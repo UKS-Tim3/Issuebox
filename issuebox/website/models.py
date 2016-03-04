@@ -24,12 +24,12 @@ class Issue(models.Model):
     status = models.CharField(max_length = 1, choices = STATUSES)
 
     assignee = models.OneToOneField(
-        'Contributor',
+        Contributor,
         related_name = 'assignee',
         on_delete = models.CASCADE,
     )
     issuer = models.OneToOneField(
-        'Contributor',
+        Contributor,
         related_name = 'issuer',
         on_delete = models.CASCADE,
     )
@@ -40,11 +40,11 @@ class Issue(models.Model):
 class Comment(models.Model):
     message = models.CharField(max_length = 300)
     issue = models.ForeignKey(
-        'Issue',
+        Issue,
         on_delete = models.CASCADE,
     )
     commenter = models.ForeignKey(
-        'Contributor',
+        Contributor,
         on_delete = models.CASCADE,
     )
 
@@ -55,7 +55,7 @@ class Tag(models.Model):
     label = models.CharField(max_length = 50)
     color = models.CharField(max_length = 20)
     issue = models.ForeignKey(
-        'Issue',
+        Issue,
         blank = True,
         related_name = '+',
     )
@@ -67,9 +67,18 @@ class Repository(models.Model):
     name = models.CharField(max_length = 50)
 
     owner = models.OneToOneField(
-        'Contributor',            # temporary solution
+        User,
+        on_delete = models.CASCADE,
     )
 
 class Commit(models.Model):
     message = models.CharField(max_length = 300)
+    contributor = models.ForeignKey(
+        Contributor,
+        on_delete = models.CASCADE,
+    )
+    repository = models.ForeignKey(
+        Repository,
+        on_delete = models.CASCADE,
+    )
 

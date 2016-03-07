@@ -1,0 +1,116 @@
+{% include "website/framework/header.html" %}
+<div id="page-wrapper">
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    All repositories
+                    <small>Search for repository</small>
+                </h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <input type="text" class="form-control" name="xx" placeholder="Search word"/><br/>
+                <button type="button" class="btn btn-md btn-success"><i class="fa fa-search"></i> Search</button>
+                <button type="button" class="btn btn-md btn-warning" onclick="showStuff()"><i class="fa fa-filter"></i>
+                    Add filter
+                </button>
+            </div>
+        </div>
+
+        <div class="row" id="filterData" style="display:none;">
+            <br/>
+            <div class="col-lg-4">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h2 class="panel-title">Filter</h2>
+                    </div>
+                    <div class="panel-body">
+                        I don't know what to put here.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <br/>
+        <div class="col-lg-12">
+            <div class="container-fluid">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover table-striped">
+                        <thead>
+                        <tr>
+                            <th width="55%">Name</th>
+                            <th width="40%">Owner</th>
+                            <th width="5%"> View</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>JSD</td>
+                            <td>pera</td>
+                            <td><a class="btn btn-info"
+                                   href="#"><span
+                                    class="glyphicon glyphicon-eye-open"></span></a>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td>UKS</td>
+                            <td>john</td>
+                            <td><a class="btn btn-info"
+                                   href="#"><span
+                                    class="glyphicon glyphicon-eye-open"></span></a>
+                            </td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                    <nav>
+                        <ul class="pagination">
+                            <li>
+                                <a href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li><a href="#">1</a></li>
+                            <li><a href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li><a href="#">4</a></li>
+                            <li><a href="#">5</a></li>
+                            <li>
+                                <a href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- /.container-fluid -->
+
+</div>
+<!-- /#page-wrapper -->
+
+<script type="text/javascript">
+function showStuff() {
+    var style = document.getElementById("filterData").style.display;
+    if(style=='block') {
+    document.getElementById("filterData").style.display = 'none';
+    }
+    else{
+    document.getElementById("filterData").style.display = 'block';
+    }
+}
+
+</script>
+
+{% include "website/framework/footer.html" %}

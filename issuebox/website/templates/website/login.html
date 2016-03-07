@@ -1,0 +1,82 @@
+{% include "website/framework/header.html" %}
+
+
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    Sign in
+                    <small>Login to IssueBox</small>
+                </h1>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <form>
+                    <br/>
+                    <label for="username" class="sr-only">Username</label> <input
+                        type="text" name="username" id="username"
+                        class="form-control"
+                        placeholder="Username" required>
+                    <br/>
+                    <label for="password" class="sr-only">Password</label> <input
+                        type="password" id="password" name="password" class="form-control"
+                        placeholder="Password" required>
+                    <br/>
+
+
+                    <button id="signin" class="btn btn-lg btn-success btn-block"
+                            type="submit">Sign in
+                    </button>
+
+                    <a class="btn btn-lg btn-danger btn-block"
+                       href="{% url 'registration' %}">Registration</a> </br>
+
+
+                </form>
+
+
+            </div>
+
+            <div class="col-lg-8">
+                <div class="panel panel-yellow">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><h4>Motivation to use IssueBox/about us</h4>
+                    </div>
+                    <div class="panel-body">
+                        <p>
+
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec bibendum leo. Duis
+                            luctus libero
+                            sit amet odio varius interdum. Interdum et malesuada fames ac ante ipsum primis in faucibus.
+                            Phasellus
+                            elementum nulla ac vestibulum hendrerit. Duis sit amet mollis eros, non rutrum nulla.
+                            Aliquam eu felis
+                            sagittis, maximus diam at, dapibus massa. Fusce ac nulla nec eros sagittis aliquet eu a
+                            ipsum.
+                        </p>
+                        <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec bibendum leo. Duis
+                            luctus libero
+                            sit amet odio varius interdum. Interdum et malesuada fames ac ante ipsum primis in faucibus.
+                            Phasellus
+                            elementum nulla ac vestibulum hendrerit. Duis sit amet mollis eros, non rutrum nulla.
+                            Aliquam eu felis
+                            sagittis, maximus diam at, dapibus massa. Fusce ac nulla nec eros sagittis aliquet eu a
+                            ipsum.
+                        </p>
+                    </div>
+                </div>
+
+
+                <br/>
+            </div>
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+</div>
+
+
+{% include "website/framework/footer.html" %}
+

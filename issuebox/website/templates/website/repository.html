@@ -1,0 +1,373 @@
+{% include "website/framework/header.html" %}
+<div id="page-wrapper">
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    RepoName
+                    <small>Short description of repository..</small>
+                </h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="container-fluid">
+                <div class="col-lg-3">
+                    <button type="button" class="btn  btn-block btn-lg btn-info" data-toggle="modal"
+                            data-target="#editRepo"><i class="fa fa-pencil-square-o"></i> Edit repository
+                    </button>
+                    <br/>
+                </div>
+                <div class="col-lg-3">
+                    <button type="button" class="btn  btn-block btn-lg btn-primary" data-toggle="modal"
+                            data-target="#newIssue"><i class="fa fa-plus-circle"></i> Create new issue
+                    </button>
+                    <br/>
+                </div>
+
+                <div class="col-lg-3">
+                    <button type="button" class="btn  btn-block btn-lg btn-success" data-toggle="modal"
+                            data-target="#addContributor"><i class="fa fa-plus-circle"></i> Add contributor
+                    </button>
+                    <br/>
+                </div>
+
+                <div class="col-lg-3">
+                    <button type="button" class="btn  btn-block btn-lg btn-danger" data-toggle="modal"
+                            data-target="#deleteRepo"><i class="fa fa-trash"></i> Delete repository
+                    </button>
+                    <br/>
+                </div>
+                <br/>
+            </div>
+        </div>
+        <div class="row">
+            <br/>
+            <div class="container-fluid">
+                <ul class="nav nav-tabs nav-justified" role="tablist">
+                    <li role="presentation" class="active"><a href="#commits" aria-controls="commits"
+                                                              role="tab" data-toggle="tab"><i class="fa fa-code"></i>
+                        Commits</a></li>
+                    <li role="presentation"><a href="#branches" aria-controls="branches" role="tab"
+                                               data-toggle="tab"><i class="fa fa-code-fork"></i> Branches</a></li>
+                    <li role="presentation"><a href="#issues" aria-controls="issues" role="tab" data-toggle="tab"><i
+                            class="fa fa-exclamation-circle"></i> Issues</a></li>
+                    <li role="presentation"><a href="#contributors" aria-controls="contributors" role="tab"
+                                               data-toggle="tab">
+
+                        <!--<i class="fa fa-user"></i> Ako ima samo jedan-->
+                        <i class="fa fa-users"></i> Contributors</a></li>
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="commits">
+                        <div class="tab-div-size">
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <a href="#"> <img
+                                                    class="media-object img-circle center-image"
+                                                    src="http://www.uni-regensburg.de/Fakultaeten/phil_Fak_II/Psychologie/Psy_II/beautycheck/english/durchschnittsgesichter/m%2801-32%29_gr.jpg"
+                                                    alt="Dragoljub Ilic" width="48" height="48"/> </a>
+                                        </div>
+                                        <div class="media-body">
+                                            <a href="#"><h4 class="media-heading"><b>userName</b></h4></a>
+                                            <h6 class="media-heading"><b><i class="fa fa-clock-o"></i> 01.01.2016 at
+                                                4:32 PM</b></h6>
+                                            <p> Message </p>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li class="list-group-item">
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <a href="#"> <img
+                                                    class="media-object img-circle center-image"
+                                                    src="http://www.uni-regensburg.de/Fakultaeten/phil_Fak_II/Psychologie/Psy_II/beautycheck/english/durchschnittsgesichter/m%2801-32%29_gr.jpg"
+                                                    alt="Dragoljub Ilic" width="48" height="48"/> </a>
+                                        </div>
+                                        <div class="media-body">
+                                            <a href="#"><h4 class="media-heading"><b>JSD</b></h4></a>
+                                            <h6 class="media-heading"><b>Comment</b></h6>
+                                            <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam at nisl
+                                                sed
+                                                ipsum posuere pharetra. </p>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li class="list-group-item">
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <a href="#"> <img
+                                                    class="media-object img-circle center-image"
+                                                    src="http://www.uni-regensburg.de/Fakultaeten/phil_Fak_II/Psychologie/Psy_II/beautycheck/english/durchschnittsgesichter/m%2801-32%29_gr.jpg"
+                                                    alt="Dragoljub Ilic" width="48" height="48"/> </a>
+                                        </div>
+                                        <div class="media-body">
+                                            <a href="#"><h4 class="media-heading"><b>JSD</b></h4></a>
+                                            <h6 class="media-heading"><b>Commit</b></h6>
+                                            <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam at nisl
+                                                sed
+                                                ipsum posuere pharetra. </p>
+                                        </div>
+                                    </div>
+                                </li>
+
+                            </ul>
+                        </div>
+
+                    </div>
+                    <div role="tabpanel" class="tab-pane tab-div-size" id="branches">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <div class="media">
+                                    <div class="media-left">
+                                        <a href="#"> <i class="fa fa-3x fa-code-fork" style="padding-top:2px"></i> </a>
+                                    </div>
+                                    <div class="media-body">
+                                        <a href="#"><h4 class="media-heading"><b>branchName</b></h4></a>
+                                        <p> username/creator</p>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="list-group-item">
+                                <div class="media">
+                                    <div class="media-left">
+                                        <a href="#"> <i class="fa fa-3x fa-code-fork" style="padding-top:2px"></i> </a>
+                                    </div>
+                                    <div class="media-body">
+                                        <a href="#"><h4 class="media-heading"><b>pera/GenAn</b></h4></a>
+                                        <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam at nisl sed
+                                            ipsum posuere pharetra. </p>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div role="tabpanel" class="tab-pane tab-div-size" id="issues">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <div class="media">
+                                    <div class="media-left">
+                                        <a href="#"> <img
+                                                class="media-object img-circle center-image"
+                                                src="http://www.uni-regensburg.de/Fakultaeten/phil_Fak_II/Psychologie/Psy_II/beautycheck/english/durchschnittsgesichter/m%2801-32%29_gr.jpg"
+                                                alt="Dragoljub Ilic" width="48" height="48"/> </a>
+                                    </div>
+                                    <div class="media-body">
+
+                                        <div class="col-lg-10">
+                                            <a href="#"><h4 class="media-heading"><b>Issue Name / autor</b></h4></a>
+                                        <h6 class="media-heading"><b>issue status</b></h6>
+                                        <p> Short description </p>
+                                        </div>
+                                        <div class="col-log-2" style="vertical-align:middle">
+                                            <p>&nbsp;</p>
+                                             <a class="btn btn-info"  href="#"  data-toggle="modal"
+                            data-target="#editIssueN"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
+                                            </div>
+
+
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="list-group-item">
+                                <div class="media">
+                                    <div class="media-left">
+                                        <a href="#"> <img
+                                                class="media-object img-circle center-image"
+                                                src="http://www.uni-regensburg.de/Fakultaeten/phil_Fak_II/Psychologie/Psy_II/beautycheck/english/durchschnittsgesichter/m%2801-32%29_gr.jpg"
+                                                alt="Dragoljub Ilic" width="48" height="48"/> </a>
+                                    </div>
+                                    <div class="media-body">
+                                        <a href="#"><h4 class="media-heading"><b>JSD</b></h4></a>
+                                        <h6 class="media-heading"><b>Comment</b></h6>
+                                        <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam at nisl sed
+                                            ipsum posuere pharetra. </p>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="list-group-item">
+                                <div class="media">
+                                    <div class="media-left">
+                                        <a href="#"> <img
+                                                class="media-object img-circle center-image"
+                                                src="http://www.uni-regensburg.de/Fakultaeten/phil_Fak_II/Psychologie/Psy_II/beautycheck/english/durchschnittsgesichter/m%2801-32%29_gr.jpg"
+                                                alt="Dragoljub Ilic" width="48" height="48"/> </a>
+                                    </div>
+                                    <div class="media-body">
+                                        <a href="#"><h4 class="media-heading"><b>JSD</b></h4></a>
+                                        <h6 class="media-heading"><b>Commit</b></h6>
+                                        <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam at nisl sed
+                                            ipsum posuere pharetra. </p>
+                                    </div>
+                                </div>
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+                    <div role="tabpanel" class="tab-pane tab-div-size" id="contributors">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <div class="media">
+                                    <div class="media-left">
+                                        <a href="#"> <img
+                                                class="media-object img-circle center-image"
+                                                src="http://www.uni-regensburg.de/Fakultaeten/phil_Fak_II/Psychologie/Psy_II/beautycheck/english/durchschnittsgesichter/m%2801-32%29_gr.jpg"
+                                                alt="Dragoljub Ilic" width="48" height="48"/> </a>
+                                    </div>
+                                    <div class="media-body">
+                                        <a href="#"><h4 class="media-heading"><b>UserName</b></h4></a>
+                                        <h6 class="media-heading"><b>isOwner</b></h6>
+                                        <p> Last activity on this repo. <i class="fa fa-clock-o"></i> 01.01.2016 at
+                                            4:32 PM </p>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="list-group-item">
+                                <div class="media">
+                                    <div class="media-left">
+                                        <a href="#"> <img
+                                                class="media-object img-circle center-image"
+                                                src="http://www.uni-regensburg.de/Fakultaeten/phil_Fak_II/Psychologie/Psy_II/beautycheck/english/durchschnittsgesichter/m%2801-32%29_gr.jpg"
+                                                alt="Dragoljub Ilic" width="48" height="48"/> </a>
+                                    </div>
+                                    <div class="media-body">
+                                        <a href="#"><h4 class="media-heading"><b>JSD</b></h4></a>
+                                        <h6 class="media-heading"><b>Comment</b></h6>
+                                        <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam at nisl sed
+                                            ipsum posuere pharetra. </p>
+                                    </div>
+                                </div>
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        <!-- /.container-fluid -->
+
+    </div>
+    <!-- /#page-wrapper -->
+
+
+    {% include "website/framework/footer.html" %}
+
+    <!--- Modal -->
+
+    <div class="modal fade" id="editRepo" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Edit repo</h4>
+                </div>
+                <div class="modal-body">
+
+                    Edit repo (not implemented)
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-info" data-dismiss="modal">Edit</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal fade" id="deleteRepo" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Delete "repoName"</h4>
+                </div>
+                <div class="modal-body">
+                    Are you sure that you want to delete repo "repoName" ?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Delete</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal fade" id="addContributor" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Add contributor</h4>
+                </div>
+                <div class="modal-body">
+                    Add contributors (not implemented)
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal">Add</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal fade" id="newIssue" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Create new issue</h4>
+                </div>
+                <div class="modal-body">
+                    not implemented
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Create</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+     <div class="modal fade" id="editIssueN" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Edit issue</h4>
+                </div>
+                <div class="modal-body">
+                    not implemented
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-info" data-dismiss="modal">Change</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!--- /Modal -->

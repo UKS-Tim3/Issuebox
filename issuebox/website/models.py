@@ -2,7 +2,11 @@ from django.db import models
 from django.contrib.auth.models import User, UserManager
 
 class Contributor(User):
-    pass
+    github_url = models.CharField(max_length = 200)
+    img_url = models.CharField(max_length = 200)
+
+    def __str__():
+        return self.username
 
 class Issue(models.Model):
     PRIORITIES = (
@@ -54,18 +58,25 @@ class Comment(models.Model):
 class Tag(models.Model):
     label = models.CharField(max_length = 50)
     color = models.CharField(max_length = 20)
-    issue = models.ManyToManyField(Issue)
+    issues = models.ManyToManyField(Issue)
 
     def __str__():
         return self.label
 
 class Repository(models.Model):
     name = models.CharField(max_length = 50)
+    description = models.CharField(max_length = 300)
+    github_url = models.CharField(max_length = 200)
+    contributors = models.ManyToManyField(Contributor)
 
     owner = models.OneToOneField(
-        User,
+        Contributor,
+        related_name = 'owner',
         on_delete = models.CASCADE,
     )
+
+    def __str__():
+        return self.name
 
 class Commit(models.Model):
     message = models.CharField(max_length = 300)
@@ -77,4 +88,7 @@ class Commit(models.Model):
         Repository,
         on_delete = models.CASCADE,
     )
+
+    def __str__():
+        return self.message
 

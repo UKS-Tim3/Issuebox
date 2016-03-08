@@ -8,7 +8,7 @@ class Issue(models.Model):
     PRIORITIES = (
         ('L', 'Low'),
         ('M', 'Medium'),
-        ('H', 'Hi'),        
+        ('H', 'High'),        
     )
     STATUSES = (
         (0, 'New'),
@@ -54,11 +54,7 @@ class Comment(models.Model):
 class Tag(models.Model):
     label = models.CharField(max_length = 50)
     color = models.CharField(max_length = 20)
-    issue = models.ForeignKey(
-        Issue,
-        blank = True,
-        related_name = '+',
-    )
+    issue = models.ManyToManyField(Issue)
 
     def __str__():
         return self.label

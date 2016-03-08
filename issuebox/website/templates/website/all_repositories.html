@@ -51,23 +51,17 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>JSD</td>
-                            <td>pera</td>
-                            <td><a class="btn btn-info"
-                                   href="#"><span
-                                    class="glyphicon glyphicon-eye-open"></span></a>
-                            </td>
 
-                        </tr>
+                        {% for repo in repository_list %}
                         <tr>
-                            <td>UKS</td>
-                            <td>john</td>
+                            <td>{{repo.name}}</td>
+                            <td>{{repo.description}}</td>
                             <td><a class="btn btn-info"
-                                   href="#"><span
+                                   href="{% url 'repository' repo.id %}"> <span
                                     class="glyphicon glyphicon-eye-open"></span></a>
                             </td>
                         </tr>
+                        {% endfor %}
 
                         </tbody>
                     </table>

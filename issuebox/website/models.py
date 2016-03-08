@@ -5,7 +5,7 @@ class Contributor(User):
     github_url = models.CharField(max_length = 200)
     img_url = models.CharField(max_length = 200)
 
-    def __str__():
+    def __str__(self):
         return self.username
 
 class Issue(models.Model):
@@ -38,7 +38,7 @@ class Issue(models.Model):
         on_delete = models.CASCADE,
     )
 
-    def __str__():
+    def __str__(self):
         return self.name
 
 class Comment(models.Model):
@@ -52,7 +52,7 @@ class Comment(models.Model):
         on_delete = models.CASCADE,
     )
 
-    def __str__():
+    def __str__(self):
         return self.message
 
 class Tag(models.Model):
@@ -60,7 +60,7 @@ class Tag(models.Model):
     color = models.CharField(max_length = 20)
     issues = models.ManyToManyField(Issue)
 
-    def __str__():
+    def __str__(self):
         return self.label
 
 class Repository(models.Model):
@@ -75,7 +75,7 @@ class Repository(models.Model):
         on_delete = models.CASCADE,
     )
 
-    def __str__():
+    def __str__(self):
         return self.name
 
 class Commit(models.Model):
@@ -89,6 +89,6 @@ class Commit(models.Model):
         on_delete = models.CASCADE,
     )
 
-    def __str__():
+    def __str__(self):
         return self.message
 

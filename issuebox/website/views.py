@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.template import RequestContext, loader
+from django.views.generic import ListView, DetailView
+from .models import *
 
 
 # Create your views here.
@@ -34,13 +36,10 @@ def settings(request,user_id):
     context = RequestContext(request)
     return HttpResponse(template.render(context),user_id)
 
-def repository(request):
-    template = loader.get_template('website/repository.html')
-    context = RequestContext(request)
-    return HttpResponse(template.render(context))
+class RepositoriesView(ListView):
+    model = Repository
+    template_name = 'website/all_repositories.html'
 
-
-def all_repositories(request):
-    template = loader.get_template('website/all_repositories.html')
-    context = RequestContext(request)
-    return HttpResponse(template.render(context))
+class RepositoryDetails(DetailView):
+    model = Repository
+    template_name = 'website/repository.html'

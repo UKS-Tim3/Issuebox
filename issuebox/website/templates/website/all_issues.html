@@ -1,0 +1,129 @@
+{% include "website/framework/header.html" %}
+<div id="page-wrapper">
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    Issues
+                    <small>All my issues</small>
+                </h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <input type="text" class="form-control" name="xx" placeholder="Search word"/><br/>
+                <button type="button" class="btn btn-md btn-success"><i class="fa fa-search"></i> Search</button>
+                <button type="button" class="btn btn-md btn-warning" onclick="showStuff()"><i class="fa fa-filter"></i>
+                    Add filter
+                </button>
+            </div>
+        </div>
+
+        <div class="row" id="filterData" style="display:none;">
+            <br/>
+            <div class="col-lg-4">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h2 class="panel-title">Filter</h2>
+                    </div>
+                    <div class="panel-body">
+                        I don't know what to put here.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="table-responsive">
+                    <br/>
+                    <table class="table table-bordered table-hover table-striped">
+                        <thead>
+                        <tr>
+                            <th width="60%">Name</th>
+                            <th width="15%">Repository</th>
+                            <th width="15%">Status</th>
+                            <th width="10%"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td><a href="#">Django views</a></td>
+                            <td><a href="#">UKS</a></td>
+                            <td>in progres</td>
+                            <td><a class="btn btn-info"
+                                   href="#"><span
+                                    class="glyphicon glyphicon-pencil"></span> Edit</a>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td><a href="#">Repository list</a></td>
+                            <td><a href="#">UKS</a></td>
+                            <td>closed</td>
+                            <td><a class="btn btn-info"
+                                   href="#" disabled><span
+                                    class="glyphicon glyphicon-pencil"></span> Edit</a>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td><a href="#">Model changes </a></td>
+                            <td><a href="#">UKS</a></td>
+                            <td>closed</td>
+                            <td><a class="btn btn-info"
+                                   href="#" disabled><span
+                                    class="glyphicon glyphicon-pencil"></span> Edit</a>
+                            </td>
+
+                        </tr>
+
+                        </tbody>
+                    </table>
+                    <nav>
+                        <ul class="pagination">
+                            <li>
+                                <a href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            <li><a href="#">1</a></li>
+                            <li><a href="#">2</a></li>
+                            <li><a href="#">3</a></li>
+                            <li><a href="#">4</a></li>
+                            <li><a href="#">5</a></li>
+                            <li>
+                                <a href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+    <!-- /#page-wrapper -->
+
+    <!--- /Modal -->
+    <script type="text/javascript">
+function showStuff() {
+    var style = document.getElementById("filterData").style.display;
+    if(style=='block') {
+    document.getElementById("filterData").style.display = 'none';
+    }
+    else{
+    document.getElementById("filterData").style.display = 'block';
+    }
+}
+
+
+
+
+
+    </script>
+
+    {% include "website/framework/footer.html" %}

@@ -6,7 +6,7 @@ from .models import *
 
 
 # Create your views here.
-#@login_required
+# @login_required
 def index(request):
     template = loader.get_template('website/index.html')
     context = RequestContext(request)
@@ -31,15 +31,23 @@ def registration(request):
     return HttpResponse(template.render(context))
 
 
-def settings(request,user_id):
+def settings(request, user_id):
     template = loader.get_template('website/settings.html')
     context = RequestContext(request)
-    return HttpResponse(template.render(context),user_id)
+    return HttpResponse(template.render(context), user_id)
+
 
 class RepositoriesView(ListView):
     model = Repository
     template_name = 'website/all_repositories.html'
 
+
 class RepositoryDetails(DetailView):
     model = Repository
     template_name = 'website/repository.html'
+
+
+def all_issues(request):
+    template = loader.get_template('website/all_issues.html')
+    context = RequestContext(request)
+    return HttpResponse(template.render(context))

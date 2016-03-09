@@ -5,172 +5,104 @@
         <div class="row">
             <div class="col-lg-12">
                 <h1 class="page-header">
-                    Tags
-                    <small>Labels for issues</small>
+                    IssueName
+                    <small>Short description</small>
                 </h1>
             </div>
         </div>
 
         <div class="row">
-            <div class="col-lg-4">
-                <div class="panel panel-info">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Default tags</h3>
-                    </div>
-                    <div class="panel-body">
-                        <ul class="list-unstyled">
-                            <li>
-                                <span class="label label-success tag"><font size="3">help wanted</font></span>
-                            </li>
-                            <li class="expanded-li">
-                                <span class="label label-primary tag"><font size="3">Question</font></span>
-                            </li>
-                            <li class="expanded-li">
-                                <span class="label label-info tag"><font size="3">Wontfix</font></span>
-                            </li>
-                            <li class="expanded-li">
-                                <span class="label label-warning tag"><font size="3">Feature</font></span>
-                            </li>
-                            <li class="expanded-li">
-                                <span class="label label-default tag"><font size="3">Invalid</font></span>
-                            </li>
-                            <li class="expanded-li">
-                                <span class="label label-danger tag"><font size="3">Bug</font></span>
-                            </li>
 
-                        </ul>
+            <div class="col-lg-6">
+                <div class="container-fluid">
+                    <div class="row">
+                        <span class="label label-warning tag"><font size="3">Feature</font></span>
+                        <span class="label label-success tag"><font size="3">help wanted</font></span>
                     </div>
+                    <br/>
+                    <div class="row">
+                        <div class="form-group">
+                            <textarea class="form-control" rows="5" id="Message" placeholder="Message"></textarea>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="btn-group" data-toggle="buttons">
+                            <label class="btn btn-primary">
+                                <input type="radio" name="priority">Low
+                            </label>
+                            <label class="btn btn-primary active">
+                                <input type="radio" name="priority">Medium
+                            </label>
+                            <label class="btn btn-primary">
+                                <input type="radio" name="priority">High
+                            </label>
+                        </div>
+                        <div class="btn-group" data-toggle="buttons">
+                            <label class="btn btn-info">
+                                <input type="radio" name="priority">New
+                            </label>
+                            <label class="btn btn-info active">
+                                <input type="radio" name="priority">In progress
+                            </label>
+                            <label class="btn btn-info">
+                                <input type="radio" name="priority">Closed
+                            </label>
+                        </div>
+                    </div>
+
                 </div>
-                <button type="button" class="btn  btn-block btn-lg btn-primary" data-toggle="modal"
-                        data-target="#addTag"><i class="fa fa-plus-circle"></i> Add custom tag
-                </button>
-                <br />
             </div>
-            <div class="col-lg-8">
-                <div class="table-responsive">
-                    <table class="table table-bordered table-hover table-striped">
-                        <thead>
-                        <tr>
-                            <th width="70%">Tag</th>
-                            <th width="20%">Repository</th>
-                            <th width="5%"></th>
-                            <th width="5%"></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td style="vertical-align:middle"> <span class="label label-primary tag"><font size="3">Bug</font></span></td>
-                            <td>JSD</td>
-                            <td><a class="btn btn-info"
-                                   href="#"><span
-                                    class="glyphicon glyphicon-pencil"></span> Edit</a>
-                            </td>
-                            <td>
-                                <a class="btn btn-danger"
-                                   href="#"><span
-                                        class="glyphicon glyphicon-trash"></span> Delete</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="vertical-align:middle"> <span class="label label-info tag"><font size="3">Greska</font></span></td>
-                            <td>JSD</td>
-                            <td><a class="btn btn-info"
-                                   href="#"><span
-                                    class="glyphicon glyphicon-pencil"></span> Edit</a>
-                            </td>
-                            <td>
-                                <a class="btn btn-danger"
-                                   href="#"><span
-                                        class="glyphicon glyphicon-trash"></span> Delete</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="vertical-align:middle"><span class="label label-info tag"><font size="3">Greska</font></span></td>
-                            <td>JSD</td>
-                            <td "><a class="btn btn-info"
-                                   href="#"><span
-                                    class="glyphicon glyphicon-pencil"></span> Edit</a>
-                            </td>
-                            <td>
-                                <a class="btn btn-danger"
-                                   href="#"><span
-                                        class="glyphicon glyphicon-trash"></span> Delete</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="vertical-align:middle"><span class="label label-danger tag"><font size="3">Greska</font></span></td>
-                            <td>JSD</td>
-                            <td><a class="btn btn-info"
-                                   href="#"><span
-                                    class="glyphicon glyphicon-pencil"></span> Edit</a>
-                            </td>
-                            <td>
-                                <a class="btn btn-danger"
-                                   href="#"><span
-                                        class="glyphicon glyphicon-trash"></span> Delete</a>
-                            </td>
-                        </tr>
 
-                        </tbody>
-                    </table>
-                    <nav>
-                        <ul class="pagination">
-                            <li>
-                                <a href="#" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
-                                </a>
+            <div class="col-lg-6">
+                <div class="container-fluid">
+                    <div class="row"> &nbsp;
+                        <div>&nbsp;</div>
+                    </div>
+                    <div class="row">
+                        <ul class="list-group">
+                            <li class="list-group-item"><b>Created on:</b> 23.01.2016. 14:32</li>
+                            <li class="list-group-item"><b>Created by:</b> <a href="#">drilic</a></li>
+                             <li class="list-group-item"><b>Clsoed on:</b> 25.01.2016. 17:55</li>
+                            <li class="list-group-item"><span class="badge" style="background-color:#5bc0de">
+                                <a href="#" data-toggle="modal" data-target="#addAssigne"><font size="4"><i class="fa fa-fw fa-pencil-square-o"></i></font></a></span><b>
+                                Assaigne: </b>
+                                <a href="#">kornjaca</a>
                             </li>
-                            <li><a href="#">1</a></li>
-                            <li><a href="#">2</a></li>
-                            <li><a href="#">3</a></li>
-                            <li><a href="#">4</a></li>
-                            <li><a href="#">5</a></li>
-                            <li>
-                                <a href="#" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
-                                </a>
+                            <li class="list-group-item"><span class="badge" style="background-color:#5bc0de">
+                                <a href="#" data-toggle="modal" data-target="#addCommit"><font size="4"><i class="fa fa-fw fa-pencil-square-o"></i></font></a></span><b>
+                                Commit: </b>
+                                <a href="#">ed0ef35</a>
                             </li>
                         </ul>
-                    </nav>
+                    </div>
                 </div>
             </div>
 
         </div>
+
+
         <!-- /.container-fluid -->
     </div>
 </div>
 <!-- /#page-wrapper -->
 
+
 <!--- Modal -->
 
-<div class="modal fade" id="addTag" role="dialog">
+<div class="modal fade" id="addCommit" role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Add custom tag</h4>
+                <h4 class="modal-title">Add commit</h4>
             </div>
             <div class="modal-body">
-                <div class="form-group">
-                    <label for="xx"> Label </label>
-                    <input type="text" class="form-control" name="xx" placeholder="Label"/>
-                </div>
-                <div class="form-group">
-                    <label for="xx"> Label </label>
-                    <input type="text" class="form-control" name="xx" placeholder="Color"/>
-                </div>
-                <div class="form-group">
-                    <label>Repository</label>
-                    <select name="repository" id="repository" class="form-control">
-                        <option value="0">JSD</option>
-                        <option value="1">UKS</option>
-                    </select>
-                </div>
+                Combo for commit (or something)
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-success" data-dismiss="modal">Add</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal">Confirm</button>
             </div>
         </div>
 
@@ -178,7 +110,27 @@
 </div>
 
 
+<div class="modal fade" id="addAssigne" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Change assigne</h4>
+            </div>
+            <div class="modal-body">
+                Combo for assigne
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal">Confirm</button>
+            </div>
+        </div>
+
+    </div>
+</div>
 <!--- /Modal -->
+
 
 
 {% include "website/framework/footer.html" %}

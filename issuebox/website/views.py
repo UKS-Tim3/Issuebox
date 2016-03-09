@@ -51,3 +51,8 @@ def all_issues(request):
     template = loader.get_template('website/all_issues.html')
     context = RequestContext(request)
     return HttpResponse(template.render(context))
+
+def issue(request):
+    template = loader.get_template('website/issue.html')
+    context = RequestContext(request)
+    return HttpResponse(template.render(context))

@@ -12,4 +12,5 @@ urlpatterns = [
     url(r'^repository/(?P<pk>\d+)$', views.RepositoryDetails.as_view(), name='repository'),
     url(r'^all-repositories/$', views.RepositoriesView.as_view(), name='all-repositories'),
     url(r'^all-issues/$', views.all_issues, name='all-issues'),
+    url(r'^issue/$', views.issue, name='issue'),
 ]

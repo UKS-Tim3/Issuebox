@@ -29,6 +29,17 @@ body {
     }
 }
 
+.tab-div-size-smaller{
+    height: 250px;
+    overflow: auto;
+}
+
+@media(min-height:768px) {
+    .tab-div-size {
+           height: 500px;
+           overflow: auto;
+    }
+}
 .badge-notify{
    background:red;
    position:relative;

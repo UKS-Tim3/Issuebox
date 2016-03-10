@@ -13,9 +13,9 @@
         <div class="row">
             <div class="container-fluid">
                 <div class="col-lg-3">
-                    <button type="button" class="btn  btn-block btn-lg btn-info" data-toggle="modal"
-                            data-target="#editRepo"><i class="fa fa-pencil-square-o"></i> Edit repository
-                    </button>
+                    <a class="btn btn-block btn-lg btn-info" href="{% url 'repository_edit' repository.id %}"
+                        data-toggle="modal" data-target="#modalEdit" title="edit repository" data-tooltip>
+                        <i class="fa fa-pencil-square-o"></i> Edit repository</a>
                     <br/>
                 </div>
                 <div class="col-lg-3">
@@ -195,26 +195,9 @@
 
     <!--- Modal -->
 
-    <div class="modal fade" id="editRepo" role="dialog">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Edit repo</h4>
-                </div>
-                <div class="modal-body">
-
-                    Edit repo (not implemented)
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-info" data-dismiss="modal">Edit</button>
-                </div>
-            </div>
-
-        </div>
-    </div>
+    <div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        {% include "website/repository_edit_form.html" %}
+    </div><!-- /.modal -->
 
     <div class="modal fade" id="deleteRepo" role="dialog">
         <div class="modal-dialog">

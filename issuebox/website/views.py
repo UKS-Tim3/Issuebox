@@ -1,8 +1,11 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.http import HttpResponse
 from django.template import RequestContext, loader
 from django.views.generic import ListView, DetailView
+from django.views.generic.edit import UpdateView
+from django.template.loader import render_to_string
 from .models import *
+from .forms import RepositoryForm
 
 
 # Create your views here.
@@ -11,7 +14,6 @@ def index(request):
     template = loader.get_template('website/index.html')
     context = RequestContext(request)
     return HttpResponse(template.render(context))
-
 
 def login(request):
     template = loader.get_template('website/login.html')
@@ -36,7 +38,20 @@ def settings(request, user_id):
     context = RequestContext(request)
     return HttpResponse(template.render(context), user_id)
 
+def all_issues(request):
+    template = loader.get_template('website/all_issues.html')
+    context = RequestContext(request)
+    return HttpResponse(template.render(context))
 
+def issue(request):
+    template = loader.get_template('website/issue.html')
+    context = RequestContext(request)
+    return HttpResponse(template.render(context))
+
+
+# ------------------
+# Repositories
+# ------------------
 class RepositoriesView(ListView):
     model = Repository
     template_name = 'website/all_repositories.html'
@@ -47,12 +62,21 @@ class RepositoryDetails(DetailView):
     template_name = 'website/repository.html'
 
 
-def all_issues(request):
-    template = loader.get_template('website/all_issues.html')
-    context = RequestContext(request)
-    return HttpResponse(template.render(context))
+class RepositoryEditView(UpdateView):
+    model = Repository
+    form_class = RepositoryForm
+    template_name = 'website/repository_edit_form.html'
 
-def issue(request):
-    template = loader.get_template('website/issue.html')
-    context = RequestContext(request)
-    return HttpResponse(template.render(context))
+    def dispatch(self, *args, **kwargs):
+        self.item_id = kwargs['pk']
+        return super(RepositoryEditView, self).dispatch(*args, **kwargs)
+
+    def form_valid(self, form):
+        form.save()
+        repository = Repository.objects.get(id=self.item_id)
+        return HttpResponse(render_to_string('website/repository_edit_form_success.html', {'repository': repository}))
+
+
+class RepositoriesView(ListView):
+    model = Repository
+    template_name = 'website/all_repositories.html'

@@ -86,14 +86,14 @@ class Issue(models.Model):
         blank = True,
     )
 
-    assignee = models.OneToOneField(
+    assignee = models.ForeignKey(
         Contributor,
         related_name = 'assignee',
         blank = True,
         null = True,
         on_delete = models.CASCADE,
     )
-    issuer = models.OneToOneField(
+    issuer = models.ForeignKey(
         Contributor,
         related_name = 'issuer',
         on_delete = models.CASCADE,

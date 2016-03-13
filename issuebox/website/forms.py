@@ -1,5 +1,5 @@
 from django import forms
-from .models import Repository
+from .models import *
 
 
 class RepositoryForm(forms.ModelForm):
@@ -9,4 +9,4 @@ class RepositoryForm(forms.ModelForm):
 
     class Meta:
         model = Repository
-        fields = ['name', 'description']
+        fields = ['name', 'description', 'github_url', 'owner', 'contributors']

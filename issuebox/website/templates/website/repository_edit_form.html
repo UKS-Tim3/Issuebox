@@ -1,5 +1,3 @@
-<div class="modal-dialog">
-    <div class="modal-content">
         <form id="repository_edit_form" class="form" role="form" method="post"
                 action="{% url 'repository_edit' repository.id %}">
             <div class="modal-header">
@@ -28,29 +26,16 @@
                         {% endif %}
                     </div>
                 {% endfor %}
-
-                <!--
-                <div class="form-group">
-                    <label for="name" > Name </label>
-                    <input type="text" class="form-control" name="name" value="{{ repository.name }}"/>
-                </div>
-                <div class="form-group">
-                    <label for="description" > Description </label>
-                    <input type="text" class="form-control" name="description" value="{{ repository.description }}"/>
-                </div>
-                -->
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <input type="submit" class="btn btn-info" data-dismiss="modal" value="Update"/>
+                <input type="submit" class="btn btn-info" value="Update"/>
             </div>
         </form>
         <script>
             var form_options = {
-                target: '#modalEdit',
+                target: '#modal',
                 success: function() { }
             }
             $('#repository_edit_form').ajaxForm(form_options);
         </script>
-    </div><!-- /.modal-content -->
-</div><!-- /.modal-dialog -->

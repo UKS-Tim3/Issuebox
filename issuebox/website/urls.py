@@ -12,6 +12,7 @@ urlpatterns = [
     url(r'^repositories/(?P<pk>\d+)$', views.RepositoryDetails.as_view(), name='repository'),
     url(r'^repositories/$', views.RepositoriesView.as_view(), name='all-repositories'),
     url(r'^repositories/(?P<pk>\d+)/edit$', views.RepositoryEditView.as_view(), name='repository_edit'),
+    url(r'^repositories/(?P<pk>\d+)/delete$', views.RepositoryDeleteView.as_view(), name='repository_delete'),
     # issues
     url(r'^all-issues/$', views.all_issues, name='all-issues'),
     url(r'^issue/$', views.issue, name='issue'),

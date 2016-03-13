@@ -1,4 +1,4 @@
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
 from django.template import RequestContext, loader
 from django.views.generic import ListView, DetailView
@@ -68,15 +68,24 @@ class RepositoryEditView(UpdateView):
     template_name = 'website/repository_edit_form.html'
 
     def dispatch(self, *args, **kwargs):
-        self.item_id = kwargs['pk']
+        self.repository_id = kwargs['pk']
         return super(RepositoryEditView, self).dispatch(*args, **kwargs)
 
     def form_valid(self, form):
         form.save()
-        repository = Repository.objects.get(id=self.item_id)
+        repository = Repository.objects.get(id=self.repository_id)
         return HttpResponse(render_to_string('website/repository_edit_form_success.html', {'repository': repository}))
 
 
-class RepositoriesView(ListView):
+class RepositoryDeleteView(DetailView):
     model = Repository
-    template_name = 'website/all_repositories.html'
+    template_name = 'website/repository_delete_view.html'
+
+    def dispatch(self, *args, **kwargs):
+        self.repository_id = kwargs['pk']
+        return super(RepositoryDeleteView, self).dispatch(*args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        repository = get_object_or_404(Repository, pk=self.repository_id)
+        repository.delete()
+        return HttpResponse(render_to_string('website/repository_delete_success.html', {'repository': repository}))

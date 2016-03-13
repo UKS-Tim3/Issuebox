@@ -193,6 +193,8 @@
 
     {% include "website/framework/footer.html" %}
 
+    {% include "website/modals/addNewIssue.html" %}
+
     <!--- Modal -->
 
     <div class="modal fade" id="editRepo" role="dialog">
@@ -256,25 +258,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="newIssue" role="dialog">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Create new issue</h4>
-                </div>
-                <div class="modal-body">
-                    not implemented
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Create</button>
-                </div>
-            </div>
 
-        </div>
-    </div>
 
      <div class="modal fade" id="editIssueN" role="dialog">
         <div class="modal-dialog">

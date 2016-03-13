@@ -1,0 +1,9 @@
+{% extends "website/framework/base_success.html" %}
+
+{% block message %}
+{{ repository.name }} has been deleted successfully.
+{% endblock %}
+
+{% block javascript %}
+$(location).attr('href', '/website/repositories');
+{% endblock %}

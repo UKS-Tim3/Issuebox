@@ -54,18 +54,18 @@ def issue(request):
 # ------------------
 class RepositoriesView(ListView):
     model = Repository
-    template_name = 'website/all_repositories.html'
+    template_name = 'website/repository/all_repositories.html'
 
 
 class RepositoryDetails(DetailView):
     model = Repository
-    template_name = 'website/repository.html'
+    template_name = 'website/repository/repository.html'
 
 
 class RepositoryEditView(UpdateView):
     model = Repository
     form_class = RepositoryForm
-    template_name = 'website/repository_edit_form.html'
+    template_name = 'website/repository/repository_edit_form.html'
 
     def dispatch(self, *args, **kwargs):
         self.repository_id = kwargs['pk']
@@ -74,12 +74,12 @@ class RepositoryEditView(UpdateView):
     def form_valid(self, form):
         form.save()
         repository = Repository.objects.get(id=self.repository_id)
-        return HttpResponse(render_to_string('website/repository_edit_form_success.html', {'repository': repository}))
+        return HttpResponse(render_to_string('website/repository/repository_edit_form_success.html', {'repository': repository}))
 
 
 class RepositoryDeleteView(DetailView):
     model = Repository
-    template_name = 'website/repository_delete_view.html'
+    template_name = 'website/repository/repository_delete_view.html'
 
     def dispatch(self, *args, **kwargs):
         self.repository_id = kwargs['pk']
@@ -88,4 +88,4 @@ class RepositoryDeleteView(DetailView):
     def post(self, request, *args, **kwargs):
         repository = get_object_or_404(Repository, pk=self.repository_id)
         repository.delete()
-        return HttpResponse(render_to_string('website/repository_delete_success.html', {'repository': repository}))
+        return HttpResponse(render_to_string('website/repository/repository_delete_success.html', {'repository': repository}))

@@ -1,0 +1,21 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title" id="myModalLabel">{% block title %}Success!{% endblock %}</h4>
+        </div>
+        <div class="modal-body">
+            {% block message %}{% endblock %}
+            <script>
+                setTimeout(function() { jQuery('#modal').modal('hide'); }, 1000);
+                $('body').on('hidden.bs.modal', '.modal', function () {
+                    $(this).removeData('bs.modal');
+                    {% block javascript %}
+                    {% endblock %}
+                });
+            </script>
+        </div>
+        <div class="modal-footer">
+        </div>
+    </div>
+</div>

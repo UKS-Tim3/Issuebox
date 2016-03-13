@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'website',
+    # added for template tweaks
+    'widget_tweaks',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -124,5 +126,5 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "website", "static","assets"),
+    os.path.join(BASE_DIR, "website", "static", "assets"),
 ]

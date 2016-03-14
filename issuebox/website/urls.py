@@ -3,13 +3,13 @@ from website import views
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
-    url(r'^login/$', views.custom_login, name='login'),
-    url(r'^logout/$', views.custom_logout, name='logout'),
+    url(r'^login/$', views.login, name='login'),
+    url(r'^logout/$', views.logout, name='logout'),
     url(r'^tags/$', views.tags, name='tags'),
     url(r'^registration/$', views.registration, name='registration'),
-    # website/5/setings ?? treba website/user/5/setings
-    url(r'^users/(?P<user_id>\d+)/settings/$', views.settings, name='settings', ),
-    # nije ispravan
+    url(r'^users/(?P<pk>\d+)$', views.ContributorsDetails.as_view(), name='users'),
+    url(r'^users/(?P<user_id>\d+)/settings$', views.settings, name='settings'),
+    url(r'^users/(?P<user_id>\d+)/change-password$', views.change_password, name='change-password'),
     url(r'^repository/(?P<pk>\d+)$', views.RepositoryDetails.as_view(), name='repository'),
     url(r'^all-repositories/$', views.RepositoriesView.as_view(), name='all-repositories'),
     url(r'^all-issues/$', views.all_issues, name='all-issues'),

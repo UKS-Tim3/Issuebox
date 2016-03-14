@@ -1,0 +1,9 @@
+{% extends "website/framework/base_form.html" %}
+
+{% block action_url %}{% url 'repository_edit' repository.id %}{% endblock %}
+
+{% block title %}Edit repository{% endblock %}
+
+{% block submit_button %}
+    <input type="submit" class="btn btn-info" value="Update"/>
+{% endblock %}

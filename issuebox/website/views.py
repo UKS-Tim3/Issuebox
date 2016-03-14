@@ -65,7 +65,7 @@ class RepositoryDetails(DetailView):
 class RepositoryCreateView(CreateView):
     model = Repository
     form_class = RepositoryForm
-    template_name = 'website/repository/repository_create_view.html'
+    template_name = 'website/repository/repository_create_form.html'
 
     def form_valid(self, form):
         repository = form.save()
@@ -75,7 +75,7 @@ class RepositoryCreateView(CreateView):
 class RepositoryEditView(UpdateView):
     model = Repository
     form_class = RepositoryForm
-    template_name = 'website/repository/repository_edit_view.html'
+    template_name = 'website/repository/repository_edit_form.html'
 
     def dispatch(self, *args, **kwargs):
         self.repository_id = kwargs['pk']
@@ -89,7 +89,7 @@ class RepositoryEditView(UpdateView):
 
 class RepositoryDeleteView(DetailView):
     model = Repository
-    template_name = 'website/repository/repository_delete_view.html'
+    template_name = 'website/repository/repository_delete_form.html'
 
     def dispatch(self, *args, **kwargs):
         self.repository_id = kwargs['pk']

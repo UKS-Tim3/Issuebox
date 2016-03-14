@@ -1,0 +1,13 @@
+{% extends "website/framework/base_form.html" %}
+
+{% block action_url %}{% url 'repository_delete' repository.id %}{% endblock %}
+
+{% block title %}Delete repository{% endblock %}
+
+{% block modal-body %}
+<p>Are you sure you want to delete <b>{{ repository.name }}</b> ?</p>
+{% endblock %}
+
+{% block submit_button %}
+    <input type="submit" class="btn btn-danger" value="Delete"/>
+{% endblock %}

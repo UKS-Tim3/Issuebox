@@ -1,91 +1,149 @@
 from django.shortcuts import get_object_or_404
-from django.http import HttpResponse
-from django.template import RequestContext, loader
-from django.views.generic import ListView, DetailView
 from django.views.generic.edit import UpdateView
 from django.template.loader import render_to_string
+from django.http import HttpResponse, HttpResponseRedirect
+from django.template import RequestContext, loader
+from django.views.generic import ListView, DetailView
+from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from website.auth.backends import have_permission
+from django.contrib.auth.decorators import login_required
 from .models import *
 from .forms import RepositoryForm
 
 
 # Create your views here.
-# @login_required
+
 def index(request):
-    template = loader.get_template('website/index.html')
-    context = RequestContext(request)
-    return HttpResponse(template.render(context))
+    if request.user.is_authenticated ():
+        return HttpResponseRedirect ('/website/users/' + str (request.user.pk))
+    else:
+        return HttpResponseRedirect ('/website/all-repositories')
+
 
 def login(request):
-    template = loader.get_template('website/login.html')
-    context = RequestContext(request)
-    return HttpResponse(template.render(context))
+    if request.user.is_authenticated ():
+        return HttpResponseRedirect ('/website/')
+
+    template = loader.get_template ('website/login.html')
+    context = RequestContext (request)
+
+    if request.method == "POST":
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate (username=username, password=password)
+
+        if user is not None:
+            if user.is_active:
+                auth_login (request, user)
+                return HttpResponseRedirect ('/website/')
+
+        context['username'] = username
+        context['error'] = True
+
+    return HttpResponse (template.render (context))
 
 
+@login_required
+def logout(request):
+    auth_logout (request)
+    return HttpResponseRedirect ('/website/login')
+
+
+@login_required
 def tags(request):
-    template = loader.get_template('website/tags.html')
-    context = RequestContext(request)
-    return HttpResponse(template.render(context))
+    template = loader.get_template ('website/tags.html')
+    context = RequestContext (request)
+    return HttpResponse (template.render (context))
 
 
 def registration(request):
-    template = loader.get_template('website/registration.html')
-    context = RequestContext(request)
-    return HttpResponse(template.render(context))
+    if request.user.is_authenticated ():
+        return HttpResponseRedirect ('/website/users/' + str (request.user.pk))
+    else:
+        template = loader.get_template ('website/registration.html')
+        context = RequestContext (request)
+        return HttpResponse (template.render (context))
 
 
+@login_required
 def settings(request, user_id):
-    template = loader.get_template('website/settings.html')
-    context = RequestContext(request)
-    return HttpResponse(template.render(context), user_id)
+    if have_permission (request.user.pk, user_id):
+        template = loader.get_template ('website/settings.html')
+        context = RequestContext (request)
+        return HttpResponse (template.render (context), user_id)
+    else:
+        return HttpResponseRedirect ('/website/users/' + str (request.user.pk))
 
-def all_issues(request):
-    template = loader.get_template('website/all_issues.html')
-    context = RequestContext(request)
-    return HttpResponse(template.render(context))
 
-def issue(request):
-    template = loader.get_template('website/issue.html')
-    context = RequestContext(request)
-    return HttpResponse(template.render(context))
-
+@login_required
+def change_password(request, user_id):
+    if have_permission (request.user.pk, user_id):
+        template = loader.get_template ('website/change_password.html')
+        context = RequestContext (request)
+        return HttpResponse (template.render (context), user_id)
+    else:
+        return HttpResponseRedirect ('/website/users/' + str (request.user.pk))
 
 # ------------------
 # Repositories
 # ------------------
-class RepositoriesView(ListView):
+class RepositoriesView (ListView):
     model = Repository
     template_name = 'website/repository/all_repositories.html'
 
 
-class RepositoryDetails(DetailView):
+class RepositoryDetails (DetailView):
     model = Repository
     template_name = 'website/repository/repository.html'
 
 
-class RepositoryEditView(UpdateView):
+class RepositoryEditView (UpdateView):
     model = Repository
     form_class = RepositoryForm
     template_name = 'website/repository/repository_edit_form.html'
 
     def dispatch(self, *args, **kwargs):
         self.repository_id = kwargs['pk']
-        return super(RepositoryEditView, self).dispatch(*args, **kwargs)
+        return super (RepositoryEditView, self).dispatch (*args, **kwargs)
 
     def form_valid(self, form):
-        form.save()
-        repository = Repository.objects.get(id=self.repository_id)
-        return HttpResponse(render_to_string('website/repository/repository_edit_form_success.html', {'repository': repository}))
+        form.save ()
+        repository = Repository.objects.get (id=self.repository_id)
+        return HttpResponse (
+            render_to_string ('website/repository/repository_edit_form_success.html', {'repository': repository}))
 
 
-class RepositoryDeleteView(DetailView):
+class RepositoryDeleteView (DetailView):
     model = Repository
     template_name = 'website/repository/repository_delete_view.html'
 
     def dispatch(self, *args, **kwargs):
         self.repository_id = kwargs['pk']
-        return super(RepositoryDeleteView, self).dispatch(*args, **kwargs)
+        return super (RepositoryDeleteView, self).dispatch (*args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        repository = get_object_or_404(Repository, pk=self.repository_id)
-        repository.delete()
-        return HttpResponse(render_to_string('website/repository/repository_delete_success.html', {'repository': repository}))
+        repository = get_object_or_404 (Repository, pk=self.repository_id)
+        repository.delete ()
+        return HttpResponse (
+            render_to_string ('website/repository/repository_delete_success.html', {'repository': repository}))
+
+
+class ContributorsDetails (DetailView):
+    model = Contributor
+    template_name = 'website/contributors.html'
+
+
+# pitanje dal sme/ne sme
+@login_required
+def all_issues(request):
+    template = loader.get_template ('website/all_issues.html')
+    context = RequestContext (request)
+    return HttpResponse (template.render (context))
+
+
+# pitanje dal sme/ne sme
+@login_required
+def issue(request):
+    template = loader.get_template ('website/issue.html')
+    context = RequestContext (request)
+    return HttpResponse (template.render (context))

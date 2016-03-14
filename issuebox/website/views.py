@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
 from django.template import RequestContext, loader
 from django.views.generic import ListView, DetailView
-from django.views.generic.edit import UpdateView
+from django.views.generic.edit import CreateView, UpdateView
 from django.template.loader import render_to_string
 from .models import *
 from .forms import RepositoryForm
@@ -62,6 +62,16 @@ class RepositoryDetails(DetailView):
     template_name = 'website/repository/repository.html'
 
 
+class RepositoryCreateView(CreateView):
+    model = Repository
+    form_class = RepositoryForm
+    template_name = 'website/repository/repository_create_form.html'
+
+    def form_valid(self, form):
+        repository = form.save()
+        return HttpResponse(render_to_string('website/repository/repository_create_success.html', {'repository': repository}))
+
+
 class RepositoryEditView(UpdateView):
     model = Repository
     form_class = RepositoryForm
@@ -74,12 +84,12 @@ class RepositoryEditView(UpdateView):
     def form_valid(self, form):
         form.save()
         repository = Repository.objects.get(id=self.repository_id)
-        return HttpResponse(render_to_string('website/repository/repository_edit_form_success.html', {'repository': repository}))
+        return HttpResponse(render_to_string('website/repository/repository_edit_success.html', {'repository': repository}))
 
 
 class RepositoryDeleteView(DetailView):
     model = Repository
-    template_name = 'website/repository/repository_delete_view.html'
+    template_name = 'website/repository/repository_delete_form.html'
 
     def dispatch(self, *args, **kwargs):
         self.repository_id = kwargs['pk']

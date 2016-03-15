@@ -47,6 +47,15 @@
 </form>
 {% block script %}
 <script>
+    /* Setting placeholders for form text inputs */
+    $('body').on('shown.bs.modal', '.modal', function () {
+        $('#modal_form input[type="text"]').each(function(index, value) {
+            var label = $(this).prev().text();
+            label = label.substring(0, label.length - 1);
+            $(this).attr('placeholder', label);
+        });
+    });
+
     var form_options = {
         target: '#modal',
         success: function() { }

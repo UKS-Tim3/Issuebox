@@ -1,14 +1,16 @@
-from django.shortcuts import get_object_or_404
-from django.views.generic.edit import UpdateView
-from django.template.loader import render_to_string
-from django.http import HttpResponse, HttpResponseRedirect
-from django.template import RequestContext, loader
-from django.views.generic import ListView, DetailView
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
-from website.auth.backends import have_permission
 from django.contrib.auth.decorators import login_required
-from .models import *
-from .forms import RepositoryForm
+from django.core.context_processors import csrf
+from django.core.exceptions import ValidationError
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render
+from django.template import RequestContext, loader
+from django.template.loader import render_to_string
+from django.views.generic import ListView, DetailView
+from django.views.generic.edit import UpdateView
+
+from website.auth.backends import have_permission
+from .forms import *
 
 
 # Create your views here.
@@ -24,7 +26,7 @@ def login(request):
     if request.user.is_authenticated ():
         return HttpResponseRedirect ('/website/')
 
-    template = loader.get_template ('website/login.html')
+    template = loader.get_template ('website/contributors/login.html')
     context = RequestContext (request)
 
     if request.method == "POST":
@@ -56,33 +58,94 @@ def tags(request):
     return HttpResponse (template.render (context))
 
 
-def registration(request):
-    if request.user.is_authenticated ():
-        return HttpResponseRedirect ('/website/users/' + str (request.user.pk))
+@login_required
+def change_password(request, user_id):
+    args = {}
+    args.update (csrf (request))
+    if have_permission (request.user.pk, user_id):
+        if request.method == "POST":
+            form = ChangePasswordForm(request.POST)
+            try:
+                if form.is_valid ():
+                    form.save (request.user)
+                    user = authenticate (username=request.user.username, password=request.user.password)
+                    auth_login (request, user)
+                    return HttpResponseRedirect ('/website/users/' + str(request.user.pk))
+                else:
+                    args['error'] = "Some error ocured."
+                    return render (request, 'website/contributors/change_password.html', args)
+
+            except ValidationError as e:
+                args['error'] = e.message
+                return render (request, 'website/contributors/change_password.html', args)
+        else:
+            template = loader.get_template ('website/contributors/change_password.html')
+            context = RequestContext (request)
+            return HttpResponse (template.render (context), user_id)
     else:
-        template = loader.get_template ('website/registration.html')
-        context = RequestContext (request)
-        return HttpResponse (template.render (context))
+        return HttpResponseRedirect ('/website/users/' + str(request.user.pk))
 
 
 @login_required
 def settings(request, user_id):
+    args = {}
+    args.update (csrf (request))
     if have_permission (request.user.pk, user_id):
-        template = loader.get_template ('website/settings.html')
-        context = RequestContext (request)
-        return HttpResponse (template.render (context), user_id)
+        if request.method == "POST":
+            form = RegistrationEditForm(request.POST)
+            try:
+                if form.is_valid ():
+                    form.save(request.user)
+                    user = authenticate (username=request.user.username, password=request.user.password)
+                    auth_login (request, user)
+                    return HttpResponseRedirect ('/website/users/' + str(request.user.pk))
+                else:
+                    args['error'] = "Some error ocured."
+                    args['oldVer'] = form
+                    return render (request, 'website/contributors/settings.html', args)
+
+            except ValidationError as e:
+                args['error'] = e.message
+                args['oldVer'] = form
+                return render (request, 'website/contributors/settings.html', args)
+        else:
+            template = loader.get_template ('website/contributors/settings.html')
+            context = RequestContext (request)
+            context['currentUser'] = request.user
+            return HttpResponse (template.render (context), user_id)
     else:
         return HttpResponseRedirect ('/website/users/' + str (request.user.pk))
 
 
-@login_required
-def change_password(request, user_id):
-    if have_permission (request.user.pk, user_id):
-        template = loader.get_template ('website/change_password.html')
-        context = RequestContext (request)
-        return HttpResponse (template.render (context), user_id)
-    else:
+def registration(request):
+    args = {}
+    args.update (csrf (request))
+    if request.user.is_authenticated ():
         return HttpResponseRedirect ('/website/users/' + str (request.user.pk))
+    else:
+        if request.method == "POST":
+            form = RegistrationForm(request.POST)
+            try:
+                if form.is_valid ():
+                    current_user = form.save ()
+                    user = authenticate (username=current_user.username, password=current_user.password)
+                    if user is not None:
+                        if user.is_active:
+                            auth_login (request, user)
+                            return HttpResponseRedirect ('/website/')
+                else:
+                    args['error'] = "Username already exist."
+                    args['oldVer'] = form
+                    return render (request, 'website/contributors/registration.html', args)
+
+            except ValidationError as e:
+                args['error'] = e.message
+                args['oldVer'] = form
+                return render (request, 'website/contributors/registration.html', args)
+
+    return render (request, 'website/contributors/registration.html', args)
+
+
 
 # ------------------
 # Repositories
@@ -130,7 +193,7 @@ class RepositoryDeleteView (DetailView):
 
 class ContributorsDetails (DetailView):
     model = Contributor
-    template_name = 'website/contributors.html'
+    template_name = 'website/contributors/contributors.html'
 
 
 # pitanje dal sme/ne sme

@@ -7,10 +7,12 @@ from django.shortcuts import get_object_or_404, render
 from django.template import RequestContext, loader
 from django.template.loader import render_to_string
 from django.views.generic import ListView, DetailView
-from django.views.generic.edit import UpdateView
+from django.views.generic.edit import CreateView, UpdateView
 
 from website.auth.backends import have_permission
 from .forms import *
+from .forms import RepositoryForm
+from .models import *
 
 
 # Create your views here.
@@ -64,13 +66,13 @@ def change_password(request, user_id):
     args.update (csrf (request))
     if have_permission (request.user.pk, user_id):
         if request.method == "POST":
-            form = ChangePasswordForm(request.POST)
+            form = ChangePasswordForm (request.POST)
             try:
                 if form.is_valid ():
                     form.save (request.user)
                     user = authenticate (username=request.user.username, password=request.user.password)
                     auth_login (request, user)
-                    return HttpResponseRedirect ('/website/users/' + str(request.user.pk))
+                    return HttpResponseRedirect ('/website/users/' + str (request.user.pk))
                 else:
                     args['error'] = "Some error ocured."
                     return render (request, 'website/contributors/change_password.html', args)
@@ -83,7 +85,7 @@ def change_password(request, user_id):
             context = RequestContext (request)
             return HttpResponse (template.render (context), user_id)
     else:
-        return HttpResponseRedirect ('/website/users/' + str(request.user.pk))
+        return HttpResponseRedirect ('/website/users/' + str (request.user.pk))
 
 
 @login_required
@@ -92,13 +94,13 @@ def settings(request, user_id):
     args.update (csrf (request))
     if have_permission (request.user.pk, user_id):
         if request.method == "POST":
-            form = RegistrationEditForm(request.POST)
+            form = RegistrationEditForm (request.POST)
             try:
                 if form.is_valid ():
-                    form.save(request.user)
+                    form.save (request.user)
                     user = authenticate (username=request.user.username, password=request.user.password)
                     auth_login (request, user)
-                    return HttpResponseRedirect ('/website/users/' + str(request.user.pk))
+                    return HttpResponseRedirect ('/website/users/' + str (request.user.pk))
                 else:
                     args['error'] = "Some error ocured."
                     args['oldVer'] = form
@@ -124,7 +126,7 @@ def registration(request):
         return HttpResponseRedirect ('/website/users/' + str (request.user.pk))
     else:
         if request.method == "POST":
-            form = RegistrationForm(request.POST)
+            form = RegistrationForm (request.POST)
             try:
                 if form.is_valid ():
                     current_user = form.save ()
@@ -146,7 +148,6 @@ def registration(request):
     return render (request, 'website/contributors/registration.html', args)
 
 
-
 # ------------------
 # Repositories
 # ------------------
@@ -160,25 +161,34 @@ class RepositoryDetails (DetailView):
     template_name = 'website/repository/repository.html'
 
 
-class RepositoryEditView (UpdateView):
+class RepositoryCreateView(CreateView):
+    model = Repository
+    form_class = RepositoryForm
+    template_name = 'website/repository/repository_create_form.html'
+
+    def form_valid(self, form):
+        repository = form.save()
+        return HttpResponse(render_to_string('website/repository/repository_create_success.html', {'repository': repository}))
+
+
+class RepositoryEditView(UpdateView):
     model = Repository
     form_class = RepositoryForm
     template_name = 'website/repository/repository_edit_form.html'
 
     def dispatch(self, *args, **kwargs):
         self.repository_id = kwargs['pk']
-        return super (RepositoryEditView, self).dispatch (*args, **kwargs)
+        return super(RepositoryEditView, self).dispatch(*args, **kwargs)
 
     def form_valid(self, form):
-        form.save ()
-        repository = Repository.objects.get (id=self.repository_id)
-        return HttpResponse (
-            render_to_string ('website/repository/repository_edit_form_success.html', {'repository': repository}))
+        form.save()
+        repository = Repository.objects.get(id=self.repository_id)
+        return HttpResponse(render_to_string('website/repository/repository_edit_success.html', {'repository': repository}))
 
 
 class RepositoryDeleteView (DetailView):
     model = Repository
-    template_name = 'website/repository/repository_delete_view.html'
+    template_name = 'website/repository/repository_delete_form.html'
 
     def dispatch(self, *args, **kwargs):
         self.repository_id = kwargs['pk']

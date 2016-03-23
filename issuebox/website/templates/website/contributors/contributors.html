@@ -1,0 +1,261 @@
+{% include "website/framework/header.html" %}
+
+
+<div id="page-wrapper">
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    Dashboard
+                    <small>User information</small>
+                </h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class=" col-lg-3" width="210">
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"> {{user.first_name}}&nbsp;{{user.last_name}} </h3>
+                    </div>
+                    <div class="panel-body">
+                        <img class="media-object img-circle center-image"
+                             src="{{user.img_url}}"
+                             alt="Dragoljub Ilic" width="200" height="280"/>
+                        <div class="text-right">
+                            <a href="#" data-toggle="modal" data-target="#AddRepository">Change picture <i
+                                    class="fa fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+                <div>
+                    &nbsp;&nbsp;<a href="#">{{user.github_url}}</a>
+                </div>
+                <br/>
+                <a class="btn btn-block btn-lg btn-primary" href="{% url 'repository_create' %}"
+                   data-toggle="modal" data-target="#modal" title="create repository" data-tooltip>
+                    <i class="fa fa-plus-circle"></i> Add repository</a>
+                <br/>
+            </div>
+            <div class="col-lg-9">
+
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#repositories" aria-controls="repositories"
+                                                              role="tab" data-toggle="tab"><i
+                            class="fa fa-database"></i> Repositories</a></li>
+                    <li role="presentation"><a href="#contributions" aria-controls="contributions" role="tab"
+                                               data-toggle="tab"><i class="fa fa-book"></i> Contributions</a></li>
+                    <li role="presentation"><a href="#activity" aria-controls="activity" role="tab" data-toggle="tab"><i
+                            class="fa fa-rss"></i> Activity</a></li>
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="repositories">
+                        <div class="tab-div-size">
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <a href="#"> <i class="fa fa-3x fa-code"></i> </a>
+                                        </div>
+                                        <div class="media-body">
+                                            <a href="#"><h4 class="media-heading"><b>Name</b></h4></a>
+                                            <p> Short description.</p>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li class="list-group-item">
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <a href="#"> <i class="fa fa-3x fa-code"></i> </a>
+                                        </div>
+                                        <div class="media-body">
+                                            <a href="#"><h4 class="media-heading"><b>JSD</b></h4></a>
+                                            <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam at nisl
+                                                sed ipsum posuere pharetra. </p>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li class="list-group-item">
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <a href="#"> <i class="fa fa-3x fa-code"></i> </a>
+                                        </div>
+                                        <div class="media-body">
+                                            <a href="#"><h4 class="media-heading"><b>JSD</b></h4></a>
+                                            <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam at nisl
+                                                sed ipsum posuere pharetra. </p>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li class="list-group-item">
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <a href="#"> <i class="fa fa-3x fa-code"></i> </a>
+                                        </div>
+                                        <div class="media-body">
+                                            <a href="#"><h4 class="media-heading"><b>JSD</b></h4></a>
+                                            <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam at nisl
+                                                sed ipsum posuere pharetra. </p>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li class="list-group-item">
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <a href="#"> <i class="fa fa-3x fa-code"></i> </a>
+                                        </div>
+                                        <div class="media-body">
+                                            <a href="#"><h4 class="media-heading"><b>JSD</b></h4></a>
+                                            <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam at nisl
+                                                sed ipsum posuere pharetra. </p>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <li class="list-group-item">
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <a href="#"> <i class="fa fa-3x fa-code"></i> </a>
+                                        </div>
+                                        <div class="media-body">
+                                            <a href="#"><h4 class="media-heading"><b>JSD</b></h4></a>
+                                            <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam at nisl
+                                                sed ipsum posuere pharetra. </p>
+                                        </div>
+                                    </div>
+                                </li>
+                        </div>
+
+                        </ul>
+                    </div>
+                    <div role="tabpanel" class="tab-pane tab-div-size" id="contributions">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <div class="media">
+                                    <div class="media-left">
+                                        <a href="#"> <i class="fa fa-3x fa-database" style="padding-top:2px"></i> </a>
+                                    </div>
+                                    <div class="media-body">
+                                        <a href="#"><h4 class="media-heading"><b>username/RepoName</b></h4></a>
+                                        <p> Short description.</p>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="list-group-item">
+                                <div class="media">
+                                    <div class="media-left">
+                                        <a href="#"> <i class="fa fa-3x fa-database" style="padding-top:2px"></i> </a>
+                                    </div>
+                                    <div class="media-body">
+                                        <a href="#"><h4 class="media-heading"><b>pera/GenAn</b></h4></a>
+                                        <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam at nisl sed
+                                            ipsum posuere pharetra. </p>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div role="tabpanel" class="tab-pane tab-div-size" id="activity">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <div class="media">
+                                    <div class="media-left">
+                                        <a href="#"> <img class="media-object img-circle center-image"
+                                                          src="http://www.uni-regensburg.de/Fakultaeten/phil_Fak_II/Psychologie/Psy_II/beautycheck/english/durchschnittsgesichter/m%2801-32%29_gr.jpg"
+                                                          alt="Dragoljub Ilic" width="48" height="48"/> </a>
+                                    </div>
+                                    <div class="media-body">
+                                        <a href="#"><h4 class="media-heading"><b>RepoName</b></h4></a>
+                                        <h6 class="media-heading"><b>Type(comment, commit, issue status)</b></h6>
+                                        <p> Message </p>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="list-group-item">
+                                <div class="media">
+                                    <div class="media-left">
+                                        <a href="#"> <img class="media-object img-circle center-image"
+                                                          src="http://www.uni-regensburg.de/Fakultaeten/phil_Fak_II/Psychologie/Psy_II/beautycheck/english/durchschnittsgesichter/m%2801-32%29_gr.jpg"
+                                                          alt="Dragoljub Ilic" width="48" height="48"/> </a>
+                                    </div>
+                                    <div class="media-body">
+                                        <a href="#"><h4 class="media-heading"><b>JSD</b></h4></a>
+                                        <h6 class="media-heading"><b>Comment</b></h6>
+                                        <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam at nisl sed
+                                            ipsum posuere pharetra. </p>
+                                    </div>
+                                </div>
+                            </li>
+
+                            <li class="list-group-item">
+                                <div class="media">
+                                    <div class="media-left">
+                                        <a href="#"> <img class="media-object img-circle center-image"
+                                                          src="http://www.uni-regensburg.de/Fakultaeten/phil_Fak_II/Psychologie/Psy_II/beautycheck/english/durchschnittsgesichter/m%2801-32%29_gr.jpg"
+                                                          alt="Dragoljub Ilic" width="48" height="48"/> </a>
+                                    </div>
+                                    <div class="media-body">
+                                        <a href="#"><h4 class="media-heading"><b>JSD</b></h4></a>
+                                        <h6 class="media-heading"><b>Commit</b></h6>
+                                        <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam at nisl sed
+                                            ipsum posuere pharetra. </p>
+                                    </div>
+                                </div>
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- /.container-fluid -->
+
+</div>
+<!-- /#page-wrapper -->
+
+<br/>
+</div>
+<!-- /#wrapper -->
+
+<!--- Modal -->
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <!-- Bootstrap 3 requires 'modal-dialog' and 'modal-content' divs to be defined -->
+    <!-- in same page as root modal div (top level page preferred) -->
+    <!-- Although, success messages still need to be wrapped with these two divs in templates! -->
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- When button that opens the modal dialog is clicked, response of href attribute -->
+            <!-- of that button is loaded which sets the content of this modal dialog. -->
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<!-- It is necessary to clear up the root modal div when dialogs are canceled, -->
+<!-- otherwise, always the first opened modal dialog will pop up -->
+<script>
+        $(document).ready(function() {
+            $('body').on('hidden.bs.modal', '.modal', function () {
+                $(this).removeData('bs.modal');
+            });
+        });
+
+</script>
+<!--- /Modal -->
+
+{% include "website/framework/footer.html" %}

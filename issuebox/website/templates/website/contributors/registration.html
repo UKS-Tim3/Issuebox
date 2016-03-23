@@ -1,0 +1,134 @@
+{% include "website/framework/header.html" %}
+
+
+<div id="page-wrapper">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    Join us
+                    <small>Proceed with registration to use our site</small>
+                </h1>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <form method="post">
+                    {% csrf_token %}
+                    <p>
+                    <div class="form-group">
+                        <input placeholder="Username" type="text" name="username" value="{{oldVer.username.value}}"
+                               id="username" class="form-control" required/>
+                        <div id="usernameErrorMessage" class="help-block with-errors"></div>
+                    </div>
+                    </p>
+                    <p>
+                        <input placeholder="Password" type="password" name="password" value=""
+                               id="password" class="form-control" required/>
+                    </p>
+                    <p>
+                    <div class="form-group">
+                        <input placeholder="Retype new password" type="password"
+                               name="confirmPassword" value="" id="confirmPassword" value=""
+                               class="form-control" required/>
+                        <div class="help-block with-errors"></div>
+                    </div>
+                    </p>
+                    <p>
+                        <input placeholder="First name" type="text" name="first_name" value="{{oldVer.first_name.value}}"
+                               id="first_name" class="form-control" required/>
+                    </p>
+                    <p>
+                        <input placeholder="Last name" type="text" name="last_name" value="{{oldVer.last_name.value}}"
+                               id="last_name" class="form-control" required/>
+                    </p>
+                    <p>
+                    <div class="form-group">
+                        <input placeholder="E-mail" type="email" name="email" value="{{oldVer.email.value}}"
+                               id="email" class="form-control"
+                               required/>
+                    </div>
+                    </p>
+                    <p>
+                        <input placeholder="Image url" type="text" name="img_url" value="{{oldVer.img_url.value}}"
+                               id="img_url" class="form-control" required/>
+                    </p>
+                    <p>
+                        <input placeholder="Github url" type="text" name="github_url" value="{{oldVer.github_url.value}}"
+                               id="github_url" class="form-control" required/>
+                    </p>
+
+                    <p>
+                        <button id="register" class="btn btn-lg btn-success btn-block" type="submit"
+                                value="Register">
+                            Register
+                        </button>
+                    </p>
+                </form>
+                {% if not error == None %}
+                <div class="alert alert-danger">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong>Error!</strong> {{error}}
+                </div>
+                {% endif %}
+                <br/>
+            </div>
+
+
+            <div class="col-lg-8">
+
+                <div class="panel panel-red">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">News</h3>
+                    </div>
+                    <div class="panel-body">
+                        <p>
+
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec bibendum leo. Duis
+                            luctus libero
+                            sit amet odio varius interdum. Interdum et malesuada fames ac ante ipsum primis in faucibus.
+                            Phasellus
+                            elementum nulla ac vestibulum hendrerit. Duis sit amet mollis eros, non rutrum nulla.
+                            Aliquam eu felis
+                            sagittis, maximus diam at, dapibus massa. Fusce ac nulla nec eros sagittis aliquet eu a
+                            ipsum.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec bibendum leo.
+                            Duis
+                            luctus libero
+                            sit amet odio varius interdum. Interdum et malesuada fames ac ante ipsum primis in faucibus.
+                            Phasellus
+                            elementum nulla ac vestibulum hendrerit. Duis sit amet mollis eros, non rutrum nulla.
+                            Aliquam eu felis
+                            sagittis, maximus diam at, dapibus massa. Fusce ac nulla nec eros sagittis aliquet eu a
+                            ipsum.
+                        </p>
+                        <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec bibendum leo. Duis
+                            luctus libero
+                            sit amet odio varius interdum. Interdum et malesuada fames ac ante ipsum primis in faucibus.
+                            Phasellus
+                            elementum nulla ac vestibulum hendrerit. Duis sit amet mollis eros, non rutrum nulla.
+                            Aliquam eu felis
+                            sagittis, maximus diam at, dapibus massa. Fusce ac nulla nec eros sagittis aliquet eu a
+                            ipsum.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec bibendum leo.
+                            Duis
+                            luctus libero
+                            sit amet odio varius interdum. Interdum et malesuada fames ac ante ipsum primis in faucibus.
+                            Phasellus
+                            elementum nulla ac vestibulum hendrerit. Duis sit amet mollis eros, non rutrum nulla.
+                            Aliquam eu felis
+                            sagittis, maximus diam at, dapibus massa. Fusce ac nulla nec eros sagittis aliquet eu a
+                            ipsum.
+                        </p>
+
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+</div>
+
+{% include "website/framework/footer.html" %}

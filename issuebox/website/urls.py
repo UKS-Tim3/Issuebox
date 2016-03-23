@@ -4,7 +4,8 @@ from website import views
 urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^login/$', views.login, name='login'),
-    url(r'^tags/$', views.TagsListView.as_view(), name='tags'),
+#   DON'T TOUCH, WILL SOON BE INTEGRATED
+#   url(r'^tags/$', views.TagsListView.as_view(), name='tags'),
     url(r'^registration/$', views.registration, name='registration'),
     # website/5/setings ?? treba website/user/5/setings
     url(r'^users/(?P<user_id>\d+)/settings/$', views.settings, name='settings'),

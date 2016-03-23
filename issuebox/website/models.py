@@ -30,11 +30,14 @@ class Repository(models.Model):
         null = True,
     )
     github_url = models.CharField(max_length = 200)
-    contributors = models.ManyToManyField(Contributor)
+    contributors = models.ManyToManyField(
+        Contributor,
+        related_name = 'contributed_repositories',
+    )
 
     owner = models.ForeignKey(
         Contributor,
-        related_name = 'owner',
+        related_name = 'owned_repositories',
         on_delete = models.CASCADE,
     )
 
@@ -45,10 +48,12 @@ class Commit(models.Model):
     message = models.CharField(max_length = 300)
     contributor = models.ForeignKey(
         Contributor,
+        related_name = 'commits',
         on_delete = models.CASCADE,
     )
     repository = models.ForeignKey(
         Repository,
+        related_name = 'commits',
         on_delete = models.CASCADE,
     )
 
@@ -88,14 +93,14 @@ class Issue(models.Model):
 
     assignee = models.ForeignKey(
         Contributor,
-        related_name = 'assignee',
+        related_name = 'issues_assigned',
         blank = True,
         null = True,
         on_delete = models.CASCADE,
     )
     issuer = models.ForeignKey(
         Contributor,
-        related_name = 'issuer',
+        related_name = 'issues_author',
         on_delete = models.CASCADE,
     )
     commit = models.OneToOneField(
@@ -116,6 +121,7 @@ class Comment(models.Model):
     )
     commenter = models.ForeignKey(
         Contributor,
+        related_name = 'comments',
         on_delete = models.CASCADE,
     )
 

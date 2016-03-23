@@ -32,7 +32,7 @@ class Repository(models.Model):
     github_url = models.CharField(max_length = 200)
     contributors = models.ManyToManyField(Contributor)
 
-    owner = models.OneToOneField(
+    owner = models.ForeignKey(
         Contributor,
         related_name = 'owner',
         on_delete = models.CASCADE,

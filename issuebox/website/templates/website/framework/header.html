@@ -141,8 +141,8 @@
                 <li>
                     <a href="{% url 'users' user.pk %}"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
                 </li>
-                <li>
-                    <a href="{% url 'tags' %}"><i class="fa fa-fw fa-tags"></i> Tags</a>
+                <li><!-- treba tags umesto all-repositories -->
+                    <a href="{% url 'all-repositories' %}"><i class="fa fa-fw fa-tags"></i> Tags</a>
                 </li>
                 <li>
                     <a href="{% url 'all-issues' %}"><i class="fa fa-fw fa-exclamation-circle"></i> My issues</a>

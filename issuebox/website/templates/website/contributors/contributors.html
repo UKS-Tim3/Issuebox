@@ -56,82 +56,19 @@
                     <div role="tabpanel" class="tab-pane active" id="repositories">
                         <div class="tab-div-size">
                             <ul class="list-group">
+                                {% for repo in user.owned_repositories.all %}
                                 <li class="list-group-item">
                                     <div class="media">
                                         <div class="media-left">
-                                            <a href="#"> <i class="fa fa-3x fa-code"></i> </a>
+                                            <a href="{{ repo.github_url }}"> <i class="fa fa-3x fa-code"></i> </a>
                                         </div>
                                         <div class="media-body">
-                                            <a href="#"><h4 class="media-heading"><b>Name</b></h4></a>
-                                            <p> Short description.</p>
+                                            <a href="{% url 'repository' repo.id %}"><h4 class="media-heading"><b>{{ repo.name }}</b></h4></a>
+                                            <p>{{ repo.description }}</p>
                                         </div>
                                     </div>
                                 </li>
-
-                                <li class="list-group-item">
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <a href="#"> <i class="fa fa-3x fa-code"></i> </a>
-                                        </div>
-                                        <div class="media-body">
-                                            <a href="#"><h4 class="media-heading"><b>JSD</b></h4></a>
-                                            <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam at nisl
-                                                sed ipsum posuere pharetra. </p>
-                                        </div>
-                                    </div>
-                                </li>
-
-                                <li class="list-group-item">
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <a href="#"> <i class="fa fa-3x fa-code"></i> </a>
-                                        </div>
-                                        <div class="media-body">
-                                            <a href="#"><h4 class="media-heading"><b>JSD</b></h4></a>
-                                            <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam at nisl
-                                                sed ipsum posuere pharetra. </p>
-                                        </div>
-                                    </div>
-                                </li>
-
-                                <li class="list-group-item">
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <a href="#"> <i class="fa fa-3x fa-code"></i> </a>
-                                        </div>
-                                        <div class="media-body">
-                                            <a href="#"><h4 class="media-heading"><b>JSD</b></h4></a>
-                                            <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam at nisl
-                                                sed ipsum posuere pharetra. </p>
-                                        </div>
-                                    </div>
-                                </li>
-
-                                <li class="list-group-item">
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <a href="#"> <i class="fa fa-3x fa-code"></i> </a>
-                                        </div>
-                                        <div class="media-body">
-                                            <a href="#"><h4 class="media-heading"><b>JSD</b></h4></a>
-                                            <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam at nisl
-                                                sed ipsum posuere pharetra. </p>
-                                        </div>
-                                    </div>
-                                </li>
-
-                                <li class="list-group-item">
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <a href="#"> <i class="fa fa-3x fa-code"></i> </a>
-                                        </div>
-                                        <div class="media-body">
-                                            <a href="#"><h4 class="media-heading"><b>JSD</b></h4></a>
-                                            <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam at nisl
-                                                sed ipsum posuere pharetra. </p>
-                                        </div>
-                                    </div>
-                                </li>
+                                {% endfor %}
                         </div>
 
                         </ul>

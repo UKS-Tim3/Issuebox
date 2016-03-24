@@ -49,7 +49,7 @@
                             </thead>
                             <tbody>
 
-                            {% for repo in repository_list %}
+                            {% for repo in owner %}
                             <tr>
                                 <td><a href="{% url 'repository' repo.id %}" >{{repo.name}}</a></td>
                                 <td>{{repo.description}}</td>

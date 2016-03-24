@@ -58,7 +58,13 @@
 
     var form_options = {
         target: '#modal',
-        success: function() { }
+        success: function() {
+            /* Fix for modal dialog when submit errors occur */
+            if($('#modal_form .form-errors').size() > 0) {
+                $('#modal_form').wrap('<div class="modal-dialog"></div>');
+                $('#modal_form').wrap('<div class="modal-content"></div>');
+            }
+        }
     }
     $('#modal_form').ajaxForm(form_options);
 </script>

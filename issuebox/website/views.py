@@ -175,7 +175,7 @@ def all_repositories(request):
                 repository_list = repository_list.filter(
                     Q(description__icontains=query)|
                     Q(name__icontains=query)|
-                    Q(owner__icontains=query)
+                    Q(owner__username__icontains=query)
                 ).distinct()
 
     paginator = Paginator(repository_list, 10)

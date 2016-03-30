@@ -12,7 +12,7 @@ urlpatterns = [
     # repositories
     url(r'^logout/$', views.logout, name='logout'),
     url(r'^repositories/(?P<pk>\d+)$', views.RepositoryDetails.as_view(), name='repository'),
-    url(r'^repositories/$', views.RepositoriesView.as_view(), name='all-repositories'),
+    #url(r'^repositories/$', views.RepositoriesView.as_view(), name='all-repositories'),
     url(r'^repositories/create$', views.RepositoryCreateView.as_view(), name='repository_create'),
     url(r'^repositories/(?P<pk>\d+)/edit$', views.RepositoryEditView.as_view(), name='repository_edit'),
     url(r'^repositories/(?P<pk>\d+)/delete$', views.RepositoryDeleteView.as_view(), name='repository_delete'),
@@ -22,7 +22,7 @@ urlpatterns = [
     url(r'^users/(?P<user_id>\d+)/settings$', views.settings, name='settings'),
     url(r'^users/(?P<user_id>\d+)/change-password$', views.change_password, name='change-password'),
 
-    url(r'^all-repositories/$', views.RepositoriesView.as_view(), name='all-repositories'),
+    url(r'^all-repositories/$', views.all_repositories, name='all-repositories'),
 
     url(r'^all-issues/$', views.all_issues, name='all-issues'),
     url(r'^issue/$', views.issue, name='issue'),

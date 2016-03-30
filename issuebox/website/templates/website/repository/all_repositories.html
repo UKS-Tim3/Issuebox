@@ -11,40 +11,43 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-lg-12">
-                <input type="text" class="form-control" name="xx" placeholder="Search word"/><br/>
-                <button type="button" class="btn btn-md btn-success"><i class="fa fa-search"></i> Search</button>
-                <button type="button" class="btn btn-md btn-warning" onclick="showStuff()"><i class="fa fa-filter"></i>
-                    Add filter
-                </button>
+        <form method="GET" action=''>
+            <div class="row">
+                <div class="col-lg-12">
+                    <input type="text" name="search_text" class="form-control" placeholder="Search word" value="{{ request.GET.search_text }}"/><br/>
+                    <button type="submit" class="btn btn-md btn-success"><i class="fa fa-search"></i> Search</button>
+                    <button type="button" class="btn btn-md btn-warning" onclick="showStuff()"><i
+                            class="fa fa-filter"></i>
+                        Add filter
+                    </button>
+                </div>
             </div>
-        </div>
 
-        <div class="row" id="filterData" style="display:none;">
-            <br/>
-            <div class="col-lg-4">
-                <div class="panel panel-info">
-                    <div class="panel-heading">
-                        <h2 class="panel-title">Filter</h2>
-                    </div>
-                    <div class="panel-body">
-                        <div class="radio">
-                            <label><input type="radio" name="optradio" checked>All</label>
+            <div class="row" id="filterData" style="display:none;">
+                <br/>
+                <div class="col-lg-4">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h2 class="panel-title">Filter</h2>
                         </div>
-                        <div class="radio">
-                            <label><input type="radio" name="optradio">By name</label>
-                        </div>
-                        <div class="radio">
-                            <label><input type="radio" name="optradio">By description</label>
-                        </div>
-                        <div class="radio">
-                            <label><input type="radio" name="optradio">By owner name</label>
+                        <div class="panel-body">
+                            <div class="radio">
+                                <label><input type="radio" name="filterParameter" value="all" checked>All</label>
+                            </div>
+                            <div class="radio">
+                                <label><input type="radio" name="filterParameter" value="byName" >By name</label>
+                            </div>
+                            <div class="radio">
+                                <label><input type="radio" name="filterParameter" value="byDescription" >By description</label>
+                            </div>
+                            <div class="radio">
+                                <label><input type="radio" name="filterParameter" value="byOwner" >By owner name</label>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </form>
 
         <div class="row">
             <br/>
@@ -71,11 +74,11 @@
                         </table>
                         <nav>
 
-                            {% if repositories|length >= 1 %}
+                            {% if repositories|length >= 10 %}
                             <ul class="pagination">
                                 {% if repositories.has_previous %}
                                 <li>
-                                    <a href="?page={{ repositories.previous_page_number }}" aria-label="Previous">
+                                    <a href="?page={{ repositories.previous_page_number }}&search_text={{request.GET.search_text}}&filterParameter={{request.GET.filterParameter}}" aria-label="Previous">
                                         <span aria-hidden="true">&laquo;</span>
                                     </a>
                                 </li>
@@ -85,7 +88,7 @@
 
                                 {% if repositories.has_next %}
                                 <li>
-                                    <a href="?page={{ repositories.next_page_number }}" aria-label="Next">
+                                    <a href="?page={{ repositories.next_page_number }}&search_text={{request.GET.search_text}}&filterParameter={{request.GET.filterParameter}}" aria-label="Next">
                                         <span aria-hidden="true">&raquo;</span>
                                     </a>
                                 </li>
@@ -115,9 +118,6 @@ function showStuff() {
     document.getElementById("filterData").style.display = 'block';
     }
 }
-
-
-
 
 </script>
 

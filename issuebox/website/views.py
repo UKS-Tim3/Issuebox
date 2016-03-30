@@ -10,6 +10,7 @@ from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Q
 
 from website.auth.backends import have_permission
 from .forms import *
@@ -156,8 +157,28 @@ def registration(request):
 # ------------------
 def all_repositories(request):
     repository_list = Repository.objects.all ()
-    paginator = Paginator(repository_list, 1)
 
+    query = request.GET.get('search_text')
+    filterParameter = request.GET.get('filterParameter')
+
+    print(filterParameter)
+
+    if query:
+        if filterParameter:
+            if filterParameter == "byDescription":
+                repository_list = repository_list.filter(description__icontains=query)
+            elif filterParameter == "byName":
+                repository_list = repository_list.filter(name__icontains=query)
+            elif filterParameter == "byOwner":
+                repository_list = repository_list.filter(owner__username__icontains=query)
+            else:
+                repository_list = repository_list.filter(
+                    Q(description__icontains=query)|
+                    Q(name__icontains=query)|
+                    Q(owner__icontains=query)
+                ).distinct()
+
+    paginator = Paginator(repository_list, 10)
     page = request.GET.get('page')
     try:
         repositories = paginator.page(page)

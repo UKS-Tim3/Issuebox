@@ -29,7 +29,18 @@
                         <h2 class="panel-title">Filter</h2>
                     </div>
                     <div class="panel-body">
-                        I don't know what to put here.
+                        <div class="radio">
+                            <label><input type="radio" name="optradio" checked>All</label>
+                        </div>
+                        <div class="radio">
+                            <label><input type="radio" name="optradio">By name</label>
+                        </div>
+                        <div class="radio">
+                            <label><input type="radio" name="optradio">By description</label>
+                        </div>
+                        <div class="radio">
+                            <label><input type="radio" name="optradio">By owner name</label>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -49,9 +60,9 @@
                             </thead>
                             <tbody>
 
-                            {% for repo in repository_list %}
+                            {% for repo in repositories %}
                             <tr>
-                                <td><a href="{% url 'repository' repo.id %}" >{{repo.name}}</a></td>
+                                <td><a href="{% url 'repository' repo.id %}">{{repo.name}}</a></td>
                                 <td>{{repo.description}}</td>
                             </tr>
                             {% endfor %}
@@ -59,28 +70,34 @@
                             </tbody>
                         </table>
                         <nav>
+
+                            {% if repositories|length >= 1 %}
                             <ul class="pagination">
+                                {% if repositories.has_previous %}
                                 <li>
-                                    <a href="#" aria-label="Previous">
+                                    <a href="?page={{ repositories.previous_page_number }}" aria-label="Previous">
                                         <span aria-hidden="true">&laquo;</span>
                                     </a>
                                 </li>
-                                <li><a href="#">1</a></li>
-                                <li><a href="#">2</a></li>
-                                <li><a href="#">3</a></li>
-                                <li><a href="#">4</a></li>
-                                <li><a href="#">5</a></li>
+                                {% endif %}
+
+                                <li><a href="#">{{repositories.number}}</a></li>
+
+                                {% if repositories.has_next %}
                                 <li>
-                                    <a href="#" aria-label="Next">
+                                    <a href="?page={{ repositories.next_page_number }}" aria-label="Next">
                                         <span aria-hidden="true">&raquo;</span>
                                     </a>
                                 </li>
+                                {% endif %}
                             </ul>
+                            {% endif %}
                         </nav>
                     </div>
                 </div>
             </div>
         </div>
+
 
         <!-- /.container-fluid -->
 
@@ -98,6 +115,9 @@ function showStuff() {
     document.getElementById("filterData").style.display = 'block';
     }
 }
+
+
+
 
 </script>
 

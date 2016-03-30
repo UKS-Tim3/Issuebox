@@ -9,6 +9,8 @@ from django.template.loader import render_to_string
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView
 
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 from website.auth.backends import have_permission
 from .forms import *
 from .forms import RepositoryForm
@@ -148,12 +150,29 @@ def registration(request):
     return render (request, 'website/contributors/registration.html', args)
 
 
+
 # ------------------
 # Repositories
 # ------------------
-class RepositoriesView (ListView):
-    model = Repository
+def all_repositories(request):
+    repository_list = Repository.objects.all ()
+    paginator = Paginator(repository_list, 1)
+
+    page = request.GET.get('page')
+    try:
+        repositories = paginator.page(page)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver first page.
+        repositories = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g. 9999), deliver last page of results.
+        repositories = paginator.page(paginator.num_pages)
+
+    context = {
+        "repositories": repositories
+    }
     template_name = 'website/repository/all_repositories.html'
+    return render(request,template_name, context)
 
 
 class RepositoryDetails (DetailView):
@@ -161,29 +180,31 @@ class RepositoryDetails (DetailView):
     template_name = 'website/repository/repository.html'
 
 
-class RepositoryCreateView(CreateView):
+class RepositoryCreateView (CreateView):
     model = Repository
     form_class = RepositoryForm
     template_name = 'website/repository/repository_create_form.html'
 
     def form_valid(self, form):
-        repository = form.save()
-        return HttpResponse(render_to_string('website/repository/repository_create_success.html', {'repository': repository}))
+        repository = form.save ()
+        return HttpResponse (
+            render_to_string ('website/repository/repository_create_success.html', {'repository': repository}))
 
 
-class RepositoryEditView(UpdateView):
+class RepositoryEditView (UpdateView):
     model = Repository
     form_class = RepositoryForm
     template_name = 'website/repository/repository_edit_form.html'
 
     def dispatch(self, *args, **kwargs):
         self.repository_id = kwargs['pk']
-        return super(RepositoryEditView, self).dispatch(*args, **kwargs)
+        return super (RepositoryEditView, self).dispatch (*args, **kwargs)
 
     def form_valid(self, form):
-        form.save()
-        repository = Repository.objects.get(id=self.repository_id)
-        return HttpResponse(render_to_string('website/repository/repository_edit_success.html', {'repository': repository}))
+        form.save ()
+        repository = Repository.objects.get (id=self.repository_id)
+        return HttpResponse (
+            render_to_string ('website/repository/repository_edit_success.html', {'repository': repository}))
 
 
 class RepositoryDeleteView (DetailView):

@@ -11,22 +11,30 @@
             </div>
         </div>
 
-        {% if user.is_authenticated and repository.owner == user %}
         <div class="row">
             <div class="container-fluid">
+                {% if user.is_authenticated and repository.owner == user %}
                 <div class="col-lg-3">
                     <a class="btn btn-block btn-lg btn-info" href="{% url 'repository_edit' repository.id %}"
                             data-toggle="modal" data-target="#modal" title="edit repository" data-tooltip>
                         <i class="fa fa-pencil-square-o"></i> Edit repository</a>
                     <br/>
                 </div>
-                <div class="col-lg-3">
-                    <button type="button" class="btn  btn-block btn-lg btn-primary" data-toggle="modal"
-                            data-target="#newIssue"><i class="fa fa-plus-circle"></i> Create new issue
-                    </button>
-                    <br/>
-                </div>
+                {% endif %}
 
+
+                {% if user.is_authenticated %}
+                    {%if user in repository.contributors.all or repository.owner == user %}
+                    <div class="col-lg-3">
+                        <button type="button" class="btn  btn-block btn-lg btn-primary" data-toggle="modal"
+                                data-target="#newIssue"><i class="fa fa-plus-circle"></i> Create new issue
+                        </button>
+                        <br/>
+                    </div>
+                    {% endif %}
+                {% endif %}
+
+                {% if user.is_authenticated and repository.owner == user %}
                 <div class="col-lg-3">
                     <button type="button" class="btn  btn-block btn-lg btn-success" data-toggle="modal"
                             data-target="#addContributor"><i class="fa fa-plus-circle"></i> Add contributor
@@ -41,9 +49,10 @@
                     <br/>
                 </div>
                 <br/>
+                {% endif %}
             </div>
         </div>
-        {% endif %}
+
 
         <div class="row">
             <br/>
@@ -110,8 +119,6 @@
                                         </div>
                                         <div class="col-log-2" style="vertical-align:middle">
                                             <p>&nbsp;</p>
-                                             <a class="btn btn-info"  href="#"  data-toggle="modal"
-                            data-target="#editIssueN"><span class="glyphicon glyphicon-pencil"></span> Edit</a>
                                             </div>
 
 

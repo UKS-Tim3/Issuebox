@@ -72,31 +72,21 @@
                     </div>
                     <div role="tabpanel" class="tab-pane tab-div-size" id="contributions">
                         <ul class="list-group">
-                            <li class="list-group-item">
-                                <div class="media">
-                                    <div class="media-left">
-                                        <a href="#"> <i class="fa fa-3x fa-database" style="padding-top:2px"></i> </a>
-                                    </div>
-                                    <div class="media-body">
-                                        <a href="#"><h4 class="media-heading"><b>username/RepoName</b></h4></a>
-                                        <p> Short description.</p>
-                                    </div>
-                                </div>
-                            </li>
 
+                            {% for repo in user.contributed_repositories.all %}
                             <li class="list-group-item">
                                 <div class="media">
                                     <div class="media-left">
-                                        <a href="#"> <i class="fa fa-3x fa-database" style="padding-top:2px"></i> </a>
+                                        <a href="{% url 'repository' repo.id %}"> <i class="fa fa-3x fa-database" style="padding-top:2px"></i> </a>
                                     </div>
                                     <div class="media-body">
-                                        <a href="#"><h4 class="media-heading"><b>pera/GenAn</b></h4></a>
-                                        <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam at nisl sed
-                                            ipsum posuere pharetra. </p>
+                                        <a href="{% url 'repository' repo.id %}"><h4 class="media-heading"><b>{{repo.owner}}/{{repo.name}}</b></h4></a>
+                                        <p> {{repo.description}}</p>
                                     </div>
                                 </div>
                             </li>
-                        </ul>
+                            {% endfor %}
+
                     </div>
 
                     <div role="tabpanel" class="tab-pane tab-div-size" id="activity">

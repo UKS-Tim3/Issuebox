@@ -14,9 +14,7 @@
             <div class="container-fluid">
                 <div class="panel panel-red">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Tags <a href="#" data-toggle="modal"
-                                                           data-target="#addCommit"><i
-                                class="fa fa-fw fa-pencil-square-o"></i></a></h3></div>
+                        <h3 class="panel-title">Tags</h3></div>
                     <div class="panel-body">
                         <span class="label label-warning tag"><font size="3">Feature</font></span>
                         <span class="label label-success tag"><font size="3">help wanted</font></span>
@@ -32,9 +30,7 @@
                         <div class="form-group">
                             <div class="panel panel-yellow">
                                 <div class="panel-heading">
-                                    <h3 class="panel-title">Message <a href="#" data-toggle="modal"
-                                                                       data-target="#addCommit"><i
-                                            class="fa fa-fw fa-pencil-square-o"></i></a></h3></div>
+                                    <h3 class="panel-title">Message </h3></div>
                                 <div class="panel-body">
                                     <p>
                                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla luctus, dui nec
@@ -50,34 +46,18 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="btn-group" data-toggle="buttons">
-                            <label class="btn btn-primary">
-                                <input type="radio" name="priority">Low
-                            </label>
-                            <label class="btn btn-primary active">
-                                <input type="radio" name="priority">Medium
-                            </label>
-                            <label class="btn btn-primary">
-                                <input type="radio" name="priority">High
-                            </label>
+                        <div class="col-lg-6">
+                            <ul class="list-group">
+                                <li class="list-group-item"><b>Priority:</b> Medium</li>
+                            </ul>
                         </div>
-                        <div class="btn-group" data-toggle="buttons">
-                            <label class="btn btn-info">
-                                <input type="radio" name="priority">New
-                            </label>
-                            <label class="btn btn-info active">
-                                <input type="radio" name="priority">In progress
-                            </label>
-                            <label class="btn btn-info">
-                                <input type="radio" name="priority">Closed
-                            </label>
+
+                        <div class="col-lg-6">
+                            <ul class="list-group">
+                                <li class="list-group-item"><b>Status:</b> In progress</li>
+                            </ul>
                         </div>
-                    </div>
-                    <div class="row">
-                        <br/>
-                        <button type="button" class="btn  btn-block btn-lg btn-primary" data-toggle="modal"
-                                data-target="#addComment"><i class="fa fa-plus-circle"></i> Add comment
-                        </button>
+
                     </div>
                     <br/>
                 </div>
@@ -90,15 +70,11 @@
                             <li class="list-group-item"><b>Created on:</b> 23.01.2016. 14:32</li>
                             <li class="list-group-item"><b>Created by:</b> <a href="#">drilic</a></li>
                             <li class="list-group-item"><b>Closed on:</b> 25.01.2016. 17:55</li>
-                            <li class="list-group-item"><span class="badge" style="background-color:#5bc0de">
-                                <a href="#" data-toggle="modal" data-target="#addAssigne"><font size="4"><i
-                                        class="fa fa-fw fa-pencil-square-o"></i></font></a></span><b>
+                            <li class="list-group-item"><b>
                                 Assignee: </b>
                                 <a href="#">kornjaca</a>
                             </li>
-                            <li class="list-group-item"><span class="badge" style="background-color:#5bc0de">
-                                <a href="#" data-toggle="modal" data-target="#addCommit"><font size="4"><i
-                                        class="fa fa-fw fa-pencil-square-o"></i></font></a></span><b>
+                            <li class="list-group-item"><b>
                                 Commit: </b>
                                 <a href="#">ed0ef35</a>
                             </li>
@@ -108,6 +84,19 @@
             </div>
 
         </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <button type="button" class="btn  btn-block btn-lg btn-primary" data-toggle="modal"
+                        data-target="#addComment"><i class="fa fa-plus-circle"></i> Add comment
+                </button>
+            </div>
+            <div class="col-lg-6">
+                <button type="button" class="btn  btn-block btn-lg btn-info" data-toggle="modal"
+                        data-target="#editIssue"><i class="fa fa-fw fa-pencil-square-o"></i> Edit issue
+                </button>
+            </div>
+        </div>
+        <br/>
         <div class="row">
             <div class="container-fluid">
                 <div class="tab-div-size-smaller">
@@ -162,67 +151,47 @@
 
 <!--- Modal -->
 
-<div class="modal fade" id="addCommit" role="dialog">
-    <div class="modal-dialog">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Add commit</h4>
-            </div>
-            <div class="modal-body">
-                Combo for commit (or something)
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-success" data-dismiss="modal">Confirm</button>
-            </div>
-        </div>
-
-    </div>
-</div>
-
-
-<div class="modal fade" id="addAssigne" role="dialog">
-    <div class="modal-dialog">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Change assigne</h4>
-            </div>
-            <div class="modal-body">
-                Combo for assigne
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-success" data-dismiss="modal">Confirm</button>
-            </div>
-        </div>
-
-    </div>
-</div>
-
-
 <div class="modal fade" id="addComment" role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Add new comment</h4>
+                <h4 class="modal-title">Add comment</h4>
             </div>
             <div class="modal-body">
-                Comment message
+                Comment text
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-success" data-dismiss="modal">Add</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Confirm</button>
             </div>
         </div>
 
     </div>
 </div>
+
+
+<div class="modal fade" id="editIssue" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Edit issue</h4>
+            </div>
+            <div class="modal-body">
+                form for editing issue
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-info" data-dismiss="modal">Confirm</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
 <!--- /Modal -->
 
 

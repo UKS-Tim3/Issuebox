@@ -161,8 +161,6 @@ def all_repositories(request):
     query = request.GET.get('search_text')
     filterParameter = request.GET.get('filterParameter')
 
-    print(filterParameter)
-
     if query:
         if filterParameter:
             if filterParameter == "byDescription":
@@ -243,17 +241,44 @@ class RepositoryDeleteView (DetailView):
             render_to_string ('website/repository/repository_delete_success.html', {'repository': repository}))
 
 
-class ContributorsDetails (DetailView):
-    model = Contributor
+def contributors(request, user_id):
+    print(user_id)
+    user = Contributor.objects.get (pk=user_id)
+    context = {
+        "userPage": user
+    }
     template_name = 'website/contributors/contributors.html'
+    return render(request,template_name, context)
 
-
-# pitanje dal sme/ne sme
 @login_required
 def all_issues(request):
-    template = loader.get_template ('website/all_issues.html')
-    context = RequestContext (request)
-    return HttpResponse (template.render (context))
+    tags = Tag.objects.all()
+
+    issues = Issue.objects.all().filter(
+                    Q(assignee__username__exact=request.user.username)|
+                    Q(issuer__username__exact=request.user.username)
+                ).distinct()
+
+    query = request.GET.get('search_text')
+    filterParameter = request.GET.get('filterParameter')
+    #if query:
+    #   if filterParameter:
+
+    paginator = Paginator(issues, 10)
+    page = request.GET.get('page')
+    try:
+        issues = paginator.page(page)
+    except PageNotAnInteger:
+        issues = paginator.page(1)
+    except EmptyPage:
+        issues = paginator.page(paginator.num_pages)
+
+    context = {
+        "issues": issues,
+        "tags": tags
+    }
+    template_name = 'website/all_issues.html'
+    return render(request,template_name, context)
 
 
 # pitanje dal sme/ne sme

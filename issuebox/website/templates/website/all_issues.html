@@ -14,7 +14,7 @@
         <form method="GET" action="">
         <div class="row">
             <div class="col-lg-12">
-                <input type="text" class="form-control" name="search_text" placeholder="Search word"/><br/>
+                <input type="text" class="form-control" name="search_text" placeholder="Search word" value="{{ request.GET.search_text }}"/><br/>
                 <button type="submit" class="btn btn-md btn-success"><i class="fa fa-search"></i> Search</button>
                 <button type="button" class="btn btn-md btn-warning" onclick="showStuff()"><i class="fa fa-filter"></i>
                     Add filter
@@ -35,18 +35,18 @@
                             Priority:
                             <select class="form-control" name="priority">
                                 <option value=""></option>
-                                <option value="L">Low</option>
-                                <option value="M">Medium</option>
-                                <option value="H">High</option>
+                                <option value="L" {% if request.GET.priority == "L" %} selected {%endif%}>Low</option>
+                                <option value="M" {% if request.GET.priority == "M" %} selected {%endif%}>Medium</option>
+                                <option value="H" {% if request.GET.priority == "H" %} selected {%endif%}>High</option>
                             </select>
                             <br/>
 
                             Status:
                             <select class="form-control" name="status">
                                 <option value=""></option>
-                                <option value="0">New</option>
-                                <option value="1">In Progress</option>
-                                <option value="2">Closed</option>
+                                <option value="0" {% if request.GET.status == "0" %} selected {%endif%}>New</option>
+                                <option value="1" {% if request.GET.status == "1" %} selected {%endif%}>In Progress</option>
+                                <option value="2" {% if request.GET.status == "2" %} selected {%endif%}>Closed</option>
                             </select>
                             <br/>
                         </div>
@@ -56,7 +56,7 @@
                             <select class="form-control" name="tag">
                                 <option value=""></option>
                                 {%for tag in tags%}
-                                <option value="{{tag.label}}">{{tag.label}}</option>
+                                <option value="{{tag.label}}" {% if request.GET.tag == tag.label %} selected {%endif%} >{{tag.label}}</option>
                                 {%endfor%}
                             </select>
                             <br/>
@@ -67,10 +67,10 @@
                             <select class="form-control" name="repo">
                                 <option value=""></option>
                                 {% for repo in user.owned_repositories.all %}
-                                <option value="{{repo.name}}">{{repo.name}}</option>
+                                <option value="{{repo.name}}" {% if request.GET.repo == repo.name %} selected {%endif%}>{{repo.name}}</option>
                                 {%endfor%}
                                 {% for repo in user.contributed_repositories.all %}
-                                <option value="{{repo.name}}">{{repo.name}}</option>
+                                <option value="{{repo.name}}" {% if request.GET.repo == repo.name %} selected {%endif%}>{{repo.name}}</option>
                                 {%endfor%}
                             </select>
                             <br/>
@@ -81,19 +81,19 @@
 
                             <div class="col-lg-6">
                                 Created from:
-                                <input type="date" name="startDateCreated" class="form-control"/>
+                                <input type="date" name="startDateCreated" class="form-control" value="{{request.GET.startDateCreated}}"/>
                                 <br/>
                                 to
-                                <input type="date" name="endDateCreated" class="form-control"/>
+                                <input type="date" name="endDateCreated" class="form-control" value="{{request.GET.endDateCreated}}"/>
                                 <br/>
                             </div>
 
                             <div class="col-lg-6">
                                 Closed from:
-                                <input type="date" name="startDateClosed" class="form-control"/>
+                                <input type="date" name="startDateClosed" class="form-control" value="{{request.GET.startDateClosed}}"/>
                                 <br/>
                                 to
-                                <input type="date" name="endDateClosed" class="form-control"/>
+                                <input type="date" name="endDateClosed" class="form-control" value="{{request.GET.endDateClosed}}"/>
                             </div>
                         </div>
                     </div>
@@ -138,7 +138,11 @@
                         <ul class="pagination">
                             {% if issues.has_previous %}
                             <li>
-                                <a href="?page={{ issues.previous_page_number }}&search_text={{request.GET.search_text}}&filterParameter={{request.GET.filterParameter}}"
+                                <a href="?page={{ issues.previous_page_number }}&search_text={{request.GET.search_text}}
+                                &priority={{request.GET.priority}}&status={{request.GET.status}}&tag={{request.GET.tag}}
+                                &repo={{request.GET.repo}}&startDateCreated={{request.GET.startDateCreated}}
+                                &endDateCreated={{request.GET.endDateCreated}}&startDateClosed={{request.GET.startDateClosed}}
+                                &endDateClosed={{request.GET.endDateClosed}}"
                                    aria-label="Previous">
                                     <span aria-hidden="true">&laquo;</span>
                                 </a>
@@ -149,7 +153,11 @@
 
                             {% if issues.has_next %}
                             <li>
-                                <a href="?page={{ issues.next_page_number }}&search_text={{request.GET.search_text}}&filterParameter={{request.GET.filterParameter}}"
+                                <a href="?page={{ issues.next_page_number }}&search_text={{request.GET.search_text}}
+                                &priority={{request.GET.priority}}&status={{request.GET.status}}&tag={{request.GET.tag}}
+                                &repo={{request.GET.repo}}&startDateCreated={{request.GET.startDateCreated}}
+                                &endDateCreated={{request.GET.endDateCreated}}&startDateClosed={{request.GET.startDateClosed}}
+                                &endDateClosed={{request.GET.endDateClosed}}"
                                    aria-label="Next">
                                     <span aria-hidden="true">&raquo;</span>
                                 </a>

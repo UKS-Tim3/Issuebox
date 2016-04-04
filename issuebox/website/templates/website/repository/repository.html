@@ -93,6 +93,9 @@
                                         </div>
                                     </div>
                                 </li>
+                                 {%empty%}
+                                <br />
+                                &nbsp;&nbsp;&nbsp;There is no any commits.
                                 {% endfor %}
 
                             </ul>
@@ -192,7 +195,7 @@
                                         <a href="{% url 'users' contributor.id %}"> <img
                                                 class="media-object img-circle center-image"
                                                 src="{{ contributor.img_url }}"
-                                                alt="Dragoljub Ilic" width="48" height="48"/> </a>
+                                                alt="{{contributor.first_name}} {{contributor.last_name}}" width="48" height="48"/> </a>
                                     </div>
                                     <div class="media-body">
                                         <a href="{% url 'users' contributor.id %}"><h4 class="media-heading"><b>{{ contributor.username }}</b></h4></a>

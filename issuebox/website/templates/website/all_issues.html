@@ -11,6 +11,7 @@
             </div>
         </div>
 
+
         <div class="row">
             <div class="col-lg-12">
                 <input type="text" class="form-control" name="xx" placeholder="Search word"/><br/>
@@ -22,53 +23,79 @@
         </div>
 
         <div class="row" id="filterData" style="display:none;">
-            <br/>
+            <div class="container-fluid">
+                <br/>
 
-            <div class="panel panel-info">
-                <div class="panel-heading">
-                    <h2 class="panel-title">Filter</h2>
-                </div>
-                <div class="panel-body">
-                    <div class="col-lg-4">
-                        Priority:
-                        <select class="form-control">
-                            <option value=""></option>
-                            <option value="L">Low</option>
-                            <option value="M">Medium</option>
-                            <option value="H">High</option>
-                        </select>
-                        <br/>
-                        Status:
-                        <select class="form-control">
-                            <option value=""></option>
-                            <option value="0">New</option>
-                            <option value="1">In Progress</option>
-                            <option value="2">Closed</option>
-                        </select>
-                        {% if tags|length > 0 %}
-                        <br/>
-                        Tag:
-                        <select class="form-control">
-                            <option value=""></option>
-                            {%for tag in tags%}
-                            <option value="{{tag.label}}">{{tag.label}}</option>
-                            {%endfor%}
-                        </select>
-                        {% endif %}
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h2 class="panel-title">Filter</h2>
                     </div>
-                    <div class="col-lg-4">
-                         Repoes:
-                        <select class="form-control">
-                            <option value=""></option>
-                             {% for repo in user.owned_repositories.all %}
-                            <option value="{{repo.name}}">{{repo.name}}</option>
-                            {%endfor%}
-                            {% for repo in user.contributed_repositories.all %}
-                            <option value="{{repo.name}}">{{repo.name}}</option>
-                            {%endfor%}
-                        </select>
-                        <br/>
+                    <div class="panel-body">
+                        <div class="col-lg-4">
+                            Priority:
+                            <select class="form-control">
+                                <option value=""></option>
+                                <option value="L">Low</option>
+                                <option value="M">Medium</option>
+                                <option value="H">High</option>
+                            </select>
+                            <br/>
 
+                            Status:
+                            <select class="form-control">
+                                <option value=""></option>
+                                <option value="0">New</option>
+                                <option value="1">In Progress</option>
+                                <option value="2">Closed</option>
+                            </select>
+                            <br/>
+                        </div>
+                        <div class="col-lg-4">
+                            {% if tags|length > 0 %}
+                            Tag:
+                            <select class="form-control">
+                                <option value=""></option>
+                                {%for tag in tags%}
+                                <option value="{{tag.label}}">{{tag.label}}</option>
+                                {%endfor%}
+                            </select>
+                            <br/>
+                            {% endif %}
+
+                            {% if repoCounter > 0 %}
+                            Repoes:
+                            <select class="form-control">
+                                <option value=""></option>
+                                {% for repo in user.owned_repositories.all %}
+                                <option value="{{repo.name}}">{{repo.name}}</option>
+                                {%endfor%}
+                                {% for repo in user.contributed_repositories.all %}
+                                <option value="{{repo.name}}">{{repo.name}}</option>
+                                {%endfor%}
+                            </select>
+                            <br/>
+                            {%endif%}
+                        </div>
+                        <div class="col-lg-4">
+
+
+                            <div class="col-lg-6">
+                                Date created from:
+                                <input type="datetime" name="startDateCreated" class="form-control"/>
+                                <br/>
+                                to
+                                <input type="datetime" name="startDateClosed" class="form-control"/>
+                                <br/>
+                            </div>
+
+                            <div class="col-lg-6">
+                                Date closed from:
+                                <input type="datetime" name="endDateCreated" class="form-control"/>
+                                <br/>
+                                to
+                                <input type="datetime" name="endDateClosed" class="form-control"/>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -149,6 +176,7 @@ function showStuff() {
     document.getElementById("filterData").style.display = 'block';
     }
 }
+
 
 
 

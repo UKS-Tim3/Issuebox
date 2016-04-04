@@ -22,7 +22,7 @@
                     <div class="panel-body">
                         <img class="media-object img-circle center-image"
                              src="{{userPage.img_url}}"
-                             alt="Dragoljub Ilic" width="200" height="280"/>
+                             alt="{{userPage.falst_name}} {{userPage.first_name}}" width="200" height="280"/>
 
                     </div>
                 </div>
@@ -67,6 +67,9 @@
                                         </div>
                                     </div>
                                 </li>
+                                {%empty%}
+                                <br />
+                                &nbsp;&nbsp;There is no any repository.
                                 {% endfor %}
                         </div>
 
@@ -87,6 +90,9 @@
                                     </div>
                                 </div>
                             </li>
+                            {%empty%}
+                                <br />
+                                &nbsp;&nbsp;There is no any contributions.
                             {% endfor %}
 
                     </div>

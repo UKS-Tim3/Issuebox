@@ -160,21 +160,22 @@ def all_repositories(request):
 
     query = request.GET.get('search_text')
     filterParameter = request.GET.get('filterParameter')
+    if filterParameter is None:
+        filterParameter='all'
 
     if query:
-        if filterParameter:
-            if filterParameter == "byDescription":
-                repository_list = repository_list.filter(description__icontains=query)
-            elif filterParameter == "byName":
-                repository_list = repository_list.filter(name__icontains=query)
-            elif filterParameter == "byOwner":
-                repository_list = repository_list.filter(owner__username__icontains=query)
-            else:
-                repository_list = repository_list.filter(
-                    Q(description__icontains=query)|
-                    Q(name__icontains=query)|
-                    Q(owner__username__icontains=query)
-                ).distinct()
+        if filterParameter == "byDescription":
+            repository_list = repository_list.filter(description__icontains=query)
+        elif filterParameter == "byName":
+            repository_list = repository_list.filter(name__icontains=query)
+        elif filterParameter == "byOwner":
+            repository_list = repository_list.filter(owner__username__icontains=query)
+        else:
+            repository_list = repository_list.filter(
+                Q(description__icontains=query)|
+                Q(name__icontains=query)|
+                Q(owner__username__icontains=query)
+            ).distinct()
 
     paginator = Paginator(repository_list, 10)
     page = request.GET.get('page')
@@ -242,7 +243,6 @@ class RepositoryDeleteView (DetailView):
 
 
 def contributors(request, user_id):
-    print(user_id)
     user = Contributor.objects.get (pk=user_id)
     context = {
         "userPage": user
@@ -253,7 +253,6 @@ def contributors(request, user_id):
 @login_required
 def all_issues(request):
     tags = Tag.objects.all()
-
     issues = Issue.objects.all().filter(
                     Q(assignee__username__exact=request.user.username)|
                     Q(issuer__username__exact=request.user.username)
@@ -273,9 +272,12 @@ def all_issues(request):
     except EmptyPage:
         issues = paginator.page(paginator.num_pages)
 
+
+    repoCounter=len(request.user.owned_repositories.all())+len(request.user.contributed_repositories.all())
     context = {
         "issues": issues,
-        "tags": tags
+        "tags": tags,
+        "repoCounter":repoCounter
     }
     template_name = 'website/all_issues.html'
     return render(request,template_name, context)

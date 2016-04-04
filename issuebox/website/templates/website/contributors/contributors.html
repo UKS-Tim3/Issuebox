@@ -17,27 +17,28 @@
             <div class=" col-lg-3" width="210">
                 <div class="panel panel-info">
                     <div class="panel-heading">
-                        <h3 class="panel-title"> {{user.first_name}}&nbsp;{{user.last_name}} </h3>
+                        <h3 class="panel-title"> {{userPage.first_name}}&nbsp;{{userPage.last_name}} </h3>
                     </div>
                     <div class="panel-body">
                         <img class="media-object img-circle center-image"
-                             src="{{user.img_url}}"
-                             alt="Dragoljub Ilic" width="200" height="280"/>
+                             src="{{userPage.img_url}}"
+                             alt="{{userPage.falst_name}} {{userPage.first_name}}" width="200" height="280"/>
 
                     </div>
                 </div>
                 <br/>
                 <div>
-                    &nbsp;&nbsp;<a href="#">{{user.github_url}}</a>
+                    &nbsp;&nbsp;<a href="{{userPage.github_url}}">{{userPage.github_url}}</a>
                 </div>
                 <br/>
+                {%if user.username == userPage.username%}
                 <a class="btn btn-block btn-lg btn-primary" href="{% url 'repository_create' %}"
                    data-toggle="modal" data-target="#modal" title="create repository" data-tooltip>
                     <i class="fa fa-plus-circle"></i> Add repository</a>
                 <br/>
+                {%endif%}
             </div>
             <div class="col-lg-9">
-
                 <ul class="nav nav-tabs" role="tablist">
                     <li role="presentation" class="active"><a href="#repositories" aria-controls="repositories"
                                                               role="tab" data-toggle="tab"><i
@@ -53,11 +54,11 @@
                     <div role="tabpanel" class="tab-pane active" id="repositories">
                         <div class="tab-div-size">
                             <ul class="list-group">
-                                {% for repo in user.owned_repositories.all %}
+                                {% for repo in userPage.owned_repositories.all %}
                                 <li class="list-group-item">
                                     <div class="media">
                                         <div class="media-left">
-                                            <a href="{{ repo.github_url }}"> <i class="fa fa-3x fa-code"></i> </a>
+                                            <a href="{% url 'repository' repo.id %}"> <i class="fa fa-3x fa-code"></i> </a>
                                         </div>
                                         <div class="media-body">
                                             <a href="{% url 'repository' repo.id %}"><h4 class="media-heading"><b>{{ repo.name }}</b></h4></a>
@@ -65,6 +66,9 @@
                                         </div>
                                     </div>
                                 </li>
+                                {%empty%}
+                                <br />
+                                &nbsp;&nbsp;There is no any repository.
                                 {% endfor %}
                         </div>
 
@@ -73,7 +77,7 @@
                     <div role="tabpanel" class="tab-pane tab-div-size" id="contributions">
                         <ul class="list-group">
 
-                            {% for repo in user.contributed_repositories.all %}
+                            {% for repo in userPage.contributed_repositories.all %}
                             <li class="list-group-item">
                                 <div class="media">
                                     <div class="media-left">
@@ -85,6 +89,9 @@
                                     </div>
                                 </div>
                             </li>
+                            {%empty%}
+                                <br />
+                                &nbsp;&nbsp;There is no any contributions.
                             {% endfor %}
 
                     </div>

@@ -32,16 +32,40 @@
                         </div>
                         <div class="panel-body">
                             <div class="radio">
-                                <label><input type="radio" name="filterParameter" value="all" checked>All</label>
+                                <label>
+                                    {% if request.GET.filterParameter == "all" %}
+                                    <input type="radio" name="filterParameter" value="all" checked>
+                                    {%else %}
+                                     <input type="radio" name="filterParameter" value="all">
+                                    {% endif %}
+                                    All</label>
                             </div>
                             <div class="radio">
-                                <label><input type="radio" name="filterParameter" value="byName" >By name</label>
+                                <label>
+                                    {% if request.GET.filterParameter == "byName" %}
+                                    <input type="radio" name="filterParameter" value="byName" checked>
+                                    {%else %}
+                                     <input type="radio" name="filterParameter" value="byName">
+                                    {% endif %}
+                                    By name</label>
                             </div>
                             <div class="radio">
-                                <label><input type="radio" name="filterParameter" value="byDescription" >By description</label>
+                                <label>
+                                    {% if request.GET.filterParameter == "byDescription" %}
+                                    <input type="radio" name="filterParameter" value="byDescription" checked>
+                                    {%else %}
+                                     <input type="radio" name="filterParameter" value="byDescription">
+                                    {% endif %}
+                                    By description</label>
                             </div>
                             <div class="radio">
-                                <label><input type="radio" name="filterParameter" value="byOwner" >By owner name</label>
+                                <label>
+                                    {% if request.GET.filterParameter == "byOwner" %}
+                                    <input type="radio" name="filterParameter" value="byOwner" checked>
+                                    {%else %}
+                                     <input type="radio" name="filterParameter" value="byOwner">
+                                    {% endif %}
+                                    By owner name</label>
                             </div>
                         </div>
                     </div>
@@ -52,14 +76,14 @@
         <div class="row">
             <br/>
             <div class="col-lg-12">
-                <div class="container-fluid">
                     <div class="table-responsive">
                         {% if repositories|length > 0 %}
                         <table class="table table-bordered table-hover table-striped">
                             <thead>
                             <tr>
-                                <th width="60%">Name</th>
-                                <th width="40%">Description</th>
+                                <th width="50%">Name</th>
+                                <th width="30%">Description</th>
+                                <th width="20%">Owner</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -68,6 +92,7 @@
                             <tr>
                                 <td><a href="{% url 'repository' repo.id %}">{{repo.name}}</a></td>
                                 <td>{{repo.description}}</td>
+                                <td><a href="{% url 'users'  repo.owner.id %}">{{repo.owner.username}}</a></td>
                             </tr>
                             {% endfor %}
 
@@ -101,7 +126,6 @@
                             {% endif %}
                         </nav>
                     </div>
-                </div>
             </div>
         </div>
 

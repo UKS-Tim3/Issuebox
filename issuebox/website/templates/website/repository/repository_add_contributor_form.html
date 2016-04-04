@@ -1,0 +1,105 @@
+{% extends "website/framework/base_form.html" %}
+
+{% load staticfiles %}
+{% block imports %}
+<!-- Bootstrap3 Typeahed plugins -->
+<script src="{% static 'js/bootstrap3-typeahead.min.js' %}"></script>
+{% endblock %}
+
+{% block action_url %}{% url 'add_contributor' repository.id %}{% endblock %}
+
+{% block title %}Add contributor{% endblock %}
+
+{% block modal-body %}
+<input type="text" id="typeahead" class="typeahead form-control" data-provide="typeahead" autocomplete="off">
+<input type="hidden" name="contributorId" id="contributorId" value="" />
+{% endblock %}
+
+{% block submit_button %}
+    <input type="submit" class="btn btn-info" value="Add contributor"/>
+{% endblock %}
+
+
+{% block script_extra %}
+<script>
+// big thanks to http://fusiongrokker.com/post/heavily-customizing-a-bootstrap-typeahead
+
+// Self-invoking function (Immediately Invoked Function Expressions)
+(function() {
+
+    var contributors = {};
+    var contributor_labels = [];
+
+    $( "#typeahead" ).typeahead({
+        source: function ( query, process ) {
+
+            // the "process" argument is a callback, expecting an array of values (strings) to display
+
+            // get the data to populate the typeahead (plus some)
+            // from your api, wherever that may be
+            $.get( "{% url 'contributor_lookup' repository.id %}", { query: query }, function (data) {
+
+                // reset these containers
+                contributors = {};
+                contributor_labels = [];
+
+                // for each item returned, if the display name is already included
+                // (e.g. multiple "John Smith" records) then add a unique value to the end
+                // so that the user can tell them apart.
+                $.each( data, function( idx, item ) {
+                    // not necessary if username is unique
+                    if ( $.contains( contributors, item.username ) ){
+                        item.username = item.username + ' #' + item.id;
+                    }
+
+                    // add the label to the display array
+                    contributor_labels.push( item.username );
+
+                    // also store a mapping to get from label back to object
+                    // storing whole object as a value for item.username as key
+                    contributors[ item.username ] = item;
+                });
+
+                //return the display array
+                process( contributor_labels );
+            });
+        }
+
+        // called when item is selected
+        // item is a value that is passed to the process() method
+        , updater: function (item) {
+            // save the id value into the hidden field
+            $( "#contributorId" ).val( contributors[ item ].id );
+            // return the string you want to go into the textbox (e.g. name)
+            return item;
+        }
+
+        // optional, to disable exact match, e.g. enables 'string 1,string 2' search pattern
+        , matcher: function () { return true; }
+
+        // customization of item display, possible to create custom html for displaying items
+        // item is a value that is passed to the process() method
+        , highlighter: function (item) {
+            var obj = contributors[ item ];
+            var html = ''
+                    + '<div class="media">'
+                    + '<div class="media-left">'
+                    + '<a href="#">'
+                    + '<img class="media-object img-circle center-image"'
+                    + ' src="' + obj.img_url + '" alt="No image" width="48" height="48"/>'
+                    + '</a>'
+                    + '</div>'
+                    + '<div class="media-body">'
+                    + '<h4 class="media-heading"><b>' + obj.username + '</b></h4>'
+                    + '<h5 class="media-heading">' + obj.first_name + '&nbsp;' + obj.last_name
+                    + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[' + obj.email + ']</h5>'
+                    + '</div>'
+                    + '</div>'
+            ;
+            return html;
+        }
+    });
+
+})();
+</script>
+{% endblock script_extra %}

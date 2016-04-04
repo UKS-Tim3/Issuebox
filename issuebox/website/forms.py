@@ -11,6 +11,21 @@ class RepositoryForm (forms.ModelForm):
         fields = ['name', 'description', 'github_url', 'owner', 'contributors']
 
 
+
+class AddContributorForm (forms.ModelForm):
+    contributor = forms.CharField (widget=forms.TextInput(), required=True, label='Contributors',
+            initial='Enter')
+
+    def __init__(self, *args, **kwargs):
+        super (AddContributorForm, self).__init__ (*args, **kwargs)
+
+    class Meta:
+        model = Repository
+        fields = ['contributor']
+
+    def save(self):
+        print("contributors form save")
+
 class RegistrationForm (forms.ModelForm):
     confirmPassword = forms.CharField (widget=forms.PasswordInput (), required=True)
     password = forms.CharField (widget=forms.PasswordInput (), required=True)

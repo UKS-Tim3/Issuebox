@@ -28,7 +28,7 @@
                 </div>
                 <br/>
                 <div>
-                    &nbsp;&nbsp;<a href="#">{{userPage.github_url}}</a>
+                    &nbsp;&nbsp;<a href="{{userPage.github_url}}">{{userPage.github_url}}</a>
                 </div>
                 <br/>
                 {%if user.username == userPage.username%}
@@ -39,7 +39,6 @@
                 {%endif%}
             </div>
             <div class="col-lg-9">
-
                 <ul class="nav nav-tabs" role="tablist">
                     <li role="presentation" class="active"><a href="#repositories" aria-controls="repositories"
                                                               role="tab" data-toggle="tab"><i
@@ -59,7 +58,7 @@
                                 <li class="list-group-item">
                                     <div class="media">
                                         <div class="media-left">
-                                            <a href="{{ repo.github_url }}"> <i class="fa fa-3x fa-code"></i> </a>
+                                            <a href="{% url 'repository' repo.id %}"> <i class="fa fa-3x fa-code"></i> </a>
                                         </div>
                                         <div class="media-body">
                                             <a href="{% url 'repository' repo.id %}"><h4 class="media-heading"><b>{{ repo.name }}</b></h4></a>

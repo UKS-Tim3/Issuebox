@@ -11,11 +11,11 @@
             </div>
         </div>
 
-
+        <form method="GET" action="">
         <div class="row">
             <div class="col-lg-12">
-                <input type="text" class="form-control" name="xx" placeholder="Search word"/><br/>
-                <button type="button" class="btn btn-md btn-success"><i class="fa fa-search"></i> Search</button>
+                <input type="text" class="form-control" name="search_text" placeholder="Search word"/><br/>
+                <button type="submit" class="btn btn-md btn-success"><i class="fa fa-search"></i> Search</button>
                 <button type="button" class="btn btn-md btn-warning" onclick="showStuff()"><i class="fa fa-filter"></i>
                     Add filter
                 </button>
@@ -31,9 +31,9 @@
                         <h2 class="panel-title">Filter</h2>
                     </div>
                     <div class="panel-body">
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                             Priority:
-                            <select class="form-control">
+                            <select class="form-control" name="priority">
                                 <option value=""></option>
                                 <option value="L">Low</option>
                                 <option value="M">Medium</option>
@@ -42,7 +42,7 @@
                             <br/>
 
                             Status:
-                            <select class="form-control">
+                            <select class="form-control" name="status">
                                 <option value=""></option>
                                 <option value="0">New</option>
                                 <option value="1">In Progress</option>
@@ -50,10 +50,10 @@
                             </select>
                             <br/>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                             {% if tags|length > 0 %}
                             Tag:
-                            <select class="form-control">
+                            <select class="form-control" name="tag">
                                 <option value=""></option>
                                 {%for tag in tags%}
                                 <option value="{{tag.label}}">{{tag.label}}</option>
@@ -64,7 +64,7 @@
 
                             {% if repoCounter > 0 %}
                             Repoes:
-                            <select class="form-control">
+                            <select class="form-control" name="repo">
                                 <option value=""></option>
                                 {% for repo in user.owned_repositories.all %}
                                 <option value="{{repo.name}}">{{repo.name}}</option>
@@ -76,30 +76,31 @@
                             <br/>
                             {%endif%}
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-6">
 
 
                             <div class="col-lg-6">
-                                Date created from:
-                                <input type="datetime" name="startDateCreated" class="form-control"/>
+                                Created from:
+                                <input type="date" name="startDateCreated" class="form-control"/>
                                 <br/>
                                 to
-                                <input type="datetime" name="startDateClosed" class="form-control"/>
+                                <input type="date" name="endDateCreated" class="form-control"/>
                                 <br/>
                             </div>
 
                             <div class="col-lg-6">
-                                Date closed from:
-                                <input type="datetime" name="endDateCreated" class="form-control"/>
+                                Closed from:
+                                <input type="date" name="startDateClosed" class="form-control"/>
                                 <br/>
                                 to
-                                <input type="datetime" name="endDateClosed" class="form-control"/>
+                                <input type="date" name="endDateClosed" class="form-control"/>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        </form>
 
         <div class="row">
             <div class="col-lg-12">

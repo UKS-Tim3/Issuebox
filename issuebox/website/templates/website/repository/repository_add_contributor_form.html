@@ -44,6 +44,16 @@
     $('.form-group label[for="id_contributor_id"]').remove();
     $('#id_contributor_id').prev().children().remove();
 
+    $('#id_contributor_id').change(function(data){
+        if(data.target.value == '') {
+           $('input[type="submit"]').prop('disabled', true);
+        }
+        else {
+           $('input[type="submit"]').prop('disabled', false);
+        }
+    });
+    $('#id_contributor_id').val('').trigger('change');
+
     var url = "{% url 'contributor_lookup' repository.id %}";
     invoke_typeahead(url);
 </script>

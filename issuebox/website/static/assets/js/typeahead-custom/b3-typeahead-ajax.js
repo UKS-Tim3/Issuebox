@@ -10,16 +10,19 @@ function invoke_typeahead(url) {
     $( "#typeahead" ).typeahead({
         source: function ( query, process ) {
 
-            // resetting value in generated hidden field
-            $( "#id_contributor_id" ).val('');
-            console.log('val > ' + $( "#id_contributor_id" ).val());
+            global_query = query;
+
+            // resetting value in generated hidden field and triggering change event
+//            var current_val = $( "#id_contributor_id" ).val();
+//            if(current_val != '') {
+                $( "#id_contributor_id" ).val('').trigger('change');
+//            }
 
             // the "process" argument is a callback, expecting an array of values (strings) to display
 
             // get the data to populate the typeahead (plus some)
             // from your api, wherever that may be
             $.get( url, { query: query }, function (data) {
-                global_query = query;
 
                 // reset these containers
                 contributors = {};
@@ -52,8 +55,8 @@ function invoke_typeahead(url) {
         // called when item is selected
         // item is a value that is passed to the process() method
         , updater: function (item) {
-            // saving value in generated hidden field
-            $( "#id_contributor_id" ).val( contributors[ item ].id );
+            // saving value in generated hidden field and triggering change event
+            $( "#id_contributor_id" ).val( contributors[ item ].id ).trigger('change');
             // return the string you want to go into the textbox (e.g. name)
             return item;
         }
@@ -70,7 +73,7 @@ function invoke_typeahead(url) {
             function insert_highlight(word) {
                 var highlighted_word = word;
                 var index = word.toLowerCase().indexOf(global_query);
-                if (index >= 0) {
+                if (global_query.length > 0 && index >= 0) {
                     highlighted_word = word.substr(0, index) + '<b>' + word.substr(index, global_query.length) + '</b>'
                             + insert_highlight(word.substr(index + global_query.length));
                 }

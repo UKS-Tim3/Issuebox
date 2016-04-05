@@ -114,15 +114,9 @@
                                                 alt="Dragoljub Ilic" width="48" height="48"/> </a>
                                     </div>
                                     <div class="media-body">
-
-                                        <div class="col-lg-10">
                                             <a href="#"><h4 class="media-heading"><b>Issue Name / autor</b></h4></a>
                                         <h6 class="media-heading"><b>issue status</b></h6>
                                         <p> Short description </p>
-                                        </div>
-                                        <div class="col-log-2" style="vertical-align:middle">
-                                            <p>&nbsp;</p>
-                                            </div>
 
 
                                     </div>
@@ -198,11 +192,19 @@
                                                 alt="{{contributor.first_name}} {{contributor.last_name}}" width="48" height="48"/> </a>
                                     </div>
                                     <div class="media-body">
+                                         <div class="col-lg-10">
                                         <a href="{% url 'users' contributor.id %}"><h4 class="media-heading"><b>{{ contributor.username }}</b></h4></a>
                                         <p> Last activity on this repo. <i class="fa fa-clock-o"></i> 01.01.2016 at
                                             4:32 PM </p>
+                                             </div>
+                                        <div class="col-log-2" style="vertical-align:middle">
+                                            <p style="height:1px">&nbsp;</p>
+                                            <a class="btn btn-danger"  href="#"><i class="fa fa-remove"></i> Remove</a>
+                                            </div>
                                     </div>
                                 </div>
+
+
                             </li>
                             {% endfor %}
 

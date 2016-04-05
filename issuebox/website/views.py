@@ -257,11 +257,19 @@ class AddContributorView (UpdateView):
 
         repository = get_object_or_404(Repository, pk=self.repository_id)
         contributor = get_object_or_404(Contributor, pk=contributor_id)
-        repository.contributors.add(contributor)
 
-        return HttpResponse(
+        # if not already a contributor
+        if contributor.id not in [x.id for x in repository.contributors.all()]:
+            repository.contributors.add(contributor)
+            return HttpResponse(
             render_to_string('website/repository/repository_add_contributor_success.html',
                               {'repository': repository, 'contributor': contributor}))
+
+        else:
+            print('error')
+            return HttpResponse(
+                render_to_string('website/repository/repository_add_contributor_error.html',
+                                  {'repository': repository, 'contributor': contributor}))
 
 
 def contributor_lookup(request, repository_id):

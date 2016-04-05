@@ -8,7 +8,7 @@ class RepositoryForm (forms.ModelForm):
 
     class Meta:
         model = Repository
-        fields = ['name', 'description', 'github_url', 'owner', 'contributors']
+        fields = ['name', 'description', 'github_url']
 
 
 

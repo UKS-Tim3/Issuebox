@@ -10,6 +10,10 @@ function invoke_typeahead(url) {
     $( "#typeahead" ).typeahead({
         source: function ( query, process ) {
 
+            // resetting value in generated hidden field
+            $( "#id_contributor_id" ).val('');
+            console.log('val > ' + $( "#id_contributor_id" ).val());
+
             // the "process" argument is a callback, expecting an array of values (strings) to display
 
             // get the data to populate the typeahead (plus some)

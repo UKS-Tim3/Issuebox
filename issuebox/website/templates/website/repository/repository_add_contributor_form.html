@@ -42,6 +42,7 @@
 <script type="text/javascript">
     // removing unnecessary label for generated hidden field
     $('.form-group label[for="id_contributor_id"]').remove();
+    $('#id_contributor_id').prev().children().remove();
 
     var url = "{% url 'contributor_lookup' repository.id %}";
     invoke_typeahead(url);

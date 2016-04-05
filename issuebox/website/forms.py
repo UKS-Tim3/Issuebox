@@ -10,7 +10,22 @@ class RepositoryForm (forms.ModelForm):
         model = Repository
         fields = ['name', 'description', 'github_url']
 
+    def save_create(self, owner):
+        repository = Repository()
+        repository.name = self.cleaned_data['name']
+        repository.description = self.cleaned_data['description']
+        repository.github_url = self.cleaned_data['github_url']
+        repository.owner = owner
+        repository.save()
+        return repository
 
+    def save_edit(self):
+        repository = self.instance
+        repository.name = self.cleaned_data['name']
+        repository.description = self.cleaned_data['description']
+        repository.github_url = self.cleaned_data['github_url']
+        repository.save()
+        return repository
 
 class AddContributorForm (forms.ModelForm):
     contributor_id = forms.CharField (widget=forms.HiddenInput(), required=True)

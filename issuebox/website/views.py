@@ -207,7 +207,8 @@ class RepositoryCreateView (CreateView):
     template_name = 'website/repository/repository_create_form.html'
 
     def form_valid(self, form):
-        repository = form.save ()
+        user = self.request.user
+        repository = form.save_create(user)
         return HttpResponse (
             render_to_string ('website/repository/repository_create_success.html', {'repository': repository}))
 
@@ -222,8 +223,7 @@ class RepositoryEditView (UpdateView):
         return super (RepositoryEditView, self).dispatch (*args, **kwargs)
 
     def form_valid(self, form):
-        form.save ()
-        repository = Repository.objects.get (id=self.repository_id)
+        repository = form.save_edit()
         return HttpResponse (
             render_to_string ('website/repository/repository_edit_success.html', {'repository': repository}))
 

@@ -16,6 +16,8 @@ urlpatterns = [
     url(r'^repositories/create$', views.RepositoryCreateView.as_view(), name='repository_create'),
     url(r'^repositories/(?P<pk>\d+)/edit$', views.RepositoryEditView.as_view(), name='repository_edit'),
     url(r'^repositories/(?P<pk>\d+)/delete$', views.RepositoryDeleteView.as_view(), name='repository_delete'),
+    url(r'^repositories/(?P<pk>\d+)/add_contributor$', views.AddContributorView.as_view(), name='add_contributor'),
+    url(r'^repositories/(?P<repository_id>\d+)/contributor_lookup$', views.contributor_lookup, name='contributor_lookup'),
 
     url(r'^registration/$', views.registration, name='registration'),
     url(r'^users/(?P<pk>\d+)$', views.ContributorsDetails.as_view(), name='users'),

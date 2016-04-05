@@ -28,9 +28,9 @@
                 </div>
 
                 <div class="col-lg-3">
-                    <button type="button" class="btn  btn-block btn-lg btn-success" data-toggle="modal"
-                            data-target="#addContributor"><i class="fa fa-plus-circle"></i> Add contributor
-                    </button>
+                    <a class="btn btn-block btn-lg btn-success" href="{% url 'add_contributor' repository.id %}"
+                            data-toggle="modal" data-target="#modal" title="add contributor" data-tooltip>
+                        <i class="fa fa-plus-circle"></i> Add contributor</a>
                     <br/>
                 </div>
 

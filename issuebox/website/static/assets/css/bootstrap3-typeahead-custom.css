@@ -1,0 +1,51 @@
+#typeahead {
+    display: block;
+
+    font-size: 20px;
+    line-height: 30px;
+
+    padding: 8px 12px;
+
+    border: 2px solid #ccc;
+    -webkit-border-radius: 8px;
+       -moz-border-radius: 8px;
+            border-radius: 8px;
+    outline: none;
+}
+
+ul.typeahead.dropdown-menu
+{
+    overflow-y: auto;
+
+    width: 95%;
+    max-height: 300px;
+    margin-top: 8px;
+    padding: 8px 0;
+
+    border: 1px solid rgba(0, 0, 0, .2);
+    border-radius: 8px 8px 8px 8px;
+    background-color: #fff;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+}
+
+ul.typeahead.dropdown-menu li
+{
+    font-size: 18px;
+    line-height: 24px;
+
+    padding: 3px 10px;
+}
+
+/*
+    ul.typeahead.dropdown-menu li.active {
+        color: #fff;
+        background-color: #0097cf;
+    }
+    */
+
+div.empty-message
+{
+    padding: 5px 10px;
+
+    text-align: center;
+}

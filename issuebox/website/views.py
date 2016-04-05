@@ -8,6 +8,8 @@ from django.template import RequestContext, loader
 from django.template.loader import render_to_string
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView
+from django.http import JsonResponse
+from django.db.models import Q
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
@@ -241,6 +243,56 @@ class RepositoryDeleteView (DetailView):
         repository.delete ()
         return HttpResponse (
             render_to_string ('website/repository/repository_delete_success.html', {'repository': repository}))
+
+
+class AddContributorView (UpdateView):
+    model = Repository
+    form_class = AddContributorForm
+    template_name = 'website/repository/repository_add_contributor_form.html'
+
+    def dispatch(self, *args, **kwargs):
+        self.repository_id = kwargs['pk']
+        return super(AddContributorView, self).dispatch(*args, **kwargs)
+
+    def form_valid(self, form):
+        contributor_id = form.save()
+
+        repository = get_object_or_404(Repository, pk=self.repository_id)
+        contributor = get_object_or_404(Contributor, pk=contributor_id)
+        repository.contributors.add(contributor)
+
+        return HttpResponse(
+            render_to_string('website/repository/repository_add_contributor_success.html',
+                              {'repository': repository, 'contributor': contributor}))
+
+
+def contributor_lookup(request, repository_id):
+    # Default return list
+    results = []
+    if request.method == "GET":
+        if request.GET.get('query', None):
+            query = request.GET['query']
+            # Ignore queries shorter than length ?
+            if len(query) > 0:
+                # Q object enables OR operation between filter conditions
+                model_results = Contributor.objects.filter(Q(username__icontains=query) |
+                        Q(first_name__icontains=query) | Q(last_name__icontains=query) | Q(email__icontains=query))
+
+                # results = [ {x.id : x.username,} for x in model_results ]
+
+                # need to use .all().values() because this converts query set of objects which are not Json convertable
+                # to list of maps which is literally JSON syntax so JsonResponse can be created
+                results = [x for x in model_results.all().values()]
+
+                # removing repository owner and user that are already contributors
+                repository = get_object_or_404 (Repository, pk=repository_id)
+                results = [x for x in results if x['id'] not in [y.id for y in repository.contributors.all()]
+                                                    and x['id'] != repository.owner.id]
+
+        # else:
+        #     # list() and .values([attributes]) must be used in order to serialize to json
+        #     results = list(Contributor.objects.all().values())
+    return JsonResponse(results, safe=False)
 
 
 class ContributorsDetails (DetailView):

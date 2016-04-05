@@ -1,3 +1,6 @@
+{% block imports %}
+{% endblock %}
+
 <form id="modal_form" class="form" role="form" method="post"
         action="{% block action_url %}{% endblock %}">
     <div class="modal-header">
@@ -34,6 +37,10 @@
                 {% endif %}
             </div>
         {% endfor %}
+
+        {% block extra_form_field %}
+        {% endblock extra_form_field %}
+
         {% endblock modal-body %}
     </div>
     <div class="modal-footer">
@@ -68,4 +75,6 @@
     }
     $('#modal_form').ajaxForm(form_options);
 </script>
-{% endblock %}
+{% block script_extra %}
+{% endblock script_extra %}
+{% endblock script %}

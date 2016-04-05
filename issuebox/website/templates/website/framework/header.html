@@ -161,6 +161,7 @@
                 {% endif %}
 
                  {% if user.is_authenticated %}
+                {%if user.owned_repositories.all|length > 0 %}
                 <li>
                     <a href="javascript:;" data-toggle="collapse" data-target="#demo"><i
                             class="fa fa-fw fa-database"></i> My Repositories <i class="fa fa-fw fa-caret-down"></i></a>
@@ -173,6 +174,7 @@
                     </ul>
                 </li>
                 {% endif %}
+                {%endif%}
             </ul>
         </div>
         <!-- /.navbar-collapse -->

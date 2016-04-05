@@ -2,11 +2,12 @@ function invoke_typeahead(url) {
 
     // Instantiate the Bloodhound suggestion engine
     var contributors = new Bloodhound({
-         datumTokenizer: function (datum) {
+//         datumTokenizer: function (datum) {
 //            return Bloodhound.tokenizers.obj.whitespace;
-            return Bloodhound.tokenizers.obj.whitespace(datum.label);
-         },
-//        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('label'),
+//            return Bloodhound.tokenizers.obj.whitespace(datum.label);
+//        },
+        identify: function(obj) { return obj.label; },
+        datumTokenizer: Bloodhound.tokenizers.obj.whitespace('label'),
         queryTokenizer: Bloodhound.tokenizers.whitespace,
         remote: {
             url: url + '?query=%QUERY',

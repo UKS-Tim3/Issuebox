@@ -5,6 +5,7 @@ function invoke_typeahead(url) {
 
     var contributors = {};
     var contributor_labels = [];
+    var global_query = '';
 
     $( "#typeahead" ).typeahead({
         source: function ( query, process ) {
@@ -14,6 +15,7 @@ function invoke_typeahead(url) {
             // get the data to populate the typeahead (plus some)
             // from your api, wherever that may be
             $.get( url, { query: query }, function (data) {
+                global_query = query;
 
                 // reset these containers
                 contributors = {};
@@ -59,6 +61,18 @@ function invoke_typeahead(url) {
         // item is a value that is passed to the process() method
         , highlighter: function (item) {
             var obj = contributors[ item ];
+
+            // function that bolds every part of word that matches the current query
+            function insert_highlight(word) {
+                var highlighted_word = word;
+                var index = word.toLowerCase().indexOf(global_query);
+                if (index >= 0) {
+                    highlighted_word = word.substr(0, index) + '<b>' + word.substr(index, global_query.length) + '</b>'
+                            + insert_highlight(word.substr(index + global_query.length));
+                }
+                return highlighted_word;
+            };
+
             var html = ''
                     + '<div class="media">'
                     + '<div class="media-left">'
@@ -68,9 +82,9 @@ function invoke_typeahead(url) {
                     + '</a>'
                     + '</div>'
                     + '<div class="media-body">'
-                    + '<h4 class="media-heading"><b>' + obj.username + '</b></h4>'
-                    + '<h5 class="media-heading">' + obj.first_name + '&nbsp;' + obj.last_name
-                    + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[' + obj.email + ']</h5>'
+                    + '<h4 class="media-heading"><b>' + insert_highlight(obj.username) + '</b></h4>'
+                    + '<h5 class="media-heading">' + insert_highlight(obj.first_name) + '&nbsp;' + insert_highlight(obj.last_name)
+                    + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[' + insert_highlight(obj.email) + ']</h5>'
                     + '</div>'
                     + '</div>'
             ;

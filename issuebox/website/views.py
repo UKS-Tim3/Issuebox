@@ -245,16 +245,25 @@ class RepositoryDeleteView (DetailView):
             render_to_string ('website/repository/repository_delete_success.html', {'repository': repository}))
 
 
-class AddContributor (UpdateView):
+class AddContributorView (UpdateView):
     model = Repository
     form_class = AddContributorForm
     template_name = 'website/repository/repository_add_contributor_form.html'
 
+    def dispatch(self, *args, **kwargs):
+        self.repository_id = kwargs['pk']
+        return super(AddContributorView, self).dispatch(*args, **kwargs)
+
     def form_valid(self, form):
-        form.save ()
-        repository = Repository.objects.get (id=self.repository_id)
-        return HttpResponse (
-            render_to_string ('website/repository/repository_edit_success.html', {'repository': repository}))
+        contributor_id = form.save()
+
+        repository = get_object_or_404(Repository, pk=self.repository_id)
+        contributor = get_object_or_404(Contributor, pk=contributor_id)
+        repository.contributors.add(contributor)
+
+        return HttpResponse(
+            render_to_string('website/repository/repository_add_contributor_success.html',
+                              {'repository': repository, 'contributor': contributor}))
 
 
 def contributor_lookup(request, repository_id):

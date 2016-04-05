@@ -13,18 +13,18 @@ class RepositoryForm (forms.ModelForm):
 
 
 class AddContributorForm (forms.ModelForm):
-    contributor = forms.CharField (widget=forms.TextInput(), required=True, label='Contributors',
-            initial='Enter')
+    contributor_id = forms.CharField (widget=forms.HiddenInput(), required=True)
 
     def __init__(self, *args, **kwargs):
         super (AddContributorForm, self).__init__ (*args, **kwargs)
 
     class Meta:
         model = Repository
-        fields = ['contributor']
+        fields = ['contributor_id']
 
     def save(self):
-        print("contributors form save")
+        contributor_id = self.cleaned_data['contributor_id']
+        return contributor_id
 
 class RegistrationForm (forms.ModelForm):
     confirmPassword = forms.CharField (widget=forms.PasswordInput (), required=True)

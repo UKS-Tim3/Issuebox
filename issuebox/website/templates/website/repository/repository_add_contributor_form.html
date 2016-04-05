@@ -17,10 +17,10 @@
 
 {% block title %}Search contributors by username, first name, last name or email...{% endblock %}
 
-{% block modal-body %}
+
+{% block extra_form_field %}
 <div class="span3">
-<input type="text" id="typeahead" class="typeahead form-control" data-provide="typeahead" autocomplete="off">
-<input type="hidden" name="contributorId" id="contributorId" value="" />
+    <input type="text" id="typeahead" class="typeahead form-control" data-provide="typeahead" autocomplete="off">
 </div>
 {% endblock %}
 
@@ -40,6 +40,9 @@
 
 <!-- Must pass url as an argument because templating doesn't work in imported js libraries -->
 <script type="text/javascript">
+    // removing unnecessary label for generated hidden field
+    $('.form-group label[for="id_contributor_id"]').remove();
+
     var url = "{% url 'contributor_lookup' repository.id %}";
     invoke_typeahead(url);
 </script>

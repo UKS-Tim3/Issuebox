@@ -37,6 +37,10 @@
                 {% endif %}
             </div>
         {% endfor %}
+
+        {% block extra_form_field %}
+        {% endblock extra_form_field %}
+
         {% endblock modal-body %}
     </div>
     <div class="modal-footer">

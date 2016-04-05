@@ -48,8 +48,8 @@ function invoke_typeahead(url) {
         // called when item is selected
         // item is a value that is passed to the process() method
         , updater: function (item) {
-            // save the id value into the hidden field
-            $( "#contributorId" ).val( contributors[ item ].id );
+            // saving value in generated hidden field
+            $( "#id_contributor_id" ).val( contributors[ item ].id );
             // return the string you want to go into the textbox (e.g. name)
             return item;
         }

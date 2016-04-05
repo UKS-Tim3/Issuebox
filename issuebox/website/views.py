@@ -258,25 +258,28 @@ class AddContributor (UpdateView):
 
 
 def contributor_lookup(request, repository_id):
+    print('lookup')
     # Default return list
     results = []
     if request.method == "GET":
         if request.GET.get('query', None):
             query = request.GET['query']
+            print('query je {}'.format(query))
             # Ignore queries shorter than length ?
             if len(query) > 0:
                 # Q object enables OR operation between filter conditions
                 model_results = Contributor.objects.filter(Q(username__icontains=query) |
                         Q(first_name__icontains=query) | Q(last_name__icontains=query) | Q(email__icontains=query))
 
+
                 # results = [ {x.id : x.username,} for x in model_results ]
 
                 # need to use .all().values() because this converts list of objects which are not Json convertable
                 # to list of maps which is literally JSON syntax so JsonResponse can be created
                 results = [x for x in model_results.all().values()]
-        else:
-            # list() and .values([attributes]) must be used in order to serialize to json
-            results = list(Contributor.objects.all().values())
+        # else:
+        #     # list() and .values([attributes]) must be used in order to serialize to json
+        #     results = list(Contributor.objects.all().values())
     return JsonResponse(results, safe=False)
 
 

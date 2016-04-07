@@ -12,6 +12,7 @@ urlpatterns = [
     url(r'^repositories/(?P<pk>\d+)/delete$', views.RepositoryDeleteView.as_view(), name='repository_delete'),
     url(r'^repositories/(?P<pk>\d+)/add_contributor$', views.AddContributorView.as_view(), name='add_contributor'),
     url(r'^repositories/(?P<repository_id>\d+)/contributor_lookup$', views.contributor_lookup, name='contributor_lookup'),
+    url(r'^repositories/(?P<repository_id>\d+)/contributor_remove$', views.contributor_remove, name='contributor_remove'),
     url(r'^all-repositories/$', views.all_repositories, name='all-repositories'),
 
     url(r'^logout/$', views.logout, name='logout'),

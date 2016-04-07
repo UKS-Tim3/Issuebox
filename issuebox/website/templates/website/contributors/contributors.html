@@ -58,7 +58,7 @@
                                 <li class="list-group-item">
                                     <div class="media">
                                         <div class="media-left">
-                                            <a href="{% url 'repository' repo.id %}"> <i class="fa fa-3x fa-code"></i> </a>
+                                            <a href="{% url 'repository' repo.id %}"> <i class="fa fa-3x fa-database"></i> </a>
                                         </div>
                                         <div class="media-body">
                                             <a href="{% url 'repository' repo.id %}"><h4 class="media-heading"><b>{{ repo.name }}</b></h4></a>
@@ -81,7 +81,7 @@
                             <li class="list-group-item">
                                 <div class="media">
                                     <div class="media-left">
-                                        <a href="{% url 'repository' repo.id %}"> <i class="fa fa-3x fa-database" style="padding-top:2px"></i> </a>
+                                        <a href="{% url 'repository' repo.id %}"> <i class="fa fa-3x fa-code" style="padding-top:2px"></i> </a>
                                     </div>
                                     <div class="media-body">
                                         <a href="{% url 'repository' repo.id %}"><h4 class="media-heading"><b>{{repo.owner}}/{{repo.name}}</b></h4></a>

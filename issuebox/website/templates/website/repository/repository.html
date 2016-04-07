@@ -83,7 +83,7 @@
                                             <a href="{% url 'users' commit.contributor.id %}"> <img
                                                     class="media-object img-circle center-image"
                                                     src="{{ commit.contributor.img_url }}"
-                                                    alt="No image" width="48" height="48"/> </a>
+                                                    alt="{{ commit.contributor.first_name}} {{ commit.contributor.last_name}}" width="48" height="48"/> </a>
                                         </div>
                                         <div class="media-body">
                                             <a href="{% url 'users' commit.contributor.id %}"><h4 class="media-heading"><b>{{ commit.contributor.username }}</b></h4></a>
@@ -176,7 +176,8 @@
                                         <div class="col-lg-10">
                                             <h4 class="media-heading"><a href="{% url 'users' repository.owner.id %}">
                                                 <b>{{ repository.owner.username }}</b></a>
-                                                &nbsp;&nbsp;<font size="3"><b>( Owner )</b></font></h4>
+                                            </h4>
+                                            <h6 class="media-heading"><b>Owner</b></h6>
                                             <p> Last activity on this repo. <i class="fa fa-clock-o"></i> 01.01.2016 at
                                                 4:32 PM </p>
                                         </div>

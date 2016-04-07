@@ -62,6 +62,9 @@ class RegistrationForm (forms.ModelForm):
         c.username = self.cleaned_data['username']
         c.img_url = self.cleaned_data['img_url']
         c.github_url = self.cleaned_data['github_url']
+
+        if c.img_url is None or c.img_url=='':
+            c.img_url='https://cdn.shopify.com/s/files/1/1069/3046/t/2/assets/noimage.jpg?11257982579509423500'
         c.save ()
 
         return c
@@ -103,6 +106,10 @@ class RegistrationEditForm (forms.ModelForm):
             c.email = unique_email(self.cleaned_data['email'])
         c.img_url = self.cleaned_data['img_url']
         c.github_url = self.cleaned_data['github_url']
+
+        if c.img_url is None or c.img_url=='':
+            c.img_url='https://cdn.shopify.com/s/files/1/1069/3046/t/2/assets/noimage.jpg?11257982579509423500'
+
         c.save ()
         return c
 

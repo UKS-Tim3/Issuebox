@@ -3,7 +3,11 @@ from django.contrib.auth.models import User, UserManager
 
 class Contributor(User):
     github_url = models.CharField(max_length = 200)
-    img_url = models.CharField(max_length = 200)
+    img_url = models.CharField(
+        max_length = 200,
+        blank = True,
+        null = True
+    )
 
     def __str__(self):
         return self.username

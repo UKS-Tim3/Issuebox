@@ -1,5 +1,6 @@
 {% include "website/framework/header.html" %}
 
+{% load website_filters %}
 
 <div id="page-wrapper">
 
@@ -22,13 +23,13 @@
                     <div class="panel-body">
                         <img class="media-object img-circle center-image"
                              src="{{userPage.img_url}}"
-                             alt="{{userPage.falst_name}} {{userPage.first_name}}" width="180" height="240"/>
+                             alt="{{userPage.first_name}} {{userPage.last_name}}" width="180" height="240"/>
 
                     </div>
                 </div>
                 <br/>
                 <div>
-                    <a class="btn btn-block btn-lg btn-success" href="{{userPage.github_url}}" target="_blank">
+                    <a class="btn btn-block btn-lg btn-success" href="{{userPage.github_url|absolute_url}}" target="_blank">
                     <i class="fa fa-eye"></i> Go on github</a>
                 </div>
                 <br/>
@@ -59,7 +60,7 @@
                                 <li class="list-group-item">
                                     <div class="media">
                                         <div class="media-left">
-                                            <a href="{% url 'repository' repo.id %}"> <i class="fa fa-3x fa-database" style="padding-top:2px"></i> </a>
+                                            <a href="{% url 'repository' repo.id %}"> <i class="fa fa-3x fa-code" style="padding-top:2px"></i> </a>
                                         </div>
                                         <div class="media-body">
                                             <a href="{% url 'repository' repo.id %}"><h4 class="media-heading"><b>{{ repo.name }}</b></h4></a>
@@ -82,7 +83,7 @@
                             <li class="list-group-item">
                                 <div class="media">
                                     <div class="media-left">
-                                        <a href="{% url 'repository' repo.id %}"> <i class="fa fa-3x fa-code" style="padding-top:2px"></i> </a>
+                                        <a href="{% url 'repository' repo.id %}"> <i class="fa fa-3x fa-database" style="padding-top:2px"></i> </a>
                                     </div>
                                     <div class="media-body">
                                         <a href="{% url 'repository' repo.id %}"><h4 class="media-heading"><b>{{repo.owner}}/{{repo.name}}</b></h4></a>

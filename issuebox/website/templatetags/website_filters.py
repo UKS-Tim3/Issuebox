@@ -11,3 +11,10 @@ def is_commited(repository, contributor):
         if commit.contributor.id == contributor.id:
             return True
     return False
+
+@register.filter
+def absolute_url(relative_url):
+    """Converts relative url to absolute."""
+
+    url = ''.join(['http://', relative_url])
+    return url

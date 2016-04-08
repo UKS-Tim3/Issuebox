@@ -1,14 +1,16 @@
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
+from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import ensure_csrf_cookie
 from django.core.context_processors import csrf
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, QueryDict
 from django.shortcuts import get_object_or_404, render
 from django.template import RequestContext, loader
 from django.template.loader import render_to_string
 from django.views.generic import DetailView
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.http import JsonResponse
 from django.db.models import Q
 
@@ -199,6 +201,11 @@ class RepositoryDetails (DetailView):
     model = Repository
     template_name = 'website/repository/repository.html'
 
+    # ensures that csrf cookie is set to response view
+    @method_decorator(ensure_csrf_cookie)
+    def dispatch(self, *args, **kwargs):
+        return super(RepositoryDetails, self).dispatch(*args, **kwargs)
+
 
 class RepositoryCreateView (CreateView):
     model = Repository
@@ -265,7 +272,6 @@ class AddContributorView (UpdateView):
                               {'repository': repository, 'contributor': contributor}))
 
         else:
-            print('error')
             return HttpResponse(
                 render_to_string('website/repository/repository_add_contributor_error.html',
                                   {'repository': repository, 'contributor': contributor}))
@@ -300,8 +306,73 @@ def contributor_lookup(request, repository_id):
     return JsonResponse(results, safe=False)
 
 
-class ContributorsDetails (DetailView):
-    model = Contributor
+class RemoveContributorView (DetailView):
+    model = Repository
+    template_name = 'website/repository/repository_remove_contributor_form.html'
+
+    def get(self, request, *args, **kwargs):
+        pk = kwargs['pk']
+        cid = kwargs['cid']
+        repository = get_object_or_404 (Repository, pk=pk)
+        contributor = get_object_or_404 (Contributor, pk=cid)
+
+        # Because target template has form with CSRF token, we must pass the request context to it.
+        # When using this and passing context to the response via render_to_string method
+        # template engine has problems with handling RequestContext object
+        # context = RequestContext(request)
+        # context.update({'repository': repository, 'contributor': contributor})
+
+        # instead, use this (this handles CSRF token successfuly)
+        template = loader.get_template(self.template_name)
+        return HttpResponse(template.render({'repository': repository, 'contributor': contributor}, request))
+
+    def post(self, request, *args, **kwargs):
+        pk = kwargs['pk']
+        cid = kwargs['cid']
+        repository = get_object_or_404 (Repository, pk=pk)
+        contributor = get_object_or_404 (Contributor, pk=cid)
+
+        # if is a contributor
+        if contributor.id in [x.id for x in repository.contributors.all()]:
+            repository.contributors.remove(contributor)
+            return HttpResponse(
+                render_to_string('website/repository/repository_remove_contributor_success.html',
+                          {'repository': repository, 'contributor': contributor}))
+
+        else:
+            return HttpResponse(
+                render_to_string('website/repository/repository_remove_contributor_error.html',
+                                  {'repository': repository, 'contributor': contributor}))
+
+
+def contributor_remove(request, repository_id):
+    if request.method == "DELETE":
+
+        # Unless GET or POST requests, QueryDict must be used to retrieve request data
+        delete = QueryDict(request.body)
+
+        cid = delete.get('contributor_id', None)
+        if cid is not None:
+            repository = get_object_or_404 (Repository, pk=repository_id)
+            contributor = get_object_or_404 (Contributor, pk=cid)
+
+            # if is a contributor
+            if contributor.id in [x.id for x in repository.contributors.all()]:
+                repository.contributors.remove(contributor)
+                return HttpResponse(
+                    render_to_string('website/repository/repository_remove_contributor_success.html',
+                              {'repository': repository, 'contributor': contributor}))
+
+            else:
+                return HttpResponse(
+                    render_to_string('website/repository/repository_remove_contributor_error.html',
+                                      {'repository': repository, 'contributor': contributor}))
+
+    return HttpResponse(
+            render_to_string('website/framework/generic_message.html',
+                      {'title': 'Error!',
+                       'message': 'Sorry! An error occured while removing contributor!'}))
+
 
 def contributors(request, user_id):
     user = Contributor.objects.get (pk=user_id)

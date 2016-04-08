@@ -1,0 +1,11 @@
+{% extends "website/framework/base_success.html" %}
+
+{% block title %}Error!{% endblock %}
+
+{% block message %}
+Contributor <b>{{ contributor.username }}</b> ({{ contributor.first_name }} {{ contributor.last_name }}) is not a contributor to repository <b>{{ repository.name }}</b> so he cannot be removed!
+{% endblock %}
+
+{% block javascript %}
+location.reload();
+{% endblock %}

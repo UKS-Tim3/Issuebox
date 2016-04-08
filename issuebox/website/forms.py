@@ -1,6 +1,8 @@
 from .models import *
 from django import forms
+from django.utils import timezone
 
+# Repository
 
 class RepositoryForm (forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -40,6 +42,24 @@ class AddContributorForm (forms.ModelForm):
     def save(self):
         contributor_id = self.cleaned_data['contributor_id']
         return contributor_id
+
+
+class IssueForm (forms.ModelForm):
+
+    class Meta:
+        model = Issue
+        fields = ['name', 'message', 'priority', 'status', 'tags', 'assignee']
+
+    def save(self, repository, issuer):
+        issue = self.instance
+        # using timezone because django throws warning for naive datetime
+        issue.created = timezone.now()
+        issue.repository = repository
+        issue.issuer = issuer
+        issue.save()
+        return issue
+
+# User
 
 class RegistrationForm (forms.ModelForm):
     confirmPassword = forms.CharField (widget=forms.PasswordInput (), required=True)

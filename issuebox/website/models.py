@@ -92,6 +92,7 @@ class Issue(models.Model):
     status = models.CharField(max_length = 1, choices = STATUSES)
     tags = models.ManyToManyField(
         Tag,
+        related_name='issues',
         blank = True,
     )
 
@@ -107,8 +108,14 @@ class Issue(models.Model):
         related_name = 'issues_author',
         on_delete = models.CASCADE,
     )
+    repository = models.ForeignKey(
+        Repository,
+        related_name = 'issues',
+        on_delete = models.CASCADE,
+    )
     commit = models.OneToOneField(
         Commit,
+        related_name='issues',
         blank = True,
         null = True,
         on_delete = models.CASCADE,

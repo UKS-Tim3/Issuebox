@@ -1,0 +1,9 @@
+{% extends "website/framework/base_success.html" %}
+
+{% block message %}
+Issue <b>{{ issue.name }}</b> has been created successfully for repository <b>{{ repository.name }}</b>.
+{% endblock %}
+
+{% block javascript %}
+$(location).attr('href', '{% url 'issue' issue.id %}');
+{% endblock %}

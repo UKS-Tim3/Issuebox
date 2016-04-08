@@ -26,9 +26,9 @@
                 {% if user.is_authenticated %}
                     {%if user in repository.contributors.all or repository.owner == user %}
                     <div class="col-lg-3">
-                        <button type="button" class="btn  btn-block btn-lg btn-primary" data-toggle="modal"
-                                data-target="#newIssue"><i class="fa fa-plus-circle"></i> Create new issue
-                        </button>
+                        <a class="btn btn-block btn-lg btn-primary" href="{% url 'issue_create' repository.id %}"
+                            data-toggle="modal" data-target="#modal" title="create new issue" data-tooltip>
+                        <i class="fa fa-plus-circle"></i> Create new issue</a>
                         <br/>
                     </div>
                     {% endif %}

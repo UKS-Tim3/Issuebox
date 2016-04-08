@@ -204,8 +204,11 @@
                                         {% if not repository|is_commited:contributor %}
                                         <div class="col-log-2" style="vertical-align:middle">
                                             <p style="height:1px">&nbsp;</p>
-                                            <a class="btn btn-danger" href="javascript:remove_contributor({{contributor.id}})">
-                                                <i class="fa fa-remove"></i> Remove</a>
+                                            <!-- No confirmation dialog! Triggers ajax call to a method. -->
+                                            <!--<a class="btn btn-danger" href="javascript:remove_contributor({{contributor.id}})">-->
+                                            <!-- With confirmation dialog! Triggers class view that responds to POST method. -->
+                                            <a class="btn btn-danger" href="{% url 'remove_contributor' repository.id contributor.id %}"
+                                             data-toggle="modal" data-target="#modal"><i class="fa fa-remove"></i> Remove</a>
                                             </div>
                                         {% endif %}
                                     </div>
@@ -250,7 +253,9 @@
                 $(this).removeData('bs.modal');
             });
         });
-
+        
+        /*
+        // No confirmation dialog! Directly removes contributor from repository.
         function remove_contributor(contributor_id) {
             var csrftoken = $.cookie('csrftoken');
             $.ajax({
@@ -268,6 +273,7 @@
                 }
             });
         }
+        */
     </script>
     <!--- /Modal -->
 

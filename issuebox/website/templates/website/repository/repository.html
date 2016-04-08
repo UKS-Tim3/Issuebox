@@ -184,6 +184,7 @@
                                 </div>
                             </li>
 
+                            {% load website_filters %}
 
                             {% for contributor in repository.contributors.all %}
                             <li class="list-group-item">
@@ -200,11 +201,13 @@
                                             <p> Last activity on this repo. <i class="fa fa-clock-o"></i> 01.01.2016 at
                                                 4:32 PM </p>
                                         </div>
+                                        {% if not repository|is_commited:contributor %}
                                         <div class="col-log-2" style="vertical-align:middle">
                                             <p style="height:1px">&nbsp;</p>
                                             <a class="btn btn-danger" href="javascript:remove_contributor({{contributor.id}})">
                                                 <i class="fa fa-remove"></i> Remove</a>
                                             </div>
+                                        {% endif %}
                                     </div>
                                 </div>
 

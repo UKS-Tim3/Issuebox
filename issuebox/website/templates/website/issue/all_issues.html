@@ -146,7 +146,7 @@
                             <td>{{issue.get_priority_display}}</td>
                             <td><a href="{% url 'users' issue.issuer.id %}">{{issue.issuer.username}}</a></td>
                             <td><a href="{% url 'users' issue.assignee.id %}">{{issue.assignee.username}}</a></td>
-                        </tr>
+                       </tr>
                         {%endfor%}
 
                         </tbody>

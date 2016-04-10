@@ -386,7 +386,7 @@ def contributors(request, user_id):
 
 class IssueView(DetailView):
     model = Issue
-    template_name = 'website/issue.html'
+    template_name = 'website/issue/issue.html'
 
 
 class CreateIssueView(CreateView):
@@ -493,13 +493,13 @@ def all_issues(request):
         "tags": tags,
         "repoCounter": repoCounter
     }
-    template_name = 'website/all_issues.html'
+    template_name = 'website/issue/all_issues.html'
     return render (request, template_name, context)
 
 
 # pitanje dal sme/ne sme
 @login_required
 def issue(request):
-    template = loader.get_template ('website/issue.html')
+    template = loader.get_template ('website/issue/issue.html')
     context = RequestContext (request)
     return HttpResponse (template.render (context))

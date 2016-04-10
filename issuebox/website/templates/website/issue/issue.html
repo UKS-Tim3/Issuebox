@@ -5,8 +5,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <h1 class="page-header">
-                    IssueName
-                    <small>Short description</small>
+                    {{ issue.name }}
                 </h1>
             </div>
         </div>
@@ -32,14 +31,7 @@
                                 <div class="panel-heading">
                                     <h3 class="panel-title">Message </h3></div>
                                 <div class="panel-body">
-                                    <p>
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla luctus, dui nec
-                                        finibus convallis, sapien nisi tempor urna,
-                                        congue dapibus erat nulla eget nulla. Nunc tempor pretium quam sit amet
-                                        ultricies.
-                                        Aenean lacinia nibh augue. Suspendisse volutpat nisi nec felis lobortis, sit
-                                        amet mattis diam dapibus.
-                                    </p>
+                                    <p>{{ issue.message }}</p>
                                 </div>
                             </div>
 
@@ -48,13 +40,13 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <ul class="list-group">
-                                <li class="list-group-item"><b>Priority:</b> Medium</li>
+                                <li class="list-group-item"><b>Priority:</b> {{ issue.get_priority_display }}</li>
                             </ul>
                         </div>
 
                         <div class="col-lg-6">
                             <ul class="list-group">
-                                <li class="list-group-item"><b>Status:</b> In progress</li>
+                                <li class="list-group-item"><b>Status:</b> {{ issue.get_status_display }}</li>
                             </ul>
                         </div>
 
@@ -67,16 +59,17 @@
                 <div class="container-fluid">
                     <div class="row">
                         <ul class="list-group">
-                            <li class="list-group-item"><b>Created on:</b> 23.01.2016. 14:32</li>
-                            <li class="list-group-item"><b>Created by:</b> <a href="#">drilic</a></li>
-                            <li class="list-group-item"><b>Closed on:</b> 25.01.2016. 17:55</li>
-                            <li class="list-group-item"><b>
-                                Assignee: </b>
-                                <a href="#">kornjaca</a>
+                            <li class="list-group-item"><b>Created on:</b> {{ issue.created }}</li>
+                            <li class="list-group-item"><b>Created by:</b>
+                                <a href="{% url 'users' issue.issuer.id %}">{{ issue.issuer.username }}</a></li>
+                            <li class="list-group-item"><b>Closed on:</b> {{ issue.closed }}</li>
+                            <li class="list-group-item">
+                                <b>Assignee: </b>
+                                <a href="{% url 'users' issue.assignee.id %}">{{ issue.assignee.username }}</a>
                             </li>
-                            <li class="list-group-item"><b>
-                                Commit: </b>
-                                <a href="#">ed0ef35</a>
+                            <li class="list-group-item">
+                                <b>Commit: </b>
+                                <a href="{{ issue.commit.github_url }}">{{ issue.commit.hash }}</a>
                             </li>
                         </ul>
                     </div>
@@ -102,41 +95,25 @@
                 <div class="tab-div-size-smaller">
                     <ul class="list-group">
 
+                        {% for comment in issue.comments.all %}
                         <li class="list-group-item">
                             <div class="media">
                                 <div class="media-left">
-                                    <a href="#"> <img
+                                    <a href="{{ comment.commenter.github_url }}"> <img
                                             class="media-object img-circle center-image"
-                                            src="http://www.uni-regensburg.de/Fakultaeten/phil_Fak_II/Psychologie/Psy_II/beautycheck/english/durchschnittsgesichter/m%2801-32%29_gr.jpg"
-                                            alt="Dragoljub Ilic" width="48" height="48"/> </a>
+                                            src="{{ comment.commenter.img_url }}"
+                                            alt="{{ comment.commenter.firstname }} {{ comment.commenter.lastname }}" width="48" height="48"/> </a>
                                 </div>
                                 <div class="media-body">
-                                    <a href="#"><h4 class="media-heading"><b>Username</b></h4>
+                                    <a href="{{ comment.commenter.github_url }}"><h4 class="media-heading"><b>{{ comment.commenter.username }}</b></h4>
                                     </a>
-                                    <h6 class="media-heading"><b><i class="fa fa-clock-o"></i> 01.01.2016 at
-                                        4:32 PM</b></h6>
-                                    <p> Message </p>
+                                    <h6 class="media-heading"><b><i class="fa fa-clock-o"></i> {{ comment.timestamp }}</b></h6>
+                                    <p> {{ comment.message }} </p>
                                 </div>
                             </div>
                         </li>
+                        {% endfor %}
 
-                        <li class="list-group-item">
-                            <div class="media">
-                                <div class="media-left">
-                                    <a href="#"> <img
-                                            class="media-object img-circle center-image"
-                                            src="http://www.uni-regensburg.de/Fakultaeten/phil_Fak_II/Psychologie/Psy_II/beautycheck/english/durchschnittsgesichter/m%2801-32%29_gr.jpg"
-                                            alt="Dragoljub Ilic" width="48" height="48"/> </a>
-                                </div>
-                                <div class="media-body">
-                                    <a href="#"><h4 class="media-heading"><b>Username</b></h4>
-                                    </a>
-                                    <h6 class="media-heading"><b><i class="fa fa-clock-o"></i> 01.01.2016 at
-                                        4:32 PM</b></h6>
-                                    <p> Message </p>
-                                </div>
-                            </div>
-                        </li>
                     </ul>
                 </div>
             </div>

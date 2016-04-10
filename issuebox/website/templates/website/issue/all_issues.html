@@ -119,10 +119,10 @@
                         <tbody>
                         {% for issue in issues %}
                         <tr>
-                            <td><a href="#">{{issue.name}}</a></td>
-                            <td><a href="#">{{issue.issuer.username}}</a></td>
-                            <td>{{issue.get_status_display}}</td>
-                            <td>{{issue.get_priority_display}}</td>
+                            <td><a href="{% url 'issue' issue.id %}">{{ issue.name }}</a></td>
+                            <td><a href="{% url 'repository'  issue.repository.id %}">{{ issue.repository.name }}</a></td>
+                            <td>{{ issue.get_status_display }}</td>
+                            <td>{{ issue.get_priority_display }}</td>
                         </tr>
                         {%endfor%}
 

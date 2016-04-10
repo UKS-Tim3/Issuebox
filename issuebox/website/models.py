@@ -49,6 +49,7 @@ class Repository(models.Model):
         return self.name
 
 class Commit(models.Model):
+    hash = models.CharField(max_length = 40)
     message = models.CharField(max_length = 300)
     contributor = models.ForeignKey(
         Contributor,
@@ -60,6 +61,7 @@ class Commit(models.Model):
         related_name = 'commits',
         on_delete = models.CASCADE,
     )
+    github_url = models.CharField(max_length = 200)
 
     def __str__(self):
         return self.message
@@ -128,6 +130,7 @@ class Comment(models.Model):
     message = models.CharField(max_length = 300)
     issue = models.ForeignKey(
         Issue,
+        related_name = 'comments',
         on_delete = models.CASCADE,
     )
     commenter = models.ForeignKey(
@@ -135,6 +138,7 @@ class Comment(models.Model):
         related_name = 'comments',
         on_delete = models.CASCADE,
     )
+    timestamp = models.DateTimeField('commented on')
 
     def __str__(self):
         return self.message

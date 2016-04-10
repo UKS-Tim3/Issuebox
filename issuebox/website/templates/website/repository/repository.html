@@ -105,57 +105,41 @@
 
                     <div role="tabpanel" class="tab-pane tab-div-size" id="issues">
                         <ul class="list-group">
+
+                            {% for issue in repository.issues.all %}
+
                             <li class="list-group-item">
                                 <div class="media">
                                     <div class="media-left">
+                                        {% if issue.assignee == None %}
                                         <a href="#"> <img
                                                 class="media-object img-circle center-image"
-                                                src="http://www.uni-regensburg.de/Fakultaeten/phil_Fak_II/Psychologie/Psy_II/beautycheck/english/durchschnittsgesichter/m%2801-32%29_gr.jpg"
-                                                alt="Dragoljub Ilic" width="48" height="48"/> </a>
+                                                src="https://cdn.shopify.com/s/files/1/1069/3046/t/2/assets/noimage.jpg?11257982579509423500"
+                                                alt="#" width="48" height="48"/> </a>
+
+                                        {% else %}
+                                            <a href="{% url 'users' issue.assignee.pk %}"> <img
+                                                class="media-object img-circle center-image"
+                                                src="{{issue.assignee.img_url}}"
+                                                alt="{{issue.assignee.username}}" width="48" height="48"/> </a>
+
+                                        {% endif %}
+
                                     </div>
                                     <div class="media-body">
-                                            <a href="#"><h4 class="media-heading"><b>Issue Name / autor</b></h4></a>
-                                        <h6 class="media-heading"><b>issue status</b></h6>
-                                        <p> Short description </p>
+                                            <a href="{% url 'issue' issue.id %}"><h4 class="media-heading"><b>{{issue.name}}</b>|{{issue.issuer.username}}</h4></a>
+                                        <h6 class="media-heading"><b>Status:</b>{{issue.get_status_display}}</h6>
+                                        <h6 class="media-heading"><b>Priority:</b>{{issue.get_priority_display}}</h6>
+                                        <p>{{issue.message|truncatechars:"200"}} </p>
 
 
                                     </div>
                                 </div>
                             </li>
-
-                            <li class="list-group-item">
-                                <div class="media">
-                                    <div class="media-left">
-                                        <a href="#"> <img
-                                                class="media-object img-circle center-image"
-                                                src="http://www.uni-regensburg.de/Fakultaeten/phil_Fak_II/Psychologie/Psy_II/beautycheck/english/durchschnittsgesichter/m%2801-32%29_gr.jpg"
-                                                alt="Dragoljub Ilic" width="48" height="48"/> </a>
-                                    </div>
-                                    <div class="media-body">
-                                        <a href="#"><h4 class="media-heading"><b>JSD</b></h4></a>
-                                        <h6 class="media-heading"><b>Comment</b></h6>
-                                        <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam at nisl sed
-                                            ipsum posuere pharetra. </p>
-                                    </div>
-                                </div>
-                            </li>
-
-                            <li class="list-group-item">
-                                <div class="media">
-                                    <div class="media-left">
-                                        <a href="#"> <img
-                                                class="media-object img-circle center-image"
-                                                src="http://www.uni-regensburg.de/Fakultaeten/phil_Fak_II/Psychologie/Psy_II/beautycheck/english/durchschnittsgesichter/m%2801-32%29_gr.jpg"
-                                                alt="Dragoljub Ilic" width="48" height="48"/> </a>
-                                    </div>
-                                    <div class="media-body">
-                                        <a href="#"><h4 class="media-heading"><b>JSD</b></h4></a>
-                                        <h6 class="media-heading"><b>Commit</b></h6>
-                                        <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam at nisl sed
-                                            ipsum posuere pharetra. </p>
-                                    </div>
-                                </div>
-                            </li>
+                             {%empty%}
+                                <br />
+                                &nbsp;&nbsp;&nbsp;There is no any issues.
+                                {% endfor %}
 
                         </ul>
 

@@ -458,8 +458,6 @@ def all_issues(request):
         Q(pk__in=contibutorsId)
     ).distinct();
 
-    print(contibutorsId)
-
     query = request.GET.get ('search_text') if request.GET.get ('search_text') else ''
     priority = request.GET.get ('priority') if request.GET.get ('priority') else ''
     status = request.GET.get ('status') if request.GET.get ('status') else ''

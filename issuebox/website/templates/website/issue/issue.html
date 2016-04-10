@@ -65,11 +65,19 @@
                             <li class="list-group-item"><b>Closed on:</b> {{ issue.closed }}</li>
                             <li class="list-group-item">
                                 <b>Assignee: </b>
+                                {% if issue.assignee == None %}
+                                 None
+                                {% else %}
                                 <a href="{% url 'users' issue.assignee.id %}">{{ issue.assignee.username }}</a>
+                                {% endif %}
                             </li>
                             <li class="list-group-item">
                                 <b>Commit: </b>
+                                {% if issue.commit == None %}
+                                 None
+                                {% else %}
                                 <a href="{{ issue.commit.github_url }}">{{ issue.commit.hash }}</a>
+                                {% endif %}
                             </li>
                         </ul>
                     </div>
@@ -82,6 +90,7 @@
                 <button type="button" class="btn  btn-block btn-lg btn-primary" data-toggle="modal"
                         data-target="#addComment"><i class="fa fa-plus-circle"></i> Add comment
                 </button>
+                <br />
             </div>
             <div class="col-lg-6">
                 <button type="button" class="btn  btn-block btn-lg btn-info" data-toggle="modal"
@@ -94,21 +103,30 @@
             <div class="container-fluid">
                 <div class="tab-div-size-smaller">
                     <ul class="list-group">
-
                         {% for comment in issue.comments.all %}
                         <li class="list-group-item">
                             <div class="media">
                                 <div class="media-left">
-                                    <a href="{{ comment.commenter.github_url }}"> <img
+                                    <a href="{% url 'users' comment.commenter.id %}"> <img
                                             class="media-object img-circle center-image"
                                             src="{{ comment.commenter.img_url }}"
                                             alt="{{ comment.commenter.firstname }} {{ comment.commenter.lastname }}" width="48" height="48"/> </a>
                                 </div>
                                 <div class="media-body">
-                                    <a href="{{ comment.commenter.github_url }}"><h4 class="media-heading"><b>{{ comment.commenter.username }}</b></h4>
-                                    </a>
-                                    <h6 class="media-heading"><b><i class="fa fa-clock-o"></i> {{ comment.timestamp }}</b></h6>
-                                    <p> {{ comment.message }} </p>
+                                    <div class="col-lg-10">
+                                        <a href="{% url 'users' comment.commenter.id %}"><h4 class="media-heading"><b>{{ comment.commenter.username }}</b></h4>
+                                        </a>
+                                        <h6 class="media-heading"><b><i class="fa fa-clock-o"></i> {{ comment.timestamp }}</b></h6>
+                                        <p> {{ comment.message }} </p>
+                                    </div>
+                                    <div class="col-log-1" style="vertical-align:middle;float:left;">
+                                            <p style="height:1px">&nbsp;</p>
+                                        <a class="btn btn-info" href="#"><i class="fa fa-pencil-square-o"></i> Edit</a>&nbsp;
+                                    </div>
+                                    <div class="col-log-1" style="vertical-align:middle;">
+                                            <p style="height:1px">&nbsp;</p>
+                                            <a class="btn btn-danger" href="#"><i class="fa fa-remove"></i> Remove</a>
+                                    </div>
                                 </div>
                             </div>
                         </li>

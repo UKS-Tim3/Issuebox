@@ -431,16 +431,43 @@ class CreateIssueView(CreateView):
 @login_required
 def all_issues(request):
     tags = Tag.objects.all ()
-    issues = Issue.objects.all ().filter (
-        Q (assignee__username__exact=request.user.username) |
-        Q (issuer__username__exact=request.user.username)
-    ).distinct ()
+    #issues = Issue.objects.all ().filter (
+    #    Q (assignee__username__exact=request.user.username) |
+    #    Q (issuer__username__exact=request.user.username)
+    #).distinct ()
+
+    listOfRepoIds =[]
+    contibutorsId =[]
+    for repository in request.user.owned_repositories.all():
+        listOfRepoIds.append(repository.id)
+        for contributor in repository.contributors.all():
+            contibutorsId.append(contributor.pk)
+        contibutorsId.append(repository.owner.pk)
+
+    for repository in request.user.contributed_repositories.all():
+        listOfRepoIds.append(repository.id)
+        for contributor in repository.contributors.all():
+            contibutorsId.append(contributor.pk)
+        contibutorsId.append(repository.owner.pk)
+
+    issues = Issue.objects.all().filter(
+        Q(repository__pk__in=listOfRepoIds)
+    ).distinct()
+
+    allContributors = Contributor.objects.all().filter(
+        Q(pk__in=contibutorsId)
+    ).distinct();
+
+    print(contibutorsId)
 
     query = request.GET.get ('search_text') if request.GET.get ('search_text') else ''
     priority = request.GET.get ('priority') if request.GET.get ('priority') else ''
     status = request.GET.get ('status') if request.GET.get ('status') else ''
     tag = request.GET.get ('tag')
     repo = request.GET.get ('repo') if request.GET.get ('repo') else ''
+    issuerName = request.GET.get ('issuer') if request.GET.get ('issuer') else ''
+    assigneeName = request.GET.get ('assignee') if request.GET.get ('assignee') else ''
+
 
     startDateCreated = request.GET.get ('startDateCreated') if request.GET.get ('startDateCreated') else ''
     startDateClosed = request.GET.get ('startDateClosed') if request.GET.get ('startDateClosed') else ''
@@ -450,8 +477,10 @@ def all_issues(request):
     issues = issues.filter (
         Q (priority__icontains=priority) &
         Q (status__icontains=status) &
-        # Q(repo__name__exact=repo)&
-        Q (name__icontains=query)
+        Q (repository__name__icontains=repo)&
+        Q (name__icontains=query)&
+        Q (assignee__username__icontains=assigneeName) &
+        Q (issuer__username__icontains=issuerName)
     ).distinct ()
 
     if tag:
@@ -489,9 +518,10 @@ def all_issues(request):
 
     repoCounter = len (request.user.owned_repositories.all ()) + len (request.user.contributed_repositories.all ())
     context = {
-        "issues": issues,
+        "issuesList": issues,
         "tags": tags,
-        "repoCounter": repoCounter
+        "repoCounter": repoCounter,
+        "allContributors":allContributors
     }
     template_name = 'website/all_issues.html'
     return render (request, template_name, context)

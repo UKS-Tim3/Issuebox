@@ -85,6 +85,7 @@
             </div>
 
         </div>
+        {% if user.is_authenticated and  issue.repository.owner == user or user in issue.repository.contributors.all %}
         <div class="row">
             <div class="col-lg-6">
                 <button type="button" class="btn  btn-block btn-lg btn-primary" data-toggle="modal"
@@ -98,6 +99,7 @@
                 </button>
             </div>
         </div>
+        {% endif %}
         <br/>
         <div class="row">
             <div class="container-fluid">
@@ -119,14 +121,19 @@
                                         <h6 class="media-heading"><b><i class="fa fa-clock-o"></i> {{ comment.timestamp }}</b></h6>
                                         <p> {{ comment.message }} </p>
                                     </div>
+                                    {% if user.is_authenticated and comment.commenter == user or issue.repository.owner == user %}
                                     <div class="col-log-1" style="vertical-align:middle;float:left;">
                                             <p style="height:1px">&nbsp;</p>
-                                        <a class="btn btn-info" href="#"><i class="fa fa-pencil-square-o"></i> Edit</a>&nbsp;
+                                            <a class="btn btn-danger" href="#"><i class="fa fa-remove"></i> Remove</a>&nbsp;
                                     </div>
+                                    {% endif %}
+
+                                    {% if user.is_authenticated and comment.commenter == user%}
                                     <div class="col-log-1" style="vertical-align:middle;">
                                             <p style="height:1px">&nbsp;</p>
-                                            <a class="btn btn-danger" href="#"><i class="fa fa-remove"></i> Remove</a>
+                                        <a class="btn btn-info" href="#"><i class="fa fa-pencil-square-o"></i> Edit</a>
                                     </div>
+                                    {% endif %}
                                 </div>
                             </div>
                         </li>

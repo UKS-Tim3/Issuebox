@@ -1,7 +1,5 @@
 from django.contrib.auth import authenticate, login as auth_login, logout as auth_logout
-from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import ensure_csrf_cookie
 from django.core.context_processors import csrf
 from django.core.exceptions import ValidationError
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -10,7 +8,7 @@ from django.shortcuts import get_object_or_404, render
 from django.template import RequestContext, loader
 from django.template.loader import render_to_string
 from django.views.generic import DetailView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.edit import CreateView, UpdateView
 from django.http import JsonResponse
 from django.db.models import Q
 
@@ -523,11 +521,3 @@ def all_issues(request):
     }
     template_name = 'website/issue/all_issues.html'
     return render (request, template_name, context)
-
-
-# pitanje dal sme/ne sme
-@login_required
-def issue(request):
-    template = loader.get_template ('website/issue/issue.html')
-    context = RequestContext (request)
-    return HttpResponse (template.render (context))

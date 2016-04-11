@@ -16,6 +16,16 @@
 
         {% for field in form %}
             <div class="form-group">
+
+                {% block form_field %}
+                {{ field.label_tag }}
+                {{ field|add_class:"form-control" }}
+                {% endblock form_field %}
+
+                {% if field.help_text %}
+                <div class="form-helptext">{{ field.help_text }}</div>
+                {% endif %}
+
                 {% if field.errors %}
                 <ul class="form-errors">
                     {% for error in field.errors %}
@@ -26,15 +36,7 @@
                     {% endfor %}
                 </ul>
                 {% endif %}
-
-                {% block form_field %}
-                {{ field.label_tag }}
-                {{ field|add_class:"form-control" }}
-                {% endblock form_field %}
-
-                {% if field.help_text %}
-                <div class="form-helptext">{{ field.help_text }}</div>
-                {% endif %}
+                
             </div>
         {% endfor %}
 

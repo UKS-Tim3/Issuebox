@@ -304,6 +304,8 @@ def contributor_lookup(request, repository_id):
     return JsonResponse(results, safe=False)
 
 
+# We don't user DeleteView because we are not deleting Contributor from database,
+# we are just removing it as a contributor from repository
 class RemoveContributorView (DetailView):
     model = Repository
     template_name = 'website/repository/repository_remove_contributor_form.html'
@@ -343,6 +345,7 @@ class RemoveContributorView (DetailView):
                                   {'repository': repository, 'contributor': contributor}))
 
 
+# Another way of removing contributor with custom AJAX calls
 def contributor_remove(request, repository_id):
     if request.method == "DELETE":
 
@@ -382,48 +385,51 @@ def contributors(request, user_id):
     return render (request, template_name, context)
 
 
+# Issue
+
 class IssueView(DetailView):
     model = Issue
     template_name = 'website/issue/issue.html'
 
 
-class CreateIssueView(CreateView):
+class IssueCreateView(CreateView):
     model = Issue
     form_class = IssueForm
     template_name = 'website/issue/issue_create_form.html'
 
-    # Overriding methods because we need to pass additional data (repository) to templates
-    # Arguments must be caught in dispatch method because it precedes every other method
-    # and they use our arguments
-    def dispatch(self, *args, **kwargs):
-        self.repository_id = kwargs['pk']
-        return super(CreateIssueView, self).dispatch(*args, **kwargs)
-
+    # We must override get and form_valid/invalid methods
+    # because we need to pass additional data (repository) to templates
     def get(self, request, *args, **kwargs):
-        repository = get_object_or_404 (Repository, pk=self.repository_id)
-
         # We must initialize form when overriding get method and pass it in the context
         form = self.form_class(initial=self.initial)
+
+        repository_id = request.GET.get('repo_id')
+        repository = get_object_or_404 (Repository, pk=repository_id)
 
         template = loader.get_template(self.template_name)
         return HttpResponse(template.render({'repository': repository, 'form': form}, request))
 
-    def form_invalid(self, form):
-        # We must extract form from response of super form_invalid method and pass it in the context
-        response = super(CreateIssueView, self).form_invalid(form)
-        form = response.context_data['form']
-
-        repository = get_object_or_404 (Repository, pk=self.repository_id)
-
-        template = loader.get_template(self.template_name)
-        return HttpResponse(template.render({'repository': repository, 'form': form}, response._request))
-
     def form_valid(self, form):
         user = self.request.user
-        repository = get_object_or_404 (Repository, pk=self.repository_id)
+
+        repository_id = self.request.POST.get('repo_id')
+        repository = get_object_or_404 (Repository, pk=repository_id)
+
         issue = form.save(repository, user)
         return HttpResponse (
             render_to_string ('website/issue/issue_create_success.html', {'issue': issue, 'repository': repository}))
+
+    def form_invalid(self, form):
+        # We must extract form from response of super form_invalid method and pass it in the context
+        response = super(IssueCreateView, self).form_invalid(form)
+        form = response.context_data['form']
+
+        repository_id = self.request.POST.get('repo_id')
+        repository = get_object_or_404 (Repository, pk=repository_id)
+
+        template = loader.get_template(self.template_name)
+        # we must pass request because we redirect to template with CLRF token (back to form)
+        return HttpResponse(template.render({'repository': repository, 'form': form}, self.request))
 
 
 class IssueEditView (UpdateView):

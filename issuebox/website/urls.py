@@ -27,6 +27,6 @@ urlpatterns = [
 
     url(r'^all-issues/$', views.all_issues, name='all-issues'),
     url(r'^issues/(?P<pk>\d+)$', views.IssueView.as_view(), name='issue'),
-    url(r'^repositories/(?P<pk>\d+)/create_issue$', views.CreateIssueView.as_view(), name='issue_create'),
-    url(r'^issues/(?P<pk>\d+)/edit_issue$', views.IssueEditView.as_view(), name='issue_edit'),
+    url(r'^issues/create$', views.IssueCreateView.as_view(), name='issue_create'),
+    url(r'^issues/(?P<pk>\d+)/edit$', views.IssueEditView.as_view(), name='issue_edit'),
 ]

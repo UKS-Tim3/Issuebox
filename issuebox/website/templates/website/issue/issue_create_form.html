@@ -1,8 +1,12 @@
 {% extends "website/framework/base_form.html" %}
 
-{% block action_url %}{% url 'issue_create' repository.id %}{% endblock %}
+{% block action_url %}{% url 'issue_create' %}{% endblock %}
 
 {% block title %}Create issue{% endblock %}
+
+{% block extra_form_field %}
+    <input name="repo_id" type="hidden" value="{{ repository.id }}" />
+{% endblock extra_form_field %}
 
 {% block submit_button %}
     <input type="submit" class="btn btn-primary" value="Create"/>

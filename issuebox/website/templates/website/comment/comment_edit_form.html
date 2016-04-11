@@ -1,0 +1,9 @@
+{% extends "website/framework/base_form.html" %}
+
+{% block action_url %}{% url 'comment_edit' comment.id %}{% endblock %}
+
+{% block title %}Edit comment{% endblock %}
+
+{% block submit_button %}
+    <input type="submit" class="btn btn-info" value="Update"/>
+{% endblock %}

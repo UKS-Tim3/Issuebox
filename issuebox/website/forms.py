@@ -74,6 +74,30 @@ class IssueForm (forms.ModelForm):
         return issue
 
 
+# Comment
+
+class CommentForm(forms.ModelForm):
+
+    message = forms.CharField(widget=forms.Textarea)
+
+    class Meta:
+        model = Comment
+        fields = ['message']
+
+    def save(self, commenter, issue):
+        comment = self.instance
+        # using timezone because django throws warning for naive datetime
+        comment.timestamp = timezone.now()
+        comment.commenter = commenter
+        comment.issue = issue
+        comment.save()
+        return comment
+
+    def save_edit(self):
+        comment = self.instance
+        comment.save()
+        return comment
+
 # User
 
 class RegistrationForm (forms.ModelForm):

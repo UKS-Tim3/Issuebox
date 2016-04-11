@@ -88,9 +88,9 @@
         {% if user.is_authenticated and  issue.repository.owner == user or user in issue.repository.contributors.all %}
         <div class="row">
             <div class="col-lg-6">
-                <button type="button" class="btn  btn-block btn-lg btn-primary" data-toggle="modal"
-                        data-target="#addComment"><i class="fa fa-plus-circle"></i> Add comment
-                </button>
+                <a class="btn btn-block btn-lg btn-primary" href="{% url 'comment_create' %}?issue_id={{ issue.id }}"
+                   data-toggle="modal" data-target="#modal" title="Add comment" data-tooltip>
+                        <i class="fa fa-plus-circle"></i> Add comment</a>
                 <br />
             </div>
             <div class="col-lg-6">
@@ -119,19 +119,23 @@
                                         <a href="{% url 'users' comment.commenter.id %}"><h4 class="media-heading"><b>{{ comment.commenter.username }}</b></h4>
                                         </a>
                                         <h6 class="media-heading"><b><i class="fa fa-clock-o"></i> {{ comment.timestamp }}</b></h6>
-                                        <p> {{ comment.message }} </p>
+                                        <p> {{ comment.message|linebreaks }} </p>
                                     </div>
                                     {% if user.is_authenticated and comment.commenter == user or issue.repository.owner == user %}
                                     <div class="col-log-1" style="vertical-align:middle;float:left;">
                                             <p style="height:1px">&nbsp;</p>
-                                            <a class="btn btn-danger" href="#"><i class="fa fa-remove"></i> Remove</a>&nbsp;
+                                            <a class="btn btn-danger" href="{% url 'comment_delete' comment.id %}"
+                                                    data-toggle="modal" data-target="#modal" title="remove comment" data-tooltip>
+                                                <i class="fa fa-remove"></i> Remove</a>&nbsp;
                                     </div>
                                     {% endif %}
 
                                     {% if user.is_authenticated and comment.commenter == user%}
                                     <div class="col-log-1" style="vertical-align:middle;">
                                             <p style="height:1px">&nbsp;</p>
-                                        <a class="btn btn-info" href="#"><i class="fa fa-pencil-square-o"></i> Edit</a>
+                                        <a class="btn btn-info" href="{% url 'comment_edit' comment.id %}"
+                                                data-toggle="modal" data-target="#modal" title="edit comment" data-tooltip>
+                                            <i class="fa fa-pencil-square-o"></i> Edit</a>
                                     </div>
                                     {% endif %}
                                 </div>
@@ -152,29 +156,6 @@
 
 
 <!--- Modal -->
-
-<div class="modal fade" id="addComment" role="dialog">
-    <div class="modal-dialog">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Add comment</h4>
-            </div>
-            <div class="modal-body">
-                Comment text
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Confirm</button>
-            </div>
-        </div>
-
-    </div>
-</div>
-
-
-<!--- Modal -->
 <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 <!-- Bootstrap 3 requires 'modal-dialog' and 'modal-content' divs to be defined -->
 <!-- in same page as root modal div (top level page preferred) -->
@@ -189,5 +170,16 @@
 
 <!--- /Modal -->
 
+<style>
+
+    $(document).ready(function() {
+        // It is necessary to clear up the root modal div when dialogs are canceled,
+        // otherwise, always the first opened modal dialog will pop up
+        $('body').on('hidden.bs.modal', '.modal', function () {
+            $(this).removeData('bs.modal');
+        });
+    });
+
+</style>
 
 {% include "website/framework/footer.html" %}

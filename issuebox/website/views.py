@@ -222,10 +222,6 @@ class RepositoryEditView (UpdateView):
     form_class = RepositoryForm
     template_name = 'website/repository/repository_edit_form.html'
 
-    def dispatch(self, *args, **kwargs):
-        self.repository_id = kwargs['pk']
-        return super (RepositoryEditView, self).dispatch (*args, **kwargs)
-
     def form_valid(self, form):
         repository = form.save_edit()
         return HttpResponse (
@@ -441,6 +437,81 @@ class IssueEditView (UpdateView):
         issue = form.save_edit()
         return HttpResponse (
             render_to_string ('website/issue/issue_edit_success.html', {'issue': issue}))
+
+
+# Comment
+
+class CommentCreateView(CreateView):
+    model = Comment
+    form_class = CommentForm
+    template_name = 'website/comment/comment_create_form.html'
+
+    # We must override get and form_valid/invalid methods
+    # because we need to pass additional data (repository) to templates
+    def get(self, request, *args, **kwargs):
+        # We must initialize form when overriding get method and pass it in the context
+        form = self.form_class(initial=self.initial)
+
+        issue_id = request.GET.get('issue_id')
+        issue = get_object_or_404 (Issue, pk=issue_id)
+
+        template = loader.get_template(self.template_name)
+        return HttpResponse(template.render({'issue': issue, 'form': form}, request))
+
+    def form_valid(self, form):
+        user = self.request.user
+
+        issue_id = self.request.POST.get('issue_id')
+        issue = get_object_or_404 (Issue, pk=issue_id)
+
+        comment = form.save(user, issue)
+        return HttpResponse (
+            render_to_string ('website/comment/comment_create_success.html', {'comment': comment, 'issue': issue}))
+
+    def form_invalid(self, form):
+        # We must extract form from response of super form_invalid method and pass it in the context
+        response = super(CommentCreateView, self).form_invalid(form)
+        form = response.context_data['form']
+
+        issue_id = self.request.POST.get('issue_id')
+        issue = get_object_or_404 (Issue, pk=issue_id)
+
+        template = loader.get_template(self.template_name)
+        # we must pass request because we redirect to template with CLRF token (back to form)
+        return HttpResponse(template.render({'issue': issue, 'form': form}, self.request))
+
+
+class CommentEditView (UpdateView):
+    model = Comment
+    form_class = CommentForm
+    template_name = 'website/comment/comment_edit_form.html'
+
+    def dispatch(self, *args, **kwargs):
+        self.comment_id = kwargs['pk']
+        print('comment edit dispatch')
+        return super (CommentEditView, self).dispatch (*args, **kwargs)
+
+    def form_valid(self, form):
+        comment = form.save_edit()
+        return HttpResponse (
+            render_to_string ('website/comment/comment_edit_success.html', {'comment': comment}))
+
+
+class CommentDeleteView (DetailView):
+    model = Comment
+    template_name = 'website/comment/comment_delete_form.html'
+
+    def dispatch(self, *args, **kwargs):
+        self.comment_id = kwargs['pk']
+        return super (CommentDeleteView, self).dispatch (*args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        comment_id = kwargs['pk']
+        comment = get_object_or_404 (Comment, pk=comment_id)
+        # comment = get_object_or_404 (Comment, pk=self.comment_id)
+        comment.delete ()
+        return HttpResponse (
+            render_to_string ('website/comment/comment_delete_success.html'))
 
 
 @login_required

@@ -59,6 +59,21 @@ class IssueForm (forms.ModelForm):
         issue.save()
         return issue
 
+    def save_edit(self):
+        issue = self.instance
+        # changing issue status
+        if self.initial.get('status') != issue.status:
+            # closed
+            if issue.status == '2':
+                issue.closed = timezone.now()
+            # reopened
+            else:
+                issue.closed = None
+
+        issue.save()
+        return issue
+
+
 # User
 
 class RegistrationForm (forms.ModelForm):

@@ -426,6 +426,17 @@ class CreateIssueView(CreateView):
             render_to_string ('website/issue/issue_create_success.html', {'issue': issue, 'repository': repository}))
 
 
+class IssueEditView (UpdateView):
+    model = Issue
+    form_class = IssueForm
+    template_name = 'website/issue/issue_edit_form.html'
+
+    def form_valid(self, form):
+        issue = form.save_edit()
+        return HttpResponse (
+            render_to_string ('website/issue/issue_edit_success.html', {'issue': issue}))
+
+
 @login_required
 def all_issues(request):
     tags = Tag.objects.all ()

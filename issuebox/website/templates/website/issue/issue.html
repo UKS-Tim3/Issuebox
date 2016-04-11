@@ -94,9 +94,9 @@
                 <br />
             </div>
             <div class="col-lg-6">
-                <button type="button" class="btn  btn-block btn-lg btn-info" data-toggle="modal"
-                        data-target="#editIssue"><i class="fa fa-fw fa-pencil-square-o"></i> Edit issue
-                </button>
+                <a class="btn btn-block btn-lg btn-info" href="{% url 'issue_edit' issue.id %}"
+                            data-toggle="modal" data-target="#modal" title="edit issue" data-tooltip>
+                        <i class="fa fa-pencil-square-o"></i> Edit issue</a>
             </div>
         </div>
         {% endif %}
@@ -174,25 +174,18 @@
 </div>
 
 
-<div class="modal fade" id="editIssue" role="dialog">
+<!--- Modal -->
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<!-- Bootstrap 3 requires 'modal-dialog' and 'modal-content' divs to be defined -->
+<!-- in same page as root modal div (top level page preferred) -->
+<!-- Although, success messages still need to be wrapped with these two divs in templates! -->
     <div class="modal-dialog">
-        <!-- Modal content-->
         <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Edit issue</h4>
-            </div>
-            <div class="modal-body">
-                form for editing issue
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-info" data-dismiss="modal">Confirm</button>
-            </div>
-        </div>
-
-    </div>
-</div>
+            <!-- When button that opens the modal dialog is clicked, response of href attribute -->
+            <!-- of that button is loaded which sets the content of this modal dialog. -->
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 <!--- /Modal -->
 

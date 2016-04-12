@@ -48,7 +48,7 @@ class AddContributorForm (forms.ModelForm):
 
 class IssueForm (forms.ModelForm):
 
-    message = forms.CharField(widget=forms.Textarea(attrs={'style':'resize:none', 'rows':'4'}))
+    message = forms.CharField(widget=forms.Textarea(attrs={'style':'resize:none', 'rows':'4','placeholder':'Message'}))
 
     class Meta:
         model = Issue
@@ -111,7 +111,7 @@ class CommitForm(forms.ModelForm):
 
 class CommentForm(forms.ModelForm):
 
-    message = forms.CharField(widget=forms.Textarea(attrs={'style':'resize:none', 'rows':'4'}))
+    message = forms.CharField(widget=forms.Textarea(attrs={'style':'resize:none', 'rows':'4','placeholder':'Message'}))
 
     class Meta:
         model = Comment

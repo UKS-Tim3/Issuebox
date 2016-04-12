@@ -105,7 +105,7 @@
             <div class="container-fluid">
                 <div class="tab-div-size-smaller">
                     <ul class="list-group">
-                        {% for comment in issue.comments.all %}
+                        {% for comment in issue.comments.all reversed %}
                         <li class="list-group-item">
                             <div class="media">
                                 <div class="media-left">

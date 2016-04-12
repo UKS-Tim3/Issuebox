@@ -398,10 +398,14 @@ class IssueCreateView(CreateView):
     # because we need to pass additional data (repository) to templates
     def get(self, request, *args, **kwargs):
         # We must initialize form when overriding get method and pass it in the context
-        form = self.form_class(initial=self.initial)
-
         repository_id = request.GET.get('repo_id')
         repository = get_object_or_404 (Repository, pk=repository_id)
+        form = self.form_class(initial=self.initial)
+        contibutorsId =[x.id for x in repository.contributors.all()]
+        form.fields['assignee'].queryset = Contributor.objects.all().filter(
+                                                        Q(pk__in=contibutorsId)|
+                                                        Q(pk=repository.owner.pk)
+                                            ).distinct();
 
         template = loader.get_template(self.template_name)
         return HttpResponse(template.render({'repository': repository, 'form': form}, request))
@@ -434,7 +438,19 @@ class IssueEditView (UpdateView):
     form_class = IssueForm
     template_name = 'website/issue/issue_edit_form.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(IssueEditView, self).get_context_data(**kwargs)
+        issue_id = self.kwargs['pk']
+        issue = get_object_or_404 (Issue, pk=issue_id)
+        contibutorsId =[x.id for x in issue.repository.contributors.all()]
+        context['form'].fields['assignee'].queryset = Contributor.objects.all().filter(
+                                                        Q(pk__in=contibutorsId)|
+                                                        Q(pk=issue.repository.owner.pk)
+                                            ).distinct();
+        return context
+
     def form_valid(self, form):
+
         issue = form.save_edit()
         return HttpResponse (
             render_to_string ('website/issue/issue_edit_success.html', {'issue': issue}))
@@ -518,10 +534,6 @@ class CommentDeleteView (DetailView):
 @login_required
 def all_issues(request):
     tags = Tag.objects.all ()
-    #issues = Issue.objects.all ().filter (
-    #    Q (assignee__username__exact=request.user.username) |
-    #    Q (issuer__username__exact=request.user.username)
-    #).distinct ()
 
     listOfRepoIds =[]
     contibutorsId =[]
@@ -558,15 +570,6 @@ def all_issues(request):
     startDateClosed = request.GET.get ('startDateClosed')
     endDateCreated = request.GET.get ('endDateCreated')
     endDateClosed = request.GET.get ('endDateClosed')
-
-    #issues = issues.filter (
-    #    Q (priority__icontains=priority) &
-    #    Q (status__icontains=status) &
-    #    Q (repository__name__icontains=repo)&
-    #    Q (name__icontains=query)&
-    #    Q (assignee__username__icontains=assigneeName) &
-    #    Q (issuer__username__icontains=issuerName)
-    #).distinct ()
 
     if query:
         issues = issues.filter (Q (name__icontains=query)).distinct ()

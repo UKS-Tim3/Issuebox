@@ -1,6 +1,8 @@
 from .models import *
 from django import forms
 from django.utils import timezone
+from django.db.models import Q
+from itertools import chain
 
 # Repository
 
@@ -45,6 +47,7 @@ class AddContributorForm (forms.ModelForm):
 
 
 class IssueForm (forms.ModelForm):
+
     message = forms.CharField(widget=forms.Textarea(attrs={'style':'resize:none', 'rows':'4'}))
 
     class Meta:
@@ -62,6 +65,12 @@ class IssueForm (forms.ModelForm):
 
     def save_edit(self):
         issue = self.instance
+        contibutorsId =[x.id for x in issue.repository.contributors.all()]
+        self.fields['assignee'].queryset = Contributor.objects.all().filter(
+                                                        Q(pk__in=contibutorsId)|
+                                                        Q(pk=issue.repository.owner.pk)
+                                            ).distinct();
+
         # changing issue status
         if self.initial.get('status') != issue.status:
             # closed

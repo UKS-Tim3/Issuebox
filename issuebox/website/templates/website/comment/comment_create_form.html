@@ -1,0 +1,13 @@
+{% extends "website/framework/base_form.html" %}
+
+{% block action_url %}{% url 'comment_create' %}{% endblock %}
+
+{% block title %}Create comment{% endblock %}
+
+{% block extra_form_field %}
+    <input name="issue_id" type="hidden" value="{{ issue.id }}" />
+{% endblock extra_form_field %}
+
+{% block submit_button %}
+    <input type="submit" class="btn btn-primary" value="Create"/>
+{% endblock %}

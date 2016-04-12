@@ -1,0 +1,82 @@
+{% block imports %}
+{% endblock %}
+
+<form id="modal_form" class="form" role="form" method="post"
+        action="{% block action_url %}{% endblock %}">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">{% block title %}Modal title{% endblock %}</h4>
+    </div>
+    <div class="modal-body">
+        {% csrf_token %}
+        {% block modal-body %}
+        {% load widget_tweaks %}
+
+        {{ form.non_field_errors }}
+
+        {% for field in form %}
+            <div class="form-group">
+
+                {% block form_field %}
+                {{ field.label_tag }}
+                {{ field|add_class:"form-control" }}
+                {% endblock form_field %}
+
+                {% if field.help_text %}
+                <div class="form-helptext">{{ field.help_text }}</div>
+                {% endif %}
+
+                {% if field.errors %}
+                <ul class="form-errors">
+                    {% for error in field.errors %}
+                    <li style="color: red;">
+                        <span class="fa fa-exclamation-triangle"></span>
+                        <strong>{{ error|escape }}</strong>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                
+            </div>
+        {% endfor %}
+
+        {% block extra_form_field %}
+        {% endblock extra_form_field %}
+
+        {% endblock modal-body %}
+    </div>
+    <div class="modal-footer">
+        {% block footer %}
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        {% block submit_button %}
+        <input type="submit" class="btn btn-info" value="Create"/>
+        {% endblock submit_button %}
+        {% endblock footer %}
+    </div>
+</form>
+{% block script %}
+<script>
+    /* Setting placeholders for form text inputs */
+    $('body').on('shown.bs.modal', '.modal', function () {
+        $('#modal_form input[type="text"]').each(function(index, value) {
+            var label = $(this).prev().text();
+            label = label.substring(0, label.length - 1);
+            $(this).attr('placeholder', label);
+        });
+    });
+
+    var form_options = {
+        target: '#modal',
+        success: function() {
+            /* Fix for modal dialog when submit errors occur */
+            if($('#modal_form .form-errors').size() > 0) {
+                $('#modal_form').wrap('<div class="modal-dialog"></div>');
+                $('#modal_form').wrap('<div class="modal-content"></div>');
+            }
+        }
+    }
+    $('#modal_form').ajaxForm(form_options);
+</script>
+{% block script_extra %}
+{% endblock script_extra %}
+{% endblock script %}

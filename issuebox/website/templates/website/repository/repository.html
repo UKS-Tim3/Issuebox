@@ -1,0 +1,271 @@
+{% include "website/framework/header.html" %}
+{% load website_filters %}
+
+<div id="page-wrapper">
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    <a href="{{repository.github_url|absolute_url}}" target="_blank" style="cursor:pointer; text-decoration:none; ">{{repository.name}}</a>
+                    <small>{{repository.description|truncatechars:"33"}}</small>
+                </h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="container-fluid">
+                {% if user.is_authenticated and repository.owner == user %}
+                <div class="col-lg-3">
+                    <a class="btn btn-block btn-lg btn-info" href="{% url 'repository_edit' repository.id %}"
+                            data-toggle="modal" data-target="#modal" title="edit repository" data-tooltip>
+                        <i class="fa fa-pencil-square-o"></i> Edit repository</a>
+                    <br/>
+                </div>
+                {% endif %}
+
+
+                {% if user.is_authenticated %}
+                    {%if user in repository.contributors.all or repository.owner == user %}
+                    <div class="col-lg-3">
+                        <a class="btn btn-block btn-lg btn-primary" href="{% url 'issue_create' %}?repo_id={{ repository.id }}"
+                            data-toggle="modal" data-target="#modal" title="create new issue" data-tooltip>
+                        <i class="fa fa-plus-circle"></i> Create new issue</a>
+                        <br/>
+                    </div>
+                    {% endif %}
+                {% endif %}
+
+                {% if user.is_authenticated and repository.owner == user %}
+                <div class="col-lg-3">
+                    <a class="btn btn-block btn-lg btn-success" href="{% url 'add_contributor' repository.id %}"
+                            data-toggle="modal" data-target="#modal" title="add contributor" data-tooltip>
+                        <i class="fa fa-plus-circle"></i> Add contributor</a>
+                    <br/>
+                </div>
+
+                <div class="col-lg-3">
+                    <a class="btn btn-block btn-lg btn-danger" href="{% url 'repository_delete' repository.id %}"
+                            data-toggle="modal" data-target="#modal" title="delete repository" data-tooltip>
+                        <i class="fa fa-trash"></i> Delete repository</a>
+                    <br/>
+                </div>
+                <br/>
+                {% endif %}
+            </div>
+        </div>
+
+
+        <div class="row">
+            <br/>
+            <div class="container-fluid">
+                <ul class="nav nav-tabs nav-justified" role="tablist">
+                    <li role="presentation" class="active"><a href="#commits" aria-controls="commits"
+                                                              role="tab" data-toggle="tab"><i class="fa fa-code"></i>
+                        Commits</a></li>
+                    <li role="presentation"><a href="#issues" aria-controls="issues" role="tab" data-toggle="tab"><i
+                            class="fa fa-exclamation-circle"></i> Issues</a></li>
+                    <li role="presentation"><a href="#contributors" aria-controls="contributors" role="tab"
+                                               data-toggle="tab">
+
+                        <!--<i class="fa fa-user"></i> Ako ima samo jedan-->
+                        <i class="fa fa-users"></i> Contributors</a></li>
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="commits">
+                        <div class="tab-div-size">
+                            <ul class="list-group">
+
+                                {% for commit in repository.commits.all reversed %}
+                                <li class="list-group-item">
+                                    <div class="media">
+                                        <div class="media-left">
+                                            <a href="{% url 'users' commit.contributor.id %}"> <img
+                                                    class="media-object img-circle center-image"
+                                                    src="{{ commit.contributor.img_url }}"
+                                                    alt="{{ commit.contributor.first_name}} {{ commit.contributor.last_name}}" width="48" height="48"/> </a>
+                                        </div>
+                                        <div class="media-body">
+                                            <a href="{% url 'users' commit.contributor.id %}"><h4 class="media-heading"><b>{{ commit.contributor.username }}</b></h4></a>
+                                            <h6 class="media-heading"><b>Hash: </b><a href="{{ commit.github_url|absolute_url }}" target="_blank">{{ commit.hash }}</a></h6>
+                                            <h6 class="media-heading"><b>Issue: </b><a href="{% url 'issue' commit.issues.id %}">{{ commit.issues.name }}</a></h6>
+                                            <p> {{ commit.message|truncatechars:"200" }} </p>
+                                        </div>
+                                    </div>
+                                </li>
+                                 {%empty%}
+                                <br />
+                                &nbsp;&nbsp;&nbsp;There is no any commits.
+                                {% endfor %}
+
+                            </ul>
+                        </div>
+
+                    </div>
+
+                    <div role="tabpanel" class="tab-pane tab-div-size" id="issues">
+                        <ul class="list-group">
+
+                            {% for issue in repository.issues.all reversed %}
+
+                            <li class="list-group-item">
+                                <div class="media">
+                                    <div class="media-left">
+                                        {% if issue.assignee == None %}
+                                        <a href="#"> <img
+                                                class="media-object img-circle center-image"
+                                                src="https://cdn.shopify.com/s/files/1/1069/3046/t/2/assets/noimage.jpg?11257982579509423500"
+                                                alt="#" width="48" height="48"/> </a>
+
+                                        {% else %}
+                                            <a href="{% url 'users' issue.assignee.pk %}"> <img
+                                                class="media-object img-circle center-image"
+                                                src="{{issue.assignee.img_url}}"
+                                                alt="{{issue.assignee.username}}" width="48" height="48"/> </a>
+
+                                        {% endif %}
+
+                                    </div>
+                                    <div class="media-body">
+                                            <a href="{% url 'issue' issue.id %}"><h4 class="media-heading"><b>{{issue.name}}</b>|{{issue.issuer.username}}</h4></a>
+                                        <h6 class="media-heading"><b>Status:</b>{{issue.get_status_display}}</h6>
+                                        <h6 class="media-heading"><b>Priority:</b>{{issue.get_priority_display}}</h6>
+                                        <p>{{issue.message|truncatechars:"200"}} </p>
+
+
+                                    </div>
+                                </div>
+                            </li>
+                             {%empty%}
+                                <br />
+                                &nbsp;&nbsp;&nbsp;There is no any issues.
+                                {% endfor %}
+
+                        </ul>
+
+                    </div>
+
+                    <div role="tabpanel" class="tab-pane tab-div-size" id="contributors">
+                        <ul class="list-group">
+
+                            <li class="list-group-item">
+                                <div class="media">
+                                    <div class="media-left">
+                                        <a href="{% url 'users' repository.owner.id %}"> <img
+                                                class="media-object img-circle center-image"
+                                                src="{{ repository.owner.img_url }}"
+                                                alt="{{repository.owner.first_name}} {{repository.owner.last_name}}" width="48" height="48"/> </a>
+                                    </div>
+                                    <div class="media-body">
+                                        <div class="col-lg-10">
+                                            <h4 class="media-heading"><a href="{% url 'users' repository.owner.id %}">
+                                                <b>{{ repository.owner.username }}</b></a>
+                                            </h4>
+                                            <h6 class="media-heading"><b>Owner</b></h6>
+                                            <p> Last activity on this repo. <i class="fa fa-clock-o"></i> 01.01.2016 at
+                                                4:32 PM </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
+                            {% load website_filters %}
+
+                            {% for contributor in repository.contributors.all %}
+                            <li class="list-group-item">
+                                <div class="media">
+                                    <div class="media-left">
+                                        <a href="{% url 'users' contributor.id %}"> <img
+                                                class="media-object img-circle center-image"
+                                                src="{{ contributor.img_url }}"
+                                                alt="{{contributor.first_name}} {{contributor.last_name}}" width="48" height="48"/> </a>
+                                    </div>
+                                    <div class="media-body">
+                                        <div class="col-lg-10">
+                                            <a href="{% url 'users' contributor.id %}"><h4 class="media-heading"><b>{{ contributor.username }}</b></h4></a>
+                                            <p> Last activity on this repo. <i class="fa fa-clock-o"></i> 01.01.2016 at
+                                                4:32 PM </p>
+                                        </div>
+                                        {% if not repository|is_commited:contributor %}
+                                        <div class="col-log-2" style="vertical-align:middle">
+                                            <p style="height:1px">&nbsp;</p>
+                                            <!-- No confirmation dialog! Triggers ajax call to a method. -->
+                                            <!--<a class="btn btn-danger" href="javascript:remove_contributor({{contributor.id}})">-->
+                                            <!-- With confirmation dialog! Triggers class view that responds to POST method. -->
+                                            {% if user.is_authenticated and repository.owner == user %}
+                                            <a class="btn btn-danger" href="{% url 'remove_contributor' repository.id contributor.id %}"
+                                             data-toggle="modal" data-target="#modal"><i class="fa fa-remove"></i> Remove</a>
+                                            {% endif %}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+
+                            </li>
+                            {% endfor %}
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        <!-- /.container-fluid -->
+
+    </div>
+
+
+    <!--- Modal -->
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <!-- Bootstrap 3 requires 'modal-dialog' and 'modal-content' divs to be defined -->
+    <!-- in same page as root modal div (top level page preferred) -->
+    <!-- Although, success messages still need to be wrapped with these two divs in templates! -->
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- When button that opens the modal dialog is clicked, response of href attribute -->
+                <!-- of that button is loaded which sets the content of this modal dialog. -->
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+
+    <script>
+        $(document).ready(function() {
+            // It is necessary to clear up the root modal div when dialogs are canceled,
+            // otherwise, always the first opened modal dialog will pop up
+            $('body').on('hidden.bs.modal', '.modal', function () {
+                $(this).removeData('bs.modal');
+            });
+        });
+        
+        /*
+        // No confirmation dialog! Directly removes contributor from repository.
+        function remove_contributor(contributor_id) {
+            var csrftoken = $.cookie('csrftoken');
+            $.ajax({
+                url: "{% url 'contributor_remove' repository.id %}",
+                type: 'DELETE',
+                beforeSend: function (request)
+                {
+                    request.setRequestHeader("X-CSRFToken", csrftoken);
+                },
+                data: {csrfmiddlewaretoken: csrftoken, contributor_id: contributor_id},
+                // manualy storing response into modal and triggering modal show
+                success: function(response) {
+                    $('#modal').html(response);
+                    $('#modal').modal('show');
+                }
+            });
+        }
+        */
+    </script>
+    <!--- /Modal -->
+
+
+    <!-- /#page-wrapper -->
+    {% include "website/framework/footer.html" %}

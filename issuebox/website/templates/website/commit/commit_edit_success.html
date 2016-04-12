@@ -1,0 +1,9 @@
+{% extends "website/framework/base_success.html" %}
+
+{% block message %}
+Commit for issue <b>{{ issue.name }}</b> has been updated successfully.
+{% endblock %}
+
+{% block javascript %}
+location.reload();
+{% endblock %}

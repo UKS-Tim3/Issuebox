@@ -1,0 +1,9 @@
+{% extends "website/framework/base_success.html" %}
+
+{% block message %}
+Repository <b>{{ repository.name }}</b> has been created successfully.
+{% endblock %}
+
+{% block javascript %}
+$(location).attr('href', '/website/repositories/{{ repository.id }}');
+{% endblock %}

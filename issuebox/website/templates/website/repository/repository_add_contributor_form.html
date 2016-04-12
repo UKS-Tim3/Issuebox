@@ -1,0 +1,60 @@
+{% extends "website/framework/base_form.html" %}
+
+{% load staticfiles %}
+{% block imports %}
+<!-- Bootstrap3 Typeahed plugins -->
+<!-- This library is for manual ajax call -->
+<script src="{% static 'js/bootstrap3-typeahead.min.js' %}"></script>
+<link href="{% static 'css/bootstrap3-typeahead-custom.css' %}" rel="stylesheet">
+
+<!-- This library is for using latest typeahed with bloodhound search engine -->
+<!-- But needs css workaround because it doesn't work well with bootstrap 3  -->
+<!--<script src="{% static 'js/typeahead.bundle.min.js' %}"></script>-->
+<!--<link href="{% static 'css/typeahead-bloodhound-b3-fix.css' %}" rel="stylesheet">-->
+{% endblock %}
+
+{% block action_url %}{% url 'add_contributor' repository.id %}{% endblock %}
+
+{% block title %}Search contributors by username, first name, last name or email...{% endblock %}
+
+
+{% block extra_form_field %}
+<div class="span3">
+    <input type="text" id="typeahead" class="typeahead form-control" data-provide="typeahead" autocomplete="off">
+</div>
+{% endblock %}
+
+{% block submit_button %}
+    <input type="submit" class="btn btn-info" value="Add contributor"/>
+{% endblock %}
+
+
+{% block script_extra %}
+<!-- Loading bootstrap3 typeahead with custom ajax call -->
+<!-- Fallback is it makes request for every text change -->
+<script src="{% static 'js/typeahead-custom/b3-typeahead-ajax.js' %}"></script>
+
+<!-- Loading typeahead with bloodhound suggestion engine -->
+<!-- Not always returns possible results for some reason!  -->
+<!--<script src="{% static 'js/typeahead-custom/typeahead-bloodhound.js' %}"></script>-->
+
+<!-- Must pass url as an argument because templating doesn't work in imported js libraries -->
+<script type="text/javascript">
+    // removing unnecessary label for generated hidden field
+    $('.form-group label[for="id_contributor_id"]').remove();
+    $('#id_contributor_id').prev().children().remove();
+
+    $('#id_contributor_id').change(function(data){
+        if(data.target.value == '') {
+           $('input[type="submit"]').prop('disabled', true);
+        }
+        else {
+           $('input[type="submit"]').prop('disabled', false);
+        }
+    });
+    $('#id_contributor_id').val('').trigger('change');
+
+    var url = "{% url 'contributor_lookup' repository.id %}";
+    invoke_typeahead(url);
+</script>
+{% endblock script_extra %}

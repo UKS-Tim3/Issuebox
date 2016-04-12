@@ -1,0 +1,198 @@
+{% include "website/framework/header.html" %}
+{% load website_filters %}
+<div id="page-wrapper">
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    {{ issue.name }}
+                </h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="container-fluid">
+                <div class="panel panel-red">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Tags</h3></div>
+                    <div class="panel-body">
+                        <span class="label label-warning tag"><font size="3">Feature</font></span>
+                        <span class="label label-success tag"><font size="3">help wanted</font></span>
+                    </div>
+                </div>
+            </div>
+            <br/>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="panel panel-yellow">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">Message </h3></div>
+                                <div class="panel-body">
+                                    <p>{{ issue.message }}</p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <ul class="list-group">
+                                <li class="list-group-item"><b>Priority:</b> {{ issue.get_priority_display }}</li>
+                            </ul>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <ul class="list-group">
+                                <li class="list-group-item"><b>Status:</b> {{ issue.get_status_display }}</li>
+                            </ul>
+                        </div>
+
+                    </div>
+                    <br/>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="container-fluid">
+                    <div class="row">
+                        <ul class="list-group">
+                            <li class="list-group-item"><b>Created on:</b> {{ issue.created }}</li>
+                            <li class="list-group-item"><b>Created by:</b>
+                                <a href="{% url 'users' issue.issuer.id %}">{{ issue.issuer.username }}</a></li>
+                            <li class="list-group-item"><b>Closed on:</b> {{ issue.closed }}</li>
+                            <li class="list-group-item">
+                                <b>Assignee: </b>
+                                {% if issue.assignee == None %}
+                                 None
+                                {% else %}
+                                <a href="{% url 'users' issue.assignee.id %}">{{ issue.assignee.username }}</a>
+                                {% endif %}
+                            </li>
+                            <li class="list-group-item">
+                                {% if user.is_authenticated and issue.assignee == user or issue.repository.owner == user %}
+                                {% if issue.commit == None %}
+                                <span class="badge" style="background-color:#3071a9">
+                                 <a href="{% url 'commit_create' %}?issue_id={{ issue.id }}"
+                                        data-toggle="modal" data-target="#modal" title="Create commit" data-tooltip>
+                                     <font size="4" color="white" width="30x"><i class="fa fa-fw fa-plus-circle"></i></font></a>
+                                </span>
+                                {% else %}
+                                <span class="badge" style="background-color:#5bc0de">
+                                 <a href="{% url 'commit_edit' issue.commit.id %}"
+                                        data-toggle="modal" data-target="#modal" title="Edit commit" data-tooltip>
+                                     <font size="4" color="white" width="30x"><i class="fa fa-fw fa-pencil-square-o"></i></font></a>
+                                </span>
+                                {% endif %}
+                                {% endif %}
+                                <b>Commit: </b>
+                                {% if issue.commit == None %}
+                                 None
+                                {% else %}
+                                <a href="{{ issue.commit.github_url|absolute_url }}" target="_blank">{{ issue.commit.hash }}</a>
+                                {% endif %}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        {% if user.is_authenticated and  issue.repository.owner == user or user in issue.repository.contributors.all %}
+        <div class="row">
+            <div class="col-lg-6">
+                <a class="btn btn-block btn-lg btn-primary" href="{% url 'comment_create' %}?issue_id={{ issue.id }}"
+                   data-toggle="modal" data-target="#modal" title="Add comment" data-tooltip>
+                        <i class="fa fa-plus-circle"></i> Add comment</a>
+                <br />
+            </div>
+            <div class="col-lg-6">
+                <a class="btn btn-block btn-lg btn-info" href="{% url 'issue_edit' issue.id %}"
+                            data-toggle="modal" data-target="#modal" title="edit issue" data-tooltip>
+                        <i class="fa fa-pencil-square-o"></i> Edit issue</a>
+            </div>
+        </div>
+        {% endif %}
+        <br/>
+        <div class="row">
+            <div class="container-fluid">
+                <div class="tab-div-size-smaller">
+                    <ul class="list-group">
+                        {% for comment in issue.comments.all reversed %}
+                        <li class="list-group-item">
+                            <div class="media">
+                                <div class="media-left">
+                                    <a href="{% url 'users' comment.commenter.id %}"> <img
+                                            class="media-object img-circle center-image"
+                                            src="{{ comment.commenter.img_url }}"
+                                            alt="{{ comment.commenter.firstname }} {{ comment.commenter.lastname }}" width="48" height="48"/> </a>
+                                </div>
+                                <div class="media-body">
+                                    <div class="col-lg-8">
+                                        <a href="{% url 'users' comment.commenter.id %}"><h4 class="media-heading"><b>{{ comment.commenter.username }}</b></h4>
+                                        </a>
+                                        <h6 class="media-heading"><b><i class="fa fa-clock-o"></i> {{ comment.timestamp }}</b></h6>
+                                        <p> {{ comment.message|linebreaks }} </p>
+                                    </div>
+                                    {% if user.is_authenticated and comment.commenter == user or issue.repository.owner == user %}
+                                    <div class="col-log-2" style="vertical-align:middle;float:right;">
+                                            <p style="height:1px">&nbsp;</p>
+                                            <a class="btn btn-danger" href="{% url 'comment_delete' comment.id %}"
+                                                    data-toggle="modal" data-target="#modal" title="remove comment" data-tooltip>
+                                                <i class="fa fa-remove"></i> Remove</a>&nbsp;
+                                        <br />
+                                    </div>
+                                    {% endif %}
+
+                                    {% if user.is_authenticated and comment.commenter == user%}
+                                    <div class="col-log-2" style="vertical-align:middle;float:right">
+                                            <p style="height:1px">&nbsp;</p>
+                                        <a class="btn btn-info" href="{% url 'comment_edit' comment.id %}"
+                                                data-toggle="modal" data-target="#modal" title="edit comment" data-tooltip>
+                                            <i class="fa fa-pencil-square-o"></i> Edit</a>
+                                        <br />
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </li>
+                        {% endfor %}
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- /.container-fluid -->
+    </div>
+</div>
+<!-- /#page-wrapper -->
+
+<!--- Modal -->
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<!-- Bootstrap 3 requires 'modal-dialog' and 'modal-content' divs to be defined -->
+<!-- in same page as root modal div (top level page preferred) -->
+<!-- Although, success messages still need to be wrapped with these two divs in templates! -->
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- When button that opens the modal dialog is clicked, response of href attribute -->
+            <!-- of that button is loaded which sets the content of this modal dialog. -->
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<!--- /Modal -->
+
+<script>
+    $(document).ready(function() {
+        // It is necessary to clear up the root modal div when dialogs are canceled,
+        // otherwise, always the first opened modal dialog will pop up
+        $('body').on('hidden.bs.modal', '.modal', function () {
+            $(this).removeData('bs.modal');
+        });
+    });
+</script>
+
+{% include "website/framework/footer.html" %}

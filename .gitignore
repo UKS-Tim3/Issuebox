@@ -60,3 +60,12 @@ target/
 
 #Ipython Notebook
 .ipynb_checkpoints
+
+# Vim .swp temp files
+*.swp
+
+# Database migration files
+migrations/
+
+# PyCharm
+.idea/

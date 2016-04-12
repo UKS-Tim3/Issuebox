@@ -1,0 +1,9 @@
+{% extends "website/framework/base_success.html" %}
+
+{% block message %}
+Contributor <b>{{ contributor.username }}</b> ({{ contributor.first_name }} {{ contributor.last_name }}) has been added to repository <b>{{ repository.name }}</b> successfully.
+{% endblock %}
+
+{% block javascript %}
+location.reload();
+{% endblock %}

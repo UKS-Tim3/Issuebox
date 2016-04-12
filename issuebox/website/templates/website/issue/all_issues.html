@@ -1,0 +1,212 @@
+{% include "website/framework/header.html" %}
+<div id="page-wrapper">
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    Issues
+                    <small>All my issues</small>
+                </h1>
+            </div>
+        </div>
+
+        <form method="GET" action=''>
+        <div class="row">
+            <div class="col-lg-12">
+                <input type="text" class="form-control" name="search_text" placeholder="Search word" value="{{request.GET.search_text}}"/><br/>
+                <button type="submit" class="btn btn-md btn-success"><i class="fa fa-search"></i> Search</button>
+                <button type="button" class="btn btn-md btn-warning" onclick="showStuff()"><i class="fa fa-filter"></i>
+                    Add filters
+                </button>
+            </div>
+        </div>
+
+        <div class="row" id="filterData" style="display:none;">
+            <div class="container-fluid">
+                <br/>
+
+                <div class="panel panel-info">
+                    <div class="panel-heading">
+                        <h2 class="panel-title">Filters</h2>
+                    </div>
+                    <div class="panel-body">
+                        <div class="col-lg-2">
+                            Priority:
+                            <select class="form-control" name="priority">
+                                <option value=""></option>
+                                <option value="L" {% if request.GET.priority == "L" %} selected {%endif%}>Low</option>
+                                <option value="M" {% if request.GET.priority == "M" %} selected {%endif%}>Medium</option>
+                                <option value="H" {% if request.GET.priority == "H" %} selected {%endif%}>High</option>
+                            </select>
+                            <br/>
+
+                            Status:
+                            <select class="form-control" name="status">
+                                <option value=""></option>
+                                <option value="0" {% if request.GET.status == "0" %} selected {%endif%}>New</option>
+                                <option value="1" {% if request.GET.status == "1" %} selected {%endif%}>In Progress</option>
+                                <option value="2" {% if request.GET.status == "2" %} selected {%endif%}>Closed</option>
+                            </select>
+                            <br/>
+                        </div>
+                        <div class="col-lg-2">
+                            Assignee:
+                            <select class="form-control" name="assignee">
+                                <option value=""></option>
+                                <option value="None" {% if request.GET.assignee == 'None' %} selected {%endif%}>None</option>
+                                {% for cont in allContributors %}
+                                <option value="{{cont.username}}" {% if request.GET.assignee == cont.username %} selected {%endif%}>{{cont.username}}</option>
+                                {%endfor%}
+                            </select>
+                            <br/>
+
+                            Issuer:
+                            <select class="form-control" name="issuer">
+                                <option value=""></option>
+                                {% for issuer in allContributors %}
+                                <option value="{{issuer.username}}" {% if request.GET.issuer == issuer.username %} selected {%endif%}>{{issuer.username}}</option>
+                                {%endfor%}
+                            </select>
+                            <br/>
+                        </div>
+                        <div class="col-lg-2">
+                            {% if tags|length > 0 %}
+                            Tag:
+                            <select class="form-control" name="tag">
+                                <option value=""></option>
+                                {%for tag in tags%}
+                                <option value="{{tag.label}}" {% if request.GET.tag == tag.label %} selected {%endif%}>{{tag.label}}</option>
+                                {%endfor%}
+                            </select>
+                            <br/>
+                            {% endif %}
+
+                            {% if repoCounter > 0 %}
+                            Repoes:
+                            <select class="form-control" name="repo">
+                                <option value=""></option>
+                                {% for repo in user.owned_repositories.all %}
+                                <option value="{{repo.name}}" {% if request.GET.repo == repo.name %} selected {%endif%}>{{repo.name}}</option>
+                                {%endfor%}
+                                {% for repo in user.contributed_repositories.all %}
+                                <option value="{{repo.name}}" {% if request.GET.repo == repo.name %} selected {%endif%}>{{repo.name}}</option>
+                                {%endfor%}
+                            </select>
+                            <br/>
+                            {%endif%}
+                        </div>
+                        <div class="col-lg-6">
+
+
+                            <div class="col-lg-6">
+                                Created from:
+                                <input type="date" name="startDateCreated" class="form-control" value="{{request.GET.startDateCreated}}" placeholder="yyyy-MM-dd"/>
+                                <br/>
+                                to
+                                <input type="date" name="endDateCreated" class="form-control" value="{{request.GET.endDateCreated}}" placeholder="yyyy-MM-dd"/>
+                                <br/>
+                            </div>
+
+                            <div class="col-lg-6">
+                                Closed from:
+                                <input type="date" name="startDateClosed" class="form-control" value="{{request.GET.startDateClosed}}" placeholder="yyyy-MM-dd"/>
+                                <br/>
+                                to
+                                <input type="date" name="endDateClosed" class="form-control" value="{{request.GET.endDateClosed}}" placeholder="yyyy-MM-dd"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </form>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="table-responsive">
+                    <br/>
+                    {% if issuesList|length > 0 %}
+                    <table class="table table-bordered table-hover table-striped">
+                        <thead>
+                        <tr>
+                            <th width="40%">Name</th>
+                            <th width="20%">Repository</th>
+                            <th width="10%">Status</th>
+                            <th width="10%">Priority</th>
+                             <th width="10%">Issuer</th>
+                            <th width="10%">Assignee</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for issue in issuesList %}
+                        <tr>
+                            <td><a href="{% url 'issue' issue.id %}">{{issue.name}}</a></td>
+                            <td><a href="{% url 'repository' issue.repository.id %}">{{issue.repository.name}}</a></td>
+                            <td>{{issue.get_status_display}}</td>
+                            <td>{{issue.get_priority_display}}</td>
+                            <td><a href="{% url 'users' issue.issuer.id %}">{{issue.issuer.username}}</a></td>
+                            {% if issue.assignee != None %}
+                            <td><a href="{% url 'users' issue.assignee.id %}">{{issue.assignee.username}}</a></td>
+                            {% else %}
+                            <td>None</td>
+                            {% endif %}
+                       </tr>
+                        {%endfor%}
+
+                        </tbody>
+                    </table>
+                    {% else %}
+                    There is no any issue to show.
+                    {% endif %}
+
+                    <nav>
+
+                        <ul class="pagination">
+                            {% if issuesList.has_previous %}
+                            <li>
+                                <a href="?page={{ issuesList.previous_page_number }}&search_text={{request.GET.search_text}}&priority={{request.GET.priority}}&status={{request.GET.status}}&tag={{request.GET.tag}}&repo={{request.GET.repo}}&startDateCreated={{request.GET.startDateCreated}}&endDateCreated={{request.GET.endDateCreated}}&startDateClosed={{request.GET.startDateClosed}}&endDateClosed={{request.GET.endDateClosed}}&issuer={{request.GET.issuer}}&assignee={{request.GET.assignee}}"
+                                   aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            {% endif %}
+
+                            <li><a href="#">{{issuesList.number}}</a></li>
+
+                            {% if issuesList.has_next %}
+                            <li>
+                                <a href="?page={{ issuesList.next_page_number }}&search_text={{request.GET.search_text}}&priority={{request.GET.priority}}&status={{request.GET.status}}&tag={{request.GET.tag}}&repo={{request.GET.repo}}&startDateCreated={{request.GET.startDateCreated}}&endDateCreated={{request.GET.endDateCreated}}&startDateClosed={{request.GET.startDateClosed}}&endDateClosed={{request.GET.endDateClosed}}&issuer={{request.GET.issuer}}&assignee={{request.GET.assignee}}"
+                                   aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <!-- /.container-fluid -->
+    </div>
+</div>
+<!-- /#page-wrapper -->
+
+<!--- /Modal -->
+<script type="text/javascript">
+function showStuff() {
+    var style = document.getElementById("filterData").style.display;
+    if(style=='block') {
+    document.getElementById("filterData").style.display = 'none';
+    }
+    else{
+    document.getElementById("filterData").style.display = 'block';
+    }
+}
+
+
+
+
+</script>
+
+{% include "website/framework/footer.html" %}

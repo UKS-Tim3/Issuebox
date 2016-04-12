@@ -1,0 +1,9 @@
+{% extends "website/framework/base_success.html" %}
+
+{% block message %}
+Commit has been created successfully for issue <b>{{ issue.name }}</b>.
+{% endblock %}
+
+{% block javascript %}
+location.reload();
+{% endblock %}

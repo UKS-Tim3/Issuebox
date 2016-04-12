@@ -84,6 +84,29 @@ class IssueForm (forms.ModelForm):
         return issue
 
 
+# Commit
+
+class CommitForm(forms.ModelForm):
+
+    class Meta:
+        model = Commit
+        fields = ['hash', 'message', 'github_url']
+
+    def save(self, issue, user):
+        commit = self.instance
+        commit.repository = issue.repository
+        commit.contributor = user
+        commit.save()
+        issue.commit = commit
+        issue.save()
+        return commit
+
+    def save_edit(self, user):
+        commit = self.instance
+        commit.contributor = user
+        commit.save()
+        return commit
+
 # Comment
 
 class CommentForm(forms.ModelForm):

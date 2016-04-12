@@ -30,6 +30,9 @@ urlpatterns = [
     url(r'^issues/create$', views.IssueCreateView.as_view(), name='issue_create'),
     url(r'^issues/(?P<pk>\d+)/edit$', views.IssueEditView.as_view(), name='issue_edit'),
 
+    url(r'^commit/create$', views.CommitCreateView.as_view(), name='commit_create'),
+    url(r'^commit/(?P<pk>\d+)/edit$', views.CommitEditView.as_view(), name='commit_edit'),
+
     url(r'^comment/create$', views.CommentCreateView.as_view(), name='comment_create'),
     url(r'^comment/(?P<pk>\d+)/edit$', views.CommentEditView.as_view(), name='comment_edit'),
     url(r'^comment/(?P<pk>\d+)/delete$', views.CommentDeleteView.as_view(), name='comment_delete')

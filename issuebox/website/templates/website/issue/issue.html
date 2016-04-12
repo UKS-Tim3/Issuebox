@@ -154,7 +154,6 @@
 </div>
 <!-- /#page-wrapper -->
 
-
 <!--- Modal -->
 <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 <!-- Bootstrap 3 requires 'modal-dialog' and 'modal-content' divs to be defined -->
@@ -167,11 +166,9 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
 <!--- /Modal -->
 
-<style>
-
+<script>
     $(document).ready(function() {
         // It is necessary to clear up the root modal div when dialogs are canceled,
         // otherwise, always the first opened modal dialog will pop up
@@ -179,7 +176,6 @@
             $(this).removeData('bs.modal');
         });
     });
-
-</style>
+</script>
 
 {% include "website/framework/footer.html" %}

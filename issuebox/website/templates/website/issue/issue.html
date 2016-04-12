@@ -1,4 +1,5 @@
 {% include "website/framework/header.html" %}
+{% load website_filters %}
 <div id="page-wrapper">
 
     <div class="container-fluid">
@@ -72,6 +73,7 @@
                                 {% endif %}
                             </li>
                             <li class="list-group-item">
+                                {% if user.is_authenticated and issue.assignee == user or issue.repository.owner == user %}
                                 {% if issue.commit == None %}
                                 <span class="badge" style="background-color:#3071a9">
                                  <a href="{% url 'commit_create' %}?issue_id={{ issue.id }}"
@@ -85,12 +87,12 @@
                                      <font size="4" color="white" width="30x"><i class="fa fa-fw fa-pencil-square-o"></i></font></a>
                                 </span>
                                 {% endif %}
-
+                                {% endif %}
                                 <b>Commit: </b>
                                 {% if issue.commit == None %}
                                  None
                                 {% else %}
-                                <a href="{{ issue.commit.github_url }}">{{ issue.commit.hash }}</a>
+                                <a href="{{ issue.commit.github_url|absolute_url }}" target="_blank">{{ issue.commit.hash }}</a>
                                 {% endif %}
                             </li>
                         </ul>

@@ -89,9 +89,9 @@
                                         </div>
                                         <div class="media-body">
                                             <a href="{% url 'users' commit.contributor.id %}"><h4 class="media-heading"><b>{{ commit.contributor.username }}</b></h4></a>
-                                            <h6 class="media-heading"><b><i class="fa fa-clock-o"></i> 01.01.2016 at
-                                                4:32 PM</b></h6>
-                                            <p> {{ commit.message }} </p>
+                                            <h6 class="media-heading"><b>Hash: </b><a href="{{ commit.github_url|absolute_url }}" target="_blank">{{ commit.hash }}</a></h6>
+                                            <h6 class="media-heading"><b>Issue: </b><a href="{% url 'issue' commit.issues.id %}">{{ commit.issues.name }}</a></h6>
+                                            <p> {{ commit.message|truncatechars:"200" }} </p>
                                         </div>
                                     </div>
                                 </li>

@@ -11,10 +11,10 @@
             </div>
         </div>
 
-        <form method="GET" action="">
+        <form method="GET" action=''>
         <div class="row">
             <div class="col-lg-12">
-                <input type="text" class="form-control" name="search_text" placeholder="Search word" value="{{ request.GET.search_text }}"/><br/>
+                <input type="text" class="form-control" name="search_text" placeholder="Search word" value="{{request.GET.search_text}}"/><br/>
                 <button type="submit" class="btn btn-md btn-success"><i class="fa fa-search"></i> Search</button>
                 <button type="button" class="btn btn-md btn-warning" onclick="showStuff()"><i class="fa fa-filter"></i>
                     Add filters
@@ -54,8 +54,9 @@
                             Assignee:
                             <select class="form-control" name="assignee">
                                 <option value=""></option>
+                                <option value="None" {% if request.GET.assignee == 'None' %} selected {%endif%}>None</option>
                                 {% for cont in allContributors %}
-                                <option value="{{cont.username}}" {% if request.GET.cont == cont.username %} selected {%endif%}>{{cont.username}}</option>
+                                <option value="{{cont.username}}" {% if request.GET.assignee == cont.username %} selected {%endif%}>{{cont.username}}</option>
                                 {%endfor%}
                             </select>
                             <br/>
@@ -75,7 +76,7 @@
                             <select class="form-control" name="tag">
                                 <option value=""></option>
                                 {%for tag in tags%}
-                                <option value="{{tag.label}}" {% if request.GET.tag == tag.label %} selected {%endif%} >{{tag.label}}</option>
+                                <option value="{{tag.label}}" {% if request.GET.tag == tag.label %} selected {%endif%}>{{tag.label}}</option>
                                 {%endfor%}
                             </select>
                             <br/>
@@ -145,7 +146,11 @@
                             <td>{{issue.get_status_display}}</td>
                             <td>{{issue.get_priority_display}}</td>
                             <td><a href="{% url 'users' issue.issuer.id %}">{{issue.issuer.username}}</a></td>
+                            {% if issue.assignee != None %}
                             <td><a href="{% url 'users' issue.assignee.id %}">{{issue.assignee.username}}</a></td>
+                            {% else %}
+                            <td>None</td>
+                            {% endif %}
                        </tr>
                         {%endfor%}
 
@@ -157,15 +162,10 @@
 
                     <nav>
 
-                        {% if issuesList|length >= 10 %}
                         <ul class="pagination">
                             {% if issuesList.has_previous %}
                             <li>
-                                <a href="?page={{ issuesList.previous_page_number }}&search_text={{request.GET.search_text}}
-                                &priority={{request.GET.priority}}&status={{request.GET.status}}&tag={{request.GET.tag}}
-                                &repo={{request.GET.repo}}&startDateCreated={{request.GET.startDateCreated}}
-                                &endDateCreated={{request.GET.endDateCreated}}&startDateClosed={{request.GET.startDateClosed}}
-                                &endDateClosed={{request.GET.endDateClosed}}&issuer={{request.GET.issuer}}&assignee={{request.GET.assignee}}"
+                                <a href="?page={{ issuesList.previous_page_number }}&search_text={{request.GET.search_text}}&priority={{request.GET.priority}}&status={{request.GET.status}}&tag={{request.GET.tag}}&repo={{request.GET.repo}}&startDateCreated={{request.GET.startDateCreated}}&endDateCreated={{request.GET.endDateCreated}}&startDateClosed={{request.GET.startDateClosed}}&endDateClosed={{request.GET.endDateClosed}}&issuer={{request.GET.issuer}}&assignee={{request.GET.assignee}}"
                                    aria-label="Previous">
                                     <span aria-hidden="true">&laquo;</span>
                                 </a>
@@ -176,18 +176,13 @@
 
                             {% if issuesList.has_next %}
                             <li>
-                                <a href="?page={{ issuesList.next_page_number }}&search_text={{request.GET.search_text}}
-                                &priority={{request.GET.priority}}&status={{request.GET.status}}&tag={{request.GET.tag}}
-                                &repo={{request.GET.repo}}&startDateCreated={{request.GET.startDateCreated}}
-                                &endDateCreated={{request.GET.endDateCreated}}&startDateClosed={{request.GET.startDateClosed}}
-                                &endDateClosed={{request.GET.endDateClosed}}&issuer={{request.GET.issuer}}&assignee={{request.GET.assignee}}"
+                                <a href="?page={{ issuesList.next_page_number }}&search_text={{request.GET.search_text}}&priority={{request.GET.priority}}&status={{request.GET.status}}&tag={{request.GET.tag}}&repo={{request.GET.repo}}&startDateCreated={{request.GET.startDateCreated}}&endDateCreated={{request.GET.endDateCreated}}&startDateClosed={{request.GET.startDateClosed}}&endDateClosed={{request.GET.endDateClosed}}&issuer={{request.GET.issuer}}&assignee={{request.GET.assignee}}"
                                    aria-label="Next">
                                     <span aria-hidden="true">&raquo;</span>
                                 </a>
                             </li>
                             {% endif %}
                         </ul>
-                        {% endif %}
                     </nav>
                 </div>
             </div>

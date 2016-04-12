@@ -103,7 +103,6 @@
                         {% endif %}
                         <nav>
 
-                            {% if repositories|length >= 10 %}
                             <ul class="pagination">
                                 {% if repositories.has_previous %}
                                 <li>
@@ -123,7 +122,6 @@
                                 </li>
                                 {% endif %}
                             </ul>
-                            {% endif %}
                         </nav>
                     </div>
             </div>

@@ -1,11 +1,13 @@
 {% include "website/framework/header.html" %}
+{% load website_filters %}
+
 <div id="page-wrapper">
 
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-12">
                 <h1 class="page-header">
-                    {{repository.name}}
+                    <a href="{{repository.github_url|absolute_url}}" target="_blank" style="cursor:pointer; text-decoration:none; ">{{repository.name}}</a>
                     <small>{{repository.description|truncatechars:"33"}}</small>
                 </h1>
             </div>
@@ -106,7 +108,7 @@
                     <div role="tabpanel" class="tab-pane tab-div-size" id="issues">
                         <ul class="list-group">
 
-                            {% for issue in repository.issues.all %}
+                            {% for issue in repository.issues.all reversed %}
 
                             <li class="list-group-item">
                                 <div class="media">

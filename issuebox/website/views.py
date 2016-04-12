@@ -191,6 +191,7 @@ def all_repositories(request):
     context = {
         "repositories": repositories
     }
+
     template_name = 'website/repository/all_repositories.html'
     return render (request, template_name, context)
 
@@ -544,31 +545,54 @@ def all_issues(request):
         Q(pk__in=contibutorsId)
     ).distinct();
 
-    query = request.GET.get ('search_text') if request.GET.get ('search_text') else ''
-    priority = request.GET.get ('priority') if request.GET.get ('priority') else ''
-    status = request.GET.get ('status') if request.GET.get ('status') else ''
+    query = request.GET.get ('search_text')
+    priority = request.GET.get ('priority')
+    status = request.GET.get ('status')
     tag = request.GET.get ('tag')
-    repo = request.GET.get ('repo') if request.GET.get ('repo') else ''
-    issuerName = request.GET.get ('issuer') if request.GET.get ('issuer') else ''
-    assigneeName = request.GET.get ('assignee') if request.GET.get ('assignee') else ''
+    repo = request.GET.get ('repo')
+    issuerName = request.GET.get ('issuer')
+    assigneeName = request.GET.get ('assignee')
 
 
-    startDateCreated = request.GET.get ('startDateCreated') if request.GET.get ('startDateCreated') else ''
-    startDateClosed = request.GET.get ('startDateClosed') if request.GET.get ('startDateClosed') else ''
-    endDateCreated = request.GET.get ('endDateCreated') if request.GET.get ('endDateCreated') else ''
-    endDateClosed = request.GET.get ('endDateClosed') if request.GET.get ('endDateClosed') else ''
+    startDateCreated = request.GET.get ('startDateCreated')
+    startDateClosed = request.GET.get ('startDateClosed')
+    endDateCreated = request.GET.get ('endDateCreated')
+    endDateClosed = request.GET.get ('endDateClosed')
 
-    issues = issues.filter (
-        Q (priority__icontains=priority) &
-        Q (status__icontains=status) &
-        Q (repository__name__icontains=repo)&
-        Q (name__icontains=query)&
-        Q (assignee__username__icontains=assigneeName) &
-        Q (issuer__username__icontains=issuerName)
-    ).distinct ()
+    #issues = issues.filter (
+    #    Q (priority__icontains=priority) &
+    #    Q (status__icontains=status) &
+    #    Q (repository__name__icontains=repo)&
+    #    Q (name__icontains=query)&
+    #    Q (assignee__username__icontains=assigneeName) &
+    #    Q (issuer__username__icontains=issuerName)
+    #).distinct ()
+
+    if query:
+        issues = issues.filter (Q (name__icontains=query)).distinct ()
+    if priority:
+        issues = issues.filter (Q (priority__icontains=priority)).distinct ()
+    if status:
+        issues = issues.filter (Q (status__icontains=status)).distinct ()
+    if repo:
+        issues = issues.filter (Q (repository__name__icontains=repo)).distinct ()
+    if assigneeName:
+        if assigneeName =="None":
+            listOfUnassigned =[]
+            for currentIssue in issues:
+                if currentIssue.assignee is None:
+                    listOfUnassigned.append(currentIssue.id)
+
+            issues = issues.filter (Q(pk__in=listOfUnassigned)).distinct ()
+        else:
+            issues = issues.filter (Q (assignee__username__icontains=assigneeName)).distinct ()
+
+    if issuerName:
+        issues = issues.filter (Q (issuer__username__icontains=issuerName)).distinct ()
 
     if tag:
         issues = issues.filter (Q (tags__label__icontains=tag)).distinct ()
+
     if startDateCreated:
         try:
             issues = issues.filter (Q (created__gte=datetime.strptime (startDateCreated, '%Y-%m-%d'))).distinct ()

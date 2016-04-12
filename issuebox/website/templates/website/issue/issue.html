@@ -115,27 +115,29 @@
                                             alt="{{ comment.commenter.firstname }} {{ comment.commenter.lastname }}" width="48" height="48"/> </a>
                                 </div>
                                 <div class="media-body">
-                                    <div class="col-lg-10">
+                                    <div class="col-lg-8">
                                         <a href="{% url 'users' comment.commenter.id %}"><h4 class="media-heading"><b>{{ comment.commenter.username }}</b></h4>
                                         </a>
                                         <h6 class="media-heading"><b><i class="fa fa-clock-o"></i> {{ comment.timestamp }}</b></h6>
                                         <p> {{ comment.message|linebreaks }} </p>
                                     </div>
                                     {% if user.is_authenticated and comment.commenter == user or issue.repository.owner == user %}
-                                    <div class="col-log-1" style="vertical-align:middle;float:left;">
+                                    <div class="col-log-2" style="vertical-align:middle;float:right;">
                                             <p style="height:1px">&nbsp;</p>
                                             <a class="btn btn-danger" href="{% url 'comment_delete' comment.id %}"
                                                     data-toggle="modal" data-target="#modal" title="remove comment" data-tooltip>
                                                 <i class="fa fa-remove"></i> Remove</a>&nbsp;
+                                        <br />
                                     </div>
                                     {% endif %}
 
                                     {% if user.is_authenticated and comment.commenter == user%}
-                                    <div class="col-log-1" style="vertical-align:middle;">
+                                    <div class="col-log-2" style="vertical-align:middle;float:right">
                                             <p style="height:1px">&nbsp;</p>
                                         <a class="btn btn-info" href="{% url 'comment_edit' comment.id %}"
                                                 data-toggle="modal" data-target="#modal" title="edit comment" data-tooltip>
                                             <i class="fa fa-pencil-square-o"></i> Edit</a>
+                                        <br />
                                     </div>
                                     {% endif %}
                                 </div>
@@ -147,7 +149,6 @@
                 </div>
             </div>
         </div>
-
 
         <!-- /.container-fluid -->
     </div>

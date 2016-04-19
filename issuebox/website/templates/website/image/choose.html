@@ -1,0 +1,39 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <h4 class="modal-title" id="myModalLabel">Image upload</h4>
+</div>
+    <div class="modal-body">
+        <p>Choose how you want to upload your profile image?</p><br>
+        <div>
+            <a class="btn btn-block btn-primary" onclick="upload_form()" title="Upload image" data-tooltip>
+            <i class="fa fa-plus-circle"></i> Upload image</a>
+
+            <a class="btn btn-block btn-primary" onclick="url_form()" title="Enter image URL" data-tooltip>
+            <i class="fa fa-plus-circle"></i> Enter image URL</a>
+        </div>
+    </div>
+    <div class="modal-footer">
+    </div>
+</div>
+
+<script>
+    function upload_form() {
+        //loadAjax("{% url 'image_url' %}");
+    }
+
+    function url_form() {
+        loadAjax("{% url 'image_url' %}");
+    }
+
+    // function that creates AJAX call to server and loads response into modal
+    function loadAjax(url) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (xhttp.readyState == 4 && xhttp.status == 200) {
+                document.getElementById("modal").innerHTML = xhttp.responseText;
+            }
+        };
+        xhttp.open("GET", url, true);
+        xhttp.send();
+    }
+</script>

@@ -24,6 +24,9 @@
                         <img class="media-object img-circle center-image"
                              src="{{userPage.img_url}}"
                              alt="{{userPage.first_name}} {{userPage.last_name}}" width="180" height="240"/>
+                        <br>
+                        <a href="{% url 'image_choose' %}" data-toggle="modal" data-target="#modal">
+                            Change profile image</a>
 
                     </div>
                 </div>

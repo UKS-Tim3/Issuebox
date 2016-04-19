@@ -11,6 +11,7 @@ from django.views.generic import DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from django.http import JsonResponse
 from django.db.models import Q
+from django.core.urlresolvers import reverse
 
 from website.auth.backends import have_permission
 from .forms import *
@@ -685,3 +686,25 @@ def all_issues(request):
     }
     template_name = 'website/issue/all_issues.html'
     return render (request, template_name, context)
+
+
+# Image upload
+def image_choose(request):
+    template_name = 'website/image/choose.html'
+    return HttpResponse(render_to_string(template_name))
+
+
+def image_url(request):
+    if request.method == 'GET':
+        # secures valid csrf token
+        template = loader.get_template('website/image/url_form.html')
+        return HttpResponse(template.render({}, request))
+
+    if request.method == 'POST':
+        img_url = request.POST.get('image_url')
+        user = request.user
+
+        user.img_url = img_url
+        user.save()
+
+        return HttpResponseRedirect(reverse('users', args=(user.id,)))

@@ -35,5 +35,9 @@ urlpatterns = [
 
     url(r'^comment/create$', views.CommentCreateView.as_view(), name='comment_create'),
     url(r'^comment/(?P<pk>\d+)/edit$', views.CommentEditView.as_view(), name='comment_edit'),
-    url(r'^comment/(?P<pk>\d+)/delete$', views.CommentDeleteView.as_view(), name='comment_delete')
+    url(r'^comment/(?P<pk>\d+)/delete$', views.CommentDeleteView.as_view(), name='comment_delete'),
+
+    # image upload
+    url(r'^image/choose$', views.image_choose, name='image_choose'),
+    url(r'^image/url$', views.image_url, name='image_url')
 ]

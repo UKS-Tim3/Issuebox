@@ -239,7 +239,6 @@ class ImageURLForm(forms.ModelForm):
         return self.cleaned_data['img_url']
 
 
-class ImageUploadForm(forms.ModelForm):
-    class Meta:
-        model = ProfileImage
-        fields = ['image_file']
+class ImageUploadForm(forms.Form):
+
+    file = forms.FileField(label='Select an image')

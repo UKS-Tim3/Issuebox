@@ -142,7 +142,3 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.message
-
-
-class ProfileImage(models.Model):
-    image_file = models.FileField(upload_to='profile_images')

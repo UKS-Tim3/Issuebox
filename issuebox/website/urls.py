@@ -38,8 +38,6 @@ urlpatterns = [
     url(r'^comment/(?P<pk>\d+)/delete$', views.CommentDeleteView.as_view(), name='comment_delete'),
 
     # image upload
-    # url(r'^image/url$', views.image_url, name='image_url'),
-    # url(r'^image/upload$', views.image_upload, name='image_upload')
     url(r'^image/url$', views.ImageURLView.as_view(), name='image_url'),
-    url(r'^image/upload$', views.ImageUploadView.as_view(), name='image_upload')
+    url(r'^image/upload$', views.image_upload, name='image_upload'),
 ]

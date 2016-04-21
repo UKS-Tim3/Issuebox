@@ -11,6 +11,8 @@ from django.views.generic import DetailView
 from django.views.generic.edit import CreateView, UpdateView
 from django.http import JsonResponse
 from django.db.models import Q
+from django.core.urlresolvers import reverse
+import os
 
 from website.auth.backends import have_permission
 from .forms import *
@@ -685,3 +687,62 @@ def all_issues(request):
     }
     template_name = 'website/issue/all_issues.html'
     return render (request, template_name, context)
+
+
+class ImageURLView(UpdateView):
+    model = Contributor
+    form_class = ImageURLForm
+    template_name = 'website/image/url_form.html'
+
+    # must override this to set object instance in Generic view because <pk> is missing from url
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def form_valid(self, form):
+        user = self.request.user
+        user.img_url = form.save()
+        user.save()
+        return HttpResponse(
+            render_to_string('website/image/image_success.html',
+                      {'title': 'Success!',
+                       'message': 'Profile image URL has been successfully changed!'}))
+
+
+def image_upload(request):
+    def handle_uploaded_file(file_path, file):
+        with open(os.path.join(file_path, file.name), 'wb+') as destination:
+            for chunk in file.chunks():
+                destination.write(chunk)
+
+    if request.method == 'POST':
+        form = ImageUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            image = request.FILES['file']
+            image_path = os.path.join('website', 'static', 'profile_images')
+            if not os.path.exists(image_path):
+                os.makedirs(image_path)
+            handle_uploaded_file(image_path, image)
+
+            user = request.user
+            img_url = os.path.join('profile_images', image.name)
+            # double '{{' and '}}' escapes '{}' format field and prints out '{' and '}'
+            # user.img_url = '{{% static "{}" %}}'.format(img_url.__str__())
+            # but {% static %} tag is not interpreted in template because it is rendered as string
+            # in order to avoid changing templates we must hardcode like this:
+
+            user.img_url = '/static/{}'.format(img_url.__str__())
+            user.save()
+
+            return HttpResponse(
+                render_to_string('website/image/image_success.html',
+                      {'title': 'Success!',
+                       'message': 'Profile image has been successfully uploaded!'}))
+
+        else:
+            template = loader.get_template('website/image/upload_form.html')
+            return HttpResponse(template.render({'form': form}, request))
+
+    elif request.method == 'GET':
+        form = ImageUploadForm()
+        template = loader.get_template('website/image/upload_form.html')
+        return HttpResponse(template.render({'form': form}, request))

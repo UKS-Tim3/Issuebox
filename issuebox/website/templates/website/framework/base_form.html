@@ -2,7 +2,7 @@
 {% endblock %}
 
 <form id="modal_form" class="form" role="form" method="post"
-        action="{% block action_url %}{% endblock %}">
+        action="{% block action_url %}{% endblock %}" {% block form_attrs %}{% endblock %}>
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4 class="modal-title">{% block title %}Modal title{% endblock %}</h4>
@@ -47,7 +47,7 @@
     </div>
     <div class="modal-footer">
         {% block footer %}
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal" data-target="#modal">Close</button>
         {% block submit_button %}
         <input type="submit" class="btn btn-info" value="Create"/>
         {% endblock submit_button %}
@@ -55,6 +55,8 @@
     </div>
 </form>
 {% block script %}
+{% block script_extra %}
+{% endblock script_extra %}
 <script>
     /* Setting placeholders for form text inputs */
     $('body').on('shown.bs.modal', '.modal', function () {
@@ -77,6 +79,4 @@
     }
     $('#modal_form').ajaxForm(form_options);
 </script>
-{% block script_extra %}
-{% endblock script_extra %}
 {% endblock script %}

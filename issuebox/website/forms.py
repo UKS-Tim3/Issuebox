@@ -217,3 +217,29 @@ def password_clean(password, confirmPassword):
         raise forms.ValidationError ("Passwords don't match.")
 
     return password
+
+
+class ImageURLForm(forms.ModelForm):
+    class Meta:
+        model = Contributor
+        fields = ['img_url']
+
+    img_url = forms.CharField(max_length=150, label="Image URL")
+
+    def clean_img_url(self):
+        data = self.cleaned_data['img_url']
+        if data == '':
+            raise forms.ValidationError("You must enter Image URL!")
+
+        # Always return the cleaned data, whether you have changed it or
+        # not.
+        return data
+
+    def save(self):
+        return self.cleaned_data['img_url']
+
+
+class ImageUploadForm(forms.ModelForm):
+    class Meta:
+        model = ProfileImage
+        fields = ['image_file']

@@ -689,22 +689,118 @@ def all_issues(request):
 
 
 # Image upload
-def image_choose(request):
-    template_name = 'website/image/choose.html'
-    return HttpResponse(render_to_string(template_name))
-
-
 def image_url(request):
     if request.method == 'GET':
         # secures valid csrf token
+        form = ImageURLForm()
         template = loader.get_template('website/image/url_form.html')
-        return HttpResponse(template.render({}, request))
+        return HttpResponse(template.render({'form': form}, request))
 
     if request.method == 'POST':
         img_url = request.POST.get('image_url')
         user = request.user
 
-        user.img_url = img_url
-        user.save()
+        # user.img_url = img_url
+        # user.save()
 
-        return HttpResponseRedirect(reverse('users', args=(user.id,)))
+        form = ImageURLForm(request.POST)
+        if form.is_valid():
+            print('validdd')
+            user.img_url = form.save()
+            return HttpResponseRedirect(reverse('users', args=(user.id,)))
+        else:
+            print('not validdd')
+            template = loader.get_template('website/image/url_form.html')
+            return HttpResponse(template.render({'form': form}, request))
+
+
+class ImageURLView(UpdateView):
+    model = Contributor
+    form_class = ImageURLForm
+    template_name = 'website/image/url_form.html'
+
+    # must override this to set object instance in Generic view because <pk> is missing from url
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def form_valid(self, form):
+        user = self.request.user
+        user.img_url = form.save()
+        user.save()
+        return HttpResponse(
+            render_to_string('website/framework/generic_message.html',
+                      {'title': 'Success!',
+                       'message': 'Profile image URL has been successfully changed!'}))
+
+    def form_invalid(self, form):
+        return HttpResponse (
+            render_to_string (self.template_name, {'form': form}))
+
+
+def image_upload(request):
+    print('image upload hit')
+    if request.method == 'POST':
+        print('post')
+        form = ImageUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            # form.save()
+            print('valid')
+            return HttpResponseRedirect(reverse('users', args=(request.user.id,)))
+
+        else:
+            print('not valid')
+            form = ImageUploadForm()
+            template = loader.get_template('website/image/upload_form.html')
+            return HttpResponse(template.render({'form': form}, request))
+            # return HttpResponseRedirect(
+            #     render_to_string('website/image/upload_form.html', {'form': form},
+            #                      context_instance=RequestContext(request)
+            #     )
+            # )
+    else:
+        print('else')
+        form = ImageUploadForm()
+        template = loader.get_template('website/image/upload_form.html')
+        return HttpResponse(template.render({'form': form}, request))
+
+
+class ImageUploadView(CreateView):
+    model = ProfileImage
+    form_class = ImageUploadForm
+    template_name = 'website/image/upload_form.html'
+
+    # We must override get and form_valid/invalid methods
+    # because we need to pass additional data (repository) to templates
+    # def get(self, request, *args, **kwargs):
+    #     # We must initialize form when overriding get method and pass it in the context
+    #     form = self.form_class(initial=self.initial)
+    #
+    #     # issue_id = request.GET.get('issue_id')
+    #     # issue = get_object_or_404 (Issue, pk=issue_id)
+    #
+    #     template = loader.get_template(self.template_name)
+    #     return HttpResponse(template.render({'form': form}, request))
+
+    def form_valid(self, form):
+        print('2 valid')
+        # user = self.request.user
+        #
+        # issue_id = self.request.POST.get('issue_id')
+        # issue = get_object_or_404 (Issue, pk=issue_id)
+        #
+        # comment = form.save(user, issue)
+        # return HttpResponse (
+        #     render_to_string ('website/comment/comment_create_success.html', {'comment': comment, 'issue': issue}))
+
+    def form_invalid(self, form):
+        print('2 invalid')
+        # We must extract form from response of super form_invalid method and pass it in the context
+        response = super(ImageUploadView, self).form_invalid(form)
+        form = response.context_data['form']
+
+        # issue_id = self.request.POST.get('issue_id')
+        # issue = get_object_or_404 (Issue, pk=issue_id)
+
+        template = loader.get_template(self.template_name)
+        # we must pass request because we redirect to template with CLRF token (back to form)
+        return HttpResponse(template.render({'form': form}, self.request))

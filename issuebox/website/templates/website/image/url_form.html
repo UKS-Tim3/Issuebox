@@ -1,24 +1,9 @@
-<div class="modal-dialog">
-    <div class="modal-content">
-        <form id="modal_form" class="form" role="form" method="post"
-                action="{% url 'image_url' %}">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">{% block title %}Modal title{% endblock %}</h4>
-            </div>
-            <div class="modal-body">
-                {% csrf_token %}
+{% extends "website/framework/base_form.html" %}
 
-                <div class="form-group">
-                    <label for="image_url">Name:</label>
-                    <input class="form-control" id="image_url" maxlength="250" name="image_url" type="text" placeholder="Image URL">
-                </div>
-            </div>
+{% block action_url %}{% url 'image_url' %}{% endblock %}
 
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <input type="submit" class="btn btn-info" value="Update"/>
-            </div>
-        </form>
-    </div>
-</div>
+{% block title %}Image URL{% endblock %}
+
+{% block submit_button %}
+    <input type="submit" class="btn btn-primary" value="Change"/>
+{% endblock %}

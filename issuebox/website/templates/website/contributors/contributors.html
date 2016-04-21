@@ -24,12 +24,10 @@
                         <img class="media-object img-circle center-image"
                              src="{{userPage.img_url}}"
                              alt="{{userPage.first_name}} {{userPage.last_name}}" width="180" height="240"/>
-                        <br>
+                        <div class="text-right" style="margin-top:5px;">
+                                     <a href="#" data-toggle="modal" data-target="#image_modal"  title="Change picture" data-tooltip>Change picture <i class="fa fa-arrow-circle-right"></i></a>
+                        </div>
                         <!-- must user separate modal for this -->
-                        <a href="#" data-toggle="modal" data-target="#image_modal"
-                           title="Change profile image" data-tooltip>
-                            Change profile image</a>
-
                     </div>
                 </div>
                 <br/>
@@ -215,16 +213,17 @@
                 <h4 class="modal-title" id="myModalLabel">Image upload</h4>
             </div>
             <div class="modal-body">
-                <p>Choose how you want to upload your profile image?</p><br>
-                <div>
-                    <a class="btn btn-block btn-primary" onclick="hideModal()" href="{% url 'image_upload' %}"
+                <p>Choose how you want to upload your profile image?</p>
+                <div style="float:right;">
+                    <a class="btn btn-small btn-info" onclick="hideModal()" href="{% url 'image_upload' %}"
                        data-toggle="modal" data-target="#modal" title="Upload image" data-tooltip>
                     <i class="fa fa-plus-circle"></i> Upload image</a>
 
-                    <a class="btn btn-block btn-primary" onclick="hideModal()" href="{% url 'image_url' %}"
+                    <a class="btn btn-small btn-primary" onclick="hideModal()" href="{% url 'image_url' %}"
                        data-toggle="modal" data-target="#modal" title="Enter image URL" data-tooltip>
                     <i class="fa fa-plus-circle"></i> Enter image URL</a>
                 </div>
+                <p>&nbsp;</p>
             </div>
             <div class="modal-footer">
             </div>

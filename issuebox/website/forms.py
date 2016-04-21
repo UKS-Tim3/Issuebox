@@ -142,7 +142,7 @@ class RegistrationForm (forms.ModelForm):
 
     class Meta:
         model = Contributor
-        fields = ['username', 'password', 'confirmPassword', 'first_name', 'last_name', 'email', 'img_url',
+        fields = ['username', 'password', 'confirmPassword', 'first_name', 'last_name', 'email',
                   'github_url']
 
     def save(self):
@@ -152,11 +152,9 @@ class RegistrationForm (forms.ModelForm):
         c.last_name = self.cleaned_data['last_name']
         c.email = unique_email (self.cleaned_data['email'])
         c.username = self.cleaned_data['username']
-        c.img_url = self.cleaned_data['img_url']
         c.github_url = self.cleaned_data['github_url']
 
-        if c.img_url is None or c.img_url=='':
-            c.img_url='https://cdn.shopify.com/s/files/1/1069/3046/t/2/assets/noimage.jpg?11257982579509423500'
+        c.img_url='/static/assets/noimage.jpg'
         c.save ()
 
         return c
@@ -189,18 +187,14 @@ class RegistrationEditForm (forms.ModelForm):
 
     class Meta:
         model = Contributor
-        fields = ['first_name', 'last_name', 'email', 'img_url', 'github_url']
+        fields = ['first_name', 'last_name', 'email', 'github_url']
 
     def save(self, c):
         c.first_name = self.cleaned_data['first_name']
         c.last_name = self.cleaned_data['last_name']
         if c.email != self.cleaned_data['email']:
             c.email = unique_email(self.cleaned_data['email'])
-        c.img_url = self.cleaned_data['img_url']
         c.github_url = self.cleaned_data['github_url']
-
-        if c.img_url is None or c.img_url=='':
-            c.img_url='https://cdn.shopify.com/s/files/1/1069/3046/t/2/assets/noimage.jpg?11257982579509423500'
 
         c.save ()
         return c

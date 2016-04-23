@@ -223,7 +223,9 @@ class ImageURLForm(forms.ModelForm):
     def clean_img_url(self):
         data = self.cleaned_data['img_url']
         if data == '':
-            raise forms.ValidationError("You must enter Image URL!")
+            raise forms.ValidationError("This field is required!")
+        elif data[-4:].lower() not in ('.jpg', '.png', '.bmp', '.gif', '.bpg', '.webp'):
+            raise forms.ValidationError("It seems this is not valid image URL!")
 
         # Always return the cleaned data, whether you have changed it or
         # not.
@@ -236,3 +238,13 @@ class ImageURLForm(forms.ModelForm):
 class ImageUploadForm(forms.Form):
 
     file = forms.FileField(label='Select an image')
+
+    def clean_file(self):
+        data = self.cleaned_data['file']
+
+        if data.name[-4:].lower() not in ('.jpg', '.png', '.bmp', '.gif', '.bpg', '.webp'):
+            raise forms.ValidationError("It seems this is not valid image file!")
+
+        # Always return the cleaned data, whether you have changed it or
+        # not.
+        return data

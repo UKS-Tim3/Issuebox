@@ -728,8 +728,7 @@ def image_upload(request):
             # double '{{' and '}}' escapes '{}' format field and prints out '{' and '}'
             # user.img_url = '{{% static "{}" %}}'.format(img_url.__str__())
             # but {% static %} tag is not interpreted in template because it is rendered as string
-            # in order to avoid changing templates we must hardcode like this:
-
+            # in order to avoid changing templates we can hardcode it like this:
             user.img_url = '/static/{}'.format(img_url.__str__())
             user.save()
 

@@ -3,6 +3,8 @@ from django import forms
 from django.utils import timezone
 from django.db.models import Q
 from itertools import chain
+from django.core.validators import URLValidator
+from django.core.exceptions import ValidationError
 
 # Repository
 
@@ -152,7 +154,7 @@ class RegistrationForm (forms.ModelForm):
         c.last_name = self.cleaned_data['last_name']
         c.email = unique_email (self.cleaned_data['email'])
         c.username = self.cleaned_data['username']
-        c.github_url = self.cleaned_data['github_url']
+        c.github_url = validate_github_url(self.cleaned_data['github_url'])
 
         c.img_url='/static/assets/noimage.jpg'
         c.save ()
@@ -194,7 +196,7 @@ class RegistrationEditForm (forms.ModelForm):
         c.last_name = self.cleaned_data['last_name']
         if c.email != self.cleaned_data['email']:
             c.email = unique_email(self.cleaned_data['email'])
-        c.github_url = self.cleaned_data['github_url']
+        c.github_url = validate_github_url(self.cleaned_data['github_url'])
 
         c.save ()
         return c
@@ -205,6 +207,16 @@ def unique_email(email):
         raise forms.ValidationError ("Email already exist.")
     else:
         return email
+
+
+def validate_github_url(url):
+    # (\s+)?(?!.) means it can have excess of whitespaces
+    # only if it is followed by a new line (not followed by any character except new line)
+    validate = URLValidator(regex='https?:\/\/(www\.)?github\.com\/\w+(\s+)?(?!.)',
+                             message='This seems not to be a valid GitHub url!')
+    validate(url)
+    return url
+
 
 def password_clean(password, confirmPassword):
     if password != confirmPassword:

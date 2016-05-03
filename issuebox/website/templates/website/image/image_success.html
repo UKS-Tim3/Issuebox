@@ -1,0 +1,8 @@
+{% extends "website/framework/generic_message.html" %}
+
+{% block script %}
+<script>
+    setTimeout(function() { jQuery('#modal').modal('hide'); }, 2000);
+    location.reload();
+</script>
+{% endblock %}

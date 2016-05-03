@@ -127,5 +127,7 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "website", "static", "assets"),
+    # added to store and serve profile images, good enough for development phase
+    # for production phase see: https://docs.djangoproject.com/en/dev/howto/static-files/deployment/
+    os.path.join(BASE_DIR, "website", "static", "profile_images")
 ]
-

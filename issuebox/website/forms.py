@@ -3,6 +3,8 @@ from django import forms
 from django.utils import timezone
 from django.db.models import Q
 from itertools import chain
+from django.core.validators import URLValidator
+from django.core.exceptions import ValidationError
 
 # Repository
 
@@ -142,7 +144,7 @@ class RegistrationForm (forms.ModelForm):
 
     class Meta:
         model = Contributor
-        fields = ['username', 'password', 'confirmPassword', 'first_name', 'last_name', 'email', 'img_url',
+        fields = ['username', 'password', 'confirmPassword', 'first_name', 'last_name', 'email',
                   'github_url']
 
     def save(self):
@@ -152,11 +154,9 @@ class RegistrationForm (forms.ModelForm):
         c.last_name = self.cleaned_data['last_name']
         c.email = unique_email (self.cleaned_data['email'])
         c.username = self.cleaned_data['username']
-        c.img_url = self.cleaned_data['img_url']
-        c.github_url = self.cleaned_data['github_url']
+        c.github_url = validate_github_url(self.cleaned_data['github_url'])
 
-        if c.img_url is None or c.img_url=='':
-            c.img_url='https://cdn.shopify.com/s/files/1/1069/3046/t/2/assets/noimage.jpg?11257982579509423500'
+        c.img_url='/static/assets/noimage.jpg'
         c.save ()
 
         return c
@@ -189,18 +189,14 @@ class RegistrationEditForm (forms.ModelForm):
 
     class Meta:
         model = Contributor
-        fields = ['first_name', 'last_name', 'email', 'img_url', 'github_url']
+        fields = ['first_name', 'last_name', 'email', 'github_url']
 
     def save(self, c):
         c.first_name = self.cleaned_data['first_name']
         c.last_name = self.cleaned_data['last_name']
         if c.email != self.cleaned_data['email']:
             c.email = unique_email(self.cleaned_data['email'])
-        c.img_url = self.cleaned_data['img_url']
-        c.github_url = self.cleaned_data['github_url']
-
-        if c.img_url is None or c.img_url=='':
-            c.img_url='https://cdn.shopify.com/s/files/1/1069/3046/t/2/assets/noimage.jpg?11257982579509423500'
+        c.github_url = validate_github_url(self.cleaned_data['github_url'])
 
         c.save ()
         return c
@@ -212,8 +208,55 @@ def unique_email(email):
     else:
         return email
 
+
+def validate_github_url(url):
+    # (\s+)?(?!.) means it can have excess of whitespaces
+    # only if it is followed by a new line (not followed by any character except new line)
+    validate = URLValidator(regex='https?:\/\/(www\.)?github\.com\/\w+(\s+)?(?!.)',
+                             message='This seems not to be a valid GitHub url!')
+    validate(url)
+    return url
+
+
 def password_clean(password, confirmPassword):
     if password != confirmPassword:
         raise forms.ValidationError ("Passwords don't match.")
 
     return password
+
+
+class ImageURLForm(forms.ModelForm):
+    class Meta:
+        model = Contributor
+        fields = ['img_url']
+
+    img_url = forms.CharField(max_length=150, label="Image URL")
+
+    def clean_img_url(self):
+        data = self.cleaned_data['img_url']
+        if data == '':
+            raise forms.ValidationError("This field is required!")
+        elif data[-4:].lower() not in ('.jpg', '.png', '.bmp', '.gif', '.bpg', '.webp'):
+            raise forms.ValidationError("It seems this is not valid image URL!")
+
+        # Always return the cleaned data, whether you have changed it or
+        # not.
+        return data
+
+    def save(self):
+        return self.cleaned_data['img_url']
+
+
+class ImageUploadForm(forms.Form):
+
+    file = forms.FileField(label='Select an image')
+
+    def clean_file(self):
+        data = self.cleaned_data['file']
+
+        if data.name[-4:].lower() not in ('.jpg', '.png', '.bmp', '.gif', '.bpg', '.webp'):
+            raise forms.ValidationError("It seems this is not valid image file!")
+
+        # Always return the cleaned data, whether you have changed it or
+        # not.
+        return data

@@ -16,5 +16,10 @@ def is_commited(repository, contributor):
 def absolute_url(relative_url):
     """Converts relative url to absolute."""
 
-    url = ''.join(['http://', relative_url])
+    url = relative_url
+    if not relative_url.startswith('https://'):
+        if not relative_url.startswith('http://'):
+            url = ''.join(['http://', relative_url])
+        else:
+            url = ''.join(['https://', relative_url])
     return url

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
+from getenv import env
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 from django.conf.global_settings import LOGIN_URL
@@ -82,6 +83,7 @@ DATABASES = {
         'NAME': 'issuebox_db',
         'USER': 'root',
         'PASSWORD': 'root',
+        'HOST': env('DATABASE_HOST', ''),
     }
 }
 

@@ -7,7 +7,7 @@ from django.http import HttpResponse, HttpResponseRedirect, QueryDict
 from django.shortcuts import get_object_or_404, render
 from django.template import RequestContext, loader
 from django.template.loader import render_to_string
-from django.views.generic import DetailView
+from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, UpdateView
 from django.http import JsonResponse
 from django.db.models import Q
@@ -456,6 +456,32 @@ class IssueEditView (UpdateView):
         issue = form.save_edit()
         return HttpResponse (
             render_to_string ('website/issue/issue_edit_success.html', {'issue': issue}))
+
+# Tag
+
+class TagListView(ListView):
+
+    template_name = "website/tags/tags.html"
+    context_object_name = "tags"
+    
+    def get_queryset(self):
+        return Tag.objects.all
+
+class TagDetailView(DetailView):
+
+    model = Tag
+    template = "website/tags/tag.html"
+
+class TagCreateView(CreateView):
+
+    model = Tag
+    form_class = TagForm
+    template_name = 'website/tags/tag_create_form.html'
+
+    def form_valid(self, form):
+        tag = form.save()
+        return HttpResponse (
+            render_to_string ('website/tags/tag_create_success.html', {'tag': tag}))
 
 
 # Commit

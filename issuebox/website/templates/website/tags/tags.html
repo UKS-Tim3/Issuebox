@@ -41,7 +41,7 @@
                         </ul>
                     </div>
                 </div>
-                <button type="button" class="btn  btn-block btn-lg btn-primary" data-toggle="modal"
+                <button type="button" class="btn  btn-block btn-lg btn-primary" href={% url 'tag_create' %} data-toggle="modal"
                         data-target="#addTag"><i class="fa fa-plus-circle"></i> Add custom tag
                 </button>
                 <br />
@@ -58,8 +58,9 @@
                         </tr>
                         </thead>
                         <tbody>
+                        {% for tag in tags %}
                         <tr>
-                            <td style="vertical-align:middle"> <span class="label label-primary tag"><font size="3">Bug</font></span></td>
+                            <td style="vertical-align:middle"> <span class="label label-primary tag"><font size="3">{{ tag.label }}</font></span></td>
                             <td>JSD</td>
                             <td><a class="btn btn-info"
                                    href="#"><span
@@ -71,46 +72,7 @@
                                         class="glyphicon glyphicon-trash"></span> Delete</a>
                             </td>
                         </tr>
-                        <tr>
-                            <td style="vertical-align:middle"> <span class="label label-info tag"><font size="3">Greska</font></span></td>
-                            <td>JSD</td>
-                            <td><a class="btn btn-info"
-                                   href="#"><span
-                                    class="glyphicon glyphicon-pencil"></span> Edit</a>
-                            </td>
-                            <td>
-                                <a class="btn btn-danger"
-                                   href="#"><span
-                                        class="glyphicon glyphicon-trash"></span> Delete</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="vertical-align:middle"><span class="label label-info tag"><font size="3">Greska</font></span></td>
-                            <td>JSD</td>
-                            <td "><a class="btn btn-info"
-                                   href="#"><span
-                                    class="glyphicon glyphicon-pencil"></span> Edit</a>
-                            </td>
-                            <td>
-                                <a class="btn btn-danger"
-                                   href="#"><span
-                                        class="glyphicon glyphicon-trash"></span> Delete</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="vertical-align:middle"><span class="label label-danger tag"><font size="3">Greska</font></span></td>
-                            <td>JSD</td>
-                            <td><a class="btn btn-info"
-                                   href="#"><span
-                                    class="glyphicon glyphicon-pencil"></span> Edit</a>
-                            </td>
-                            <td>
-                                <a class="btn btn-danger"
-                                   href="#"><span
-                                        class="glyphicon glyphicon-trash"></span> Delete</a>
-                            </td>
-                        </tr>
-
+                        {% endfor %}
                         </tbody>
                     </table>
                     <nav>
@@ -147,33 +109,7 @@
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Add custom tag</h4>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label for="xx"> Label </label>
-                    <input type="text" class="form-control" name="xx" placeholder="Label"/>
-                </div>
-                <div class="form-group">
-                    <label for="xx"> Label </label>
-                    <input type="text" class="form-control" name="xx" placeholder="Color"/>
-                </div>
-                <div class="form-group">
-                    <label>Repository</label>
-                    <select name="repository" id="repository" class="form-control">
-                        <option value="0">JSD</option>
-                        <option value="1">UKS</option>
-                    </select>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-success" data-dismiss="modal">Add</button>
-            </div>
         </div>
-
     </div>
 </div>
 

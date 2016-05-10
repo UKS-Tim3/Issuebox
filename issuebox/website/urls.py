@@ -3,8 +3,11 @@ from website import views
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
-#   DON'T TOUCH, WILL SOON BE INTEGRATED
-#   url(r'^tags/$', views.TagsListView.as_view(), name='tags'),
+    # tags
+    url(r'^tags/$', views.TagListView.as_view(), name='tags'),
+    url(r'^tags/(?P<pk>\d+)$', views.TagDetailView.as_view(), name='tag'),
+    url(r'^tags/create$', views.TagCreateView.as_view(), name='tag_create'),
+
     # repositories
     url(r'^repositories/(?P<pk>\d+)$', views.RepositoryDetails.as_view(), name='repository'),
     url(r'^repositories/create$', views.RepositoryCreateView.as_view(), name='repository_create'),

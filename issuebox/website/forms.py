@@ -85,6 +85,18 @@ class IssueForm (forms.ModelForm):
         issue.save()
         return issue
 
+# Tag
+
+class TagForm(forms.ModelForm):
+
+    class Meta:
+        model = Tag
+        fields = ['label', 'font_color', 'background_color']
+
+    def save(self):
+        tag = self.instance
+        tag.save()
+        return tag
 
 # Commit
 

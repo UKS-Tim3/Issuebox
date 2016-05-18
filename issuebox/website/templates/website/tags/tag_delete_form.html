@@ -1,0 +1,13 @@
+{% extends "website/framework/base_form.html" %}
+
+{% block action_url %}{% url 'tag_delete' tag.id %}{% endblock %}
+
+{% block title %}Delete tag{% endblock %}
+
+{% block modal-body %}
+<p>Are you sure you want to delete <b>{{ tag.name }}</b> ?</p>
+{% endblock %}
+
+{% block submit_button %}
+    <input type="submit" class="btn btn-danger" value="Delete"/>
+{% endblock %}

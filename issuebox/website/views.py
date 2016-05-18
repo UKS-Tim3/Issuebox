@@ -494,6 +494,22 @@ class TagEditView(UpdateView):
         return HttpResponse (
             render_to_string ('website/tags/tag_edit_success.html', {'tag': tag}))
 
+class TagDeleteView(DetailView):
+    model = Tag 
+    template_name = 'website/tags/tag_delete_form.html'
+
+    def dispatch(self, *args, **kwargs):
+        self.tag_id = kwargs['pk']
+        return super (TagDeleteView, self).dispatch (*args, **kwargs)
+
+    def post(self, tag, *args, **kwargs):
+        tag = get_object_or_404 (Tag, pk=self.tag_id)
+        tag.delete()
+        return HttpResponse (
+            render_to_string ('website/tags/tag_delete_success.html', {'tag': tag}))
+
+
+
 # Commit
 
 class CommitCreateView(CreateView):

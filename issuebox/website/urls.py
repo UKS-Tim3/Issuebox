@@ -9,6 +9,7 @@ urlpatterns = [
     url(r'^tags/(?P<pk>\d+)$', views.TagDetailView.as_view(), name='tag'),
     url(r'^tags/create$', views.TagCreateView.as_view(), name='tag_create'),
     url(r'^tags/(?P<pk>\d+)/edit$', views.TagEditView.as_view(), name='tag_edit'),
+    url(r'^tags/(?P<pk>\d+)/delete$', views.TagDeleteView.as_view(), name='tag_delete'),
 
     # repositories
     url(r'^repositories/(?P<pk>\d+)$', views.RepositoryDetails.as_view(), name='repository'),

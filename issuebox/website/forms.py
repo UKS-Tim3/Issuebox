@@ -5,6 +5,8 @@ from django.db.models import Q
 from itertools import chain
 from django.core.validators import URLValidator
 from django.core.exceptions import ValidationError
+import http.client
+from urllib.parse import urlparse
 
 # Repository
 
@@ -252,8 +254,15 @@ class ImageURLForm(forms.ModelForm):
         data = self.cleaned_data['img_url']
         if data == '':
             raise forms.ValidationError("This field is required!")
-        elif data[-4:].lower() not in ('.jpg', '.png', '.bmp', '.gif', '.bpg', '.webp'):
-            raise forms.ValidationError("It seems this is not valid image URL!")
+        # elif data[-4:].lower() not in ('.jpg', '.png', '.bmp', '.gif', '.bpg', '.webp'):
+        #     raise forms.ValidationError("It seems this is not valid image URL!")
+
+        url = urlparse(data)
+        try:
+            if not valid_image_url(url, url.scheme == 'https'):
+                raise forms.ValidationError("It seems this is not valid image file!")
+        except:
+            raise forms.ValidationError("There seems to be an error during image url validation!")
 
         # Always return the cleaned data, whether you have changed it or
         # not.
@@ -276,3 +285,24 @@ class ImageUploadForm(forms.Form):
         # Always return the cleaned data, whether you have changed it or
         # not.
         return data
+
+
+def valid_image_url(url, secure):
+    if secure:
+        connection = http.client.HTTPSConnection(url.netloc)
+    else:
+        connection = http.client.HTTPConnection(url.netloc)
+
+    connection.request("HEAD", url.path)
+    response = connection.getresponse()
+
+    # workaround for shortened urls e.g. http://goo.gl/IsSUeBox
+    location = response.getheader('Location', None)
+    if location is not None and url.__str__() != location:
+        location = urlparse(location)
+        return valid_image_url(location, location.scheme == 'https')
+
+    if response.code not in range(200, 209):
+        return False
+
+    return True if response.getheader('Content-Type', None).startswith('image/') else False

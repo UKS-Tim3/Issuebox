@@ -483,6 +483,16 @@ class TagCreateView(CreateView):
         return HttpResponse (
             render_to_string ('website/tags/tag_create_success.html', {'tag': tag}))
 
+class TagEditView(UpdateView):
+
+    model = Tag
+    form_class = TagForm
+    template_name = 'website/tags/tag_edit_form.html'
+
+    def form_valid(self, form):
+        tag = form.save_edit()
+        return HttpResponse (
+            render_to_string ('website/tags/tag_edit_success.html', {'tag': tag}))
 
 # Commit
 

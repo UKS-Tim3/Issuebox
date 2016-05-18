@@ -62,7 +62,7 @@ target/
 .ipynb_checkpoints
 
 # Vim .swp temp files
-*.swp
+*.sw?
 
 # Database migration files
 migrations/

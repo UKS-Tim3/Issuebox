@@ -42,7 +42,7 @@
                     </div>
                 </div>
                 <button type="button" class="btn  btn-block btn-lg btn-primary" href={% url 'tag_create' %} data-toggle="modal"
-                        data-target="#addTag"><i class="fa fa-plus-circle"></i> Add custom tag
+                        data-target="#modal"><i class="fa fa-plus-circle"></i> Add custom tag
                 </button>
                 <br />
             </div>
@@ -60,11 +60,11 @@
                         <tbody>
                         {% for tag in tags %}
                         <tr>
-                            <td style="vertical-align:middle"> <span class="label label-primary tag"><font size="3">{{ tag.label }}</font></span></td>
+                            <td style="vertical-align:middle"> <span class="label label-primary tag" style = "background-color: {{ tag.background_color }}"><font size="3" color="{{ tag.font_color }}" >{{ tag.label }}</font></span></td>
                             <td>JSD</td>
                             <td><a class="btn btn-info"
-                                   href="#"><span
-                                    class="glyphicon glyphicon-pencil"></span> Edit</a>
+                                    href={% url 'tag_edit' tag.id %} data-toggle="modal" data-target="#modal">
+                                <span class="glyphicon glyphicon-pencil"></span> Edit</a>
                             </td>
                             <td>
                                 <a class="btn btn-danger"
@@ -105,7 +105,7 @@
 
 <!--- Modal -->
 
-<div class="modal fade" id="addTag" role="dialog">
+<div class="modal fade" id="modal" role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
@@ -113,6 +113,15 @@
     </div>
 </div>
 
+<!-- It is necessary to clear up the root modal div when dialogs are canceled, -->
+<!-- otherwise, always the first opened modal dialog will pop up -->
+<script>
+        $(document).ready(function() {
+            $('body').on('hidden.bs.modal', '#modal', function () {
+                $(this).removeData('bs.modal');
+            });
+        });
+</script>
 
 <!--- /Modal -->
 

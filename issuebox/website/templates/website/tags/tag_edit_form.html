@@ -2,7 +2,7 @@
 
 {% load staticfiles %}
 
-{% block action_url %}{% url 'tag_create' %}{% endblock %}
+{% block action_url %}{% url 'tag_edit' tag.id %}{% endblock %}
 
 {% block extra_form_field %}
 
@@ -15,4 +15,4 @@
 
 {% endblock %}
 
-{% block title %}Create tag{% endblock %}
+{% block title %}Edit tag{% endblock %}

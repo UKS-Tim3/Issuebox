@@ -95,14 +95,30 @@ class TagForm(forms.ModelForm):
         model = Tag
         fields = ['label', 'font_color', 'background_color'] 
 
-    def save(self):
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super (TagForm, self).__init__ (*args, **kwargs)
+
+        self.fields['repository'] = forms.ModelChoiceField(
+                                                              label = 'Repository',
+                                                              queryset = Repository.objects.all().filter(owner_id = user.id),
+                                                          )
+
+    def save(self, repository):
         tag = self.instance
+        tag.repository = repository
+
         tag.save()
+
         return tag
 
-    def save_edit(self):
+    def save_edit(self, repository):
         tag = self.instance
+        tag.repository = repository
+
         tag.save()
+
+        return tag
 
 # Commit
 

@@ -4,15 +4,16 @@
 
 {% block action_url %}{% url 'tag_edit' tag.id %}{% endblock %}
 
-{% block extra_form_field %}
-
 {% block script_extra %}
 <script>
     $('#id_font_color').prop('type', 'color')
     $('#id_background_color').prop('type', 'color')
 </script>
-{% endblock %}
 
 {% endblock %}
 
 {% block title %}Edit tag{% endblock %}
+
+{% block submit_button %}
+<input type="submit" class="btn btn-info" value="Edit"/>
+{% endblock %}

@@ -478,10 +478,19 @@ class TagCreateView(CreateView):
     form_class = TagForm
     template_name = 'website/tags/tag_create_form.html'
 
+    def get_form_kwargs(self):
+        kwargs = super(TagCreateView, self).get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
     def form_valid(self, form):
-        tag = form.save()
+        repository_id = self.request.POST.get('repository')
+        repository = get_object_or_404(Repository, pk=repository_id)
+
+        tag = form.save(repository)
+
         return HttpResponse (
-            render_to_string ('website/tags/tag_create_success.html', {'tag': tag}))
+            render_to_string ('website/tags/tag_create_success.html', {'tag': tag, 'repository': repository}))
 
 class TagEditView(UpdateView):
 
@@ -489,8 +498,16 @@ class TagEditView(UpdateView):
     form_class = TagForm
     template_name = 'website/tags/tag_edit_form.html'
 
+    def get_form_kwargs(self):
+        kwargs = super(TagEditView, self).get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
     def form_valid(self, form):
-        tag = form.save_edit()
+        repository_id = self.request.POST.get('repository')
+        repository = get_object_or_404(Repository, pk=repository_id)
+
+        tag = form.save_edit(repository)
         return HttpResponse (
             render_to_string ('website/tags/tag_edit_success.html', {'tag': tag}))
 

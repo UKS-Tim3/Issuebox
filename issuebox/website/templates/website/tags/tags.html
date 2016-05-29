@@ -61,7 +61,7 @@
                         {% for tag in tags %}
                         <tr>
                             <td style="vertical-align:middle"> <span class="label label-primary tag" style = "background-color: {{ tag.background_color }}"><font size="3" color="{{ tag.font_color }}" >{{ tag.label }}</font></span></td>
-                            <td>JSD</td>
+                            <td>{{ tag.repository.name }}</td>
                             <td><a class="btn btn-info"
                                     href={% url 'tag_edit' tag.id %} data-toggle="modal" data-target="#modal">
                                 <span class="glyphicon glyphicon-pencil"></span> Edit</a>

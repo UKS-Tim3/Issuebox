@@ -83,7 +83,8 @@ DATABASES = {
         'NAME': 'issuebox_db',
         'USER': 'root',
         'PASSWORD': 'root',
-        'HOST': env('DATABASE_HOST', ''),
+        'HOST': '172.17.0.2'
+#        'HOST': env('DATABASE_HOST', ''),
     }
 }
 

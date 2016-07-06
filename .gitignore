@@ -64,9 +64,6 @@ target/
 # Vim .swp temp files
 *.sw?
 
-# Database migration files
-migrations/
-
 # Uploaded images
 issuebox/website/static/profile_images
 

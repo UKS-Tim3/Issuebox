@@ -99,8 +99,12 @@ class TagForm(forms.ModelForm):
         user = kwargs.pop('user', None)
         super (TagForm, self).__init__ (*args, **kwargs)
 
+        repository_id = self.instance.repository.id if self.instance.repository else None
+
         self.fields['repository'] = forms.ModelChoiceField(
                                                               label = 'Repository',
+                                                              initial = repository_id,
+                                                              required = False,
                                                               queryset = Repository.objects.all().filter(owner_id = user.id),
                                                           )
 

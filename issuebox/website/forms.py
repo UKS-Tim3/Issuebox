@@ -65,6 +65,11 @@ class IssueForm (forms.ModelForm):
         issue.repository = repository
         issue.issuer = issuer
         issue.save()
+        # we can use many field only after saving object
+        # so after saving we can add collection of items and unwrap it with '*'
+        tags = self.cleaned_data['tags']
+        issue.tags.add(*(tags.all()))
+        issue.save()
         return issue
 
     def save_edit(self):

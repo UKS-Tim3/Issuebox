@@ -304,7 +304,7 @@ class ImageUploadForm(forms.Form):
     def clean_file(self):
         data = self.cleaned_data['file']
 
-        if data.name[-4:].lower() not in ('.jpg', '.png', '.bmp', '.gif', '.bpg', '.webp'):
+        if data.name[-4:].lower() not in ('.jpg', '.png', '.bmp', '.gif', '.bpg'):
             raise forms.ValidationError("It seems this is not valid image file!")
 
         # Always return the cleaned data, whether you have changed it or
@@ -313,6 +313,8 @@ class ImageUploadForm(forms.Form):
 
 
 def valid_image_url(url, secure):
+    return url.path[-4:].lower() in ('.jpg', '.png', '.bmp', '.gif', '.bpg')
+
     if secure:
         connection = http.client.HTTPSConnection(url.netloc)
     else:

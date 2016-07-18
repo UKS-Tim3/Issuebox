@@ -465,7 +465,7 @@ class TagListView(ListView):
     context_object_name = "tags"
     
     def get_queryset(self):
-        return Tag.objects.all
+        return Tag.objects.filter(repository__owner=self.request.user) 
 
 class TagDetailView(DetailView):
 

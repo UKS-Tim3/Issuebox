@@ -1,0 +1,9 @@
+{% extends "website/framework/base_success.html" %}
+
+{% block message %}
+Issue <b>{{ tag.label }}</b> has been created successfully for repository {{ repository.name }}.
+{% endblock %}
+
+{% block javascript %}
+location.reload();
+{% endblock %}

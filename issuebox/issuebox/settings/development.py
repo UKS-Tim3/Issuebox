@@ -11,11 +11,12 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
+from getenv import env
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 from django.conf.global_settings import LOGIN_URL
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
@@ -82,6 +83,7 @@ DATABASES = {
         'NAME': 'issuebox_db',
         'USER': 'root',
         'PASSWORD': 'root',
+        'HOST': env('DATABASE_HOST', ''),
     }
 }
 
@@ -125,5 +127,7 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "website", "static", "assets"),
+    # added to store and serve profile images, good enough for development phase
+    # for production phase see: https://docs.djangoproject.com/en/dev/howto/static-files/deployment/
+    os.path.join(BASE_DIR, "website", "static", "profile_images")
 ]
-

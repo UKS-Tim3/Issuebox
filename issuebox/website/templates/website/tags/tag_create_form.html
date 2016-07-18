@@ -1,0 +1,15 @@
+{% extends "website/framework/base_form.html" %}
+
+{% load staticfiles %}
+
+{% block action_url %}{% url 'tag_create' %}{% endblock %}
+
+{% block script_extra %}
+<script>
+    $('#id_font_color').prop('type', 'color')
+    $('#id_background_color').prop('type', 'color')
+</script>
+
+{% endblock %}
+
+{% block title %}Create tag{% endblock %}

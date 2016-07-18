@@ -3,8 +3,14 @@ from website import views
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
-#   DON'T TOUCH, WILL SOON BE INTEGRATED
-#   url(r'^tags/$', views.TagsListView.as_view(), name='tags'),
+
+    # tags
+    url(r'^tags/$', views.TagListView.as_view(), name='tags'),
+    url(r'^tags/(?P<pk>\d+)$', views.TagDetailView.as_view(), name='tag'),
+    url(r'^tags/create$', views.TagCreateView.as_view(), name='tag_create'),
+    url(r'^tags/(?P<pk>\d+)/edit$', views.TagEditView.as_view(), name='tag_edit'),
+    url(r'^tags/(?P<pk>\d+)/delete$', views.TagDeleteView.as_view(), name='tag_delete'),
+
     # repositories
     url(r'^repositories/(?P<pk>\d+)$', views.RepositoryDetails.as_view(), name='repository'),
     url(r'^repositories/create$', views.RepositoryCreateView.as_view(), name='repository_create'),
@@ -35,5 +41,9 @@ urlpatterns = [
 
     url(r'^comment/create$', views.CommentCreateView.as_view(), name='comment_create'),
     url(r'^comment/(?P<pk>\d+)/edit$', views.CommentEditView.as_view(), name='comment_edit'),
-    url(r'^comment/(?P<pk>\d+)/delete$', views.CommentDeleteView.as_view(), name='comment_delete')
+    url(r'^comment/(?P<pk>\d+)/delete$', views.CommentDeleteView.as_view(), name='comment_delete'),
+
+    # image upload
+    url(r'^image/url$', views.ImageURLView.as_view(), name='image_url'),
+    url(r'^image/upload$', views.image_upload, name='image_upload'),
 ]

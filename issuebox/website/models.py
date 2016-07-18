@@ -12,20 +12,6 @@ class Contributor(User):
     def __str__(self):
         return self.username
 
-class Tag(models.Model):
-    label = models.CharField(max_length = 50)
-    font_color = models.CharField(
-        max_length = 7,
-        default = '#000000',
-    )
-    background_color = models.CharField(
-        max_length = 7,
-        default = '#FFFFFF',
-    )
-
-    def __str__(self):
-        return self.label
-
 class Repository(models.Model):
     name = models.CharField(max_length = 50)
     description = models.CharField(
@@ -47,6 +33,26 @@ class Repository(models.Model):
 
     def __str__(self):
         return self.name
+
+class Tag(models.Model):
+    label = models.CharField(max_length = 50)
+    font_color = models.CharField(
+        max_length = 7,
+        default = '#000000',
+    )
+    background_color = models.CharField(
+        max_length = 7,
+        default = '#FFFFFF',
+    )
+    repository = models.ForeignKey(
+        Repository,
+        default = None,
+        blank = False,
+        null = True,
+    )
+
+    def __str__(self):
+        return self.label
 
 class Commit(models.Model):
     hash = models.CharField(max_length = 40)
@@ -142,4 +148,3 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.message
-

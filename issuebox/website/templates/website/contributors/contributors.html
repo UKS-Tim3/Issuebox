@@ -24,13 +24,16 @@
                         <img class="media-object img-circle center-image"
                              src="{{userPage.img_url}}"
                              alt="{{userPage.first_name}} {{userPage.last_name}}" width="180" height="240"/>
-
+                        <div class="text-right" style="margin-top:5px;">
+                                     <a href="#" data-toggle="modal" data-target="#image_modal"  title="Change picture" data-tooltip>Change picture <i class="fa fa-arrow-circle-right"></i></a>
+                        </div>
+                        <!-- must user separate modal for this -->
                     </div>
                 </div>
                 <br/>
                 <div>
                     <a class="btn btn-block btn-lg btn-success" href="{{userPage.github_url|absolute_url}}" target="_blank">
-                    <i class="fa fa-eye"></i> Go on github</a>
+                    <i class="fa fa-eye"></i> View on github</a>
                 </div>
                 <br/>
                 {%if user.username == userPage.username%}
@@ -198,15 +201,49 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+<!--- Modal -->
+<div class="modal fade" id="image_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <!-- Bootstrap 3 requires 'modal-dialog' and 'modal-content' divs to be defined -->
+    <!-- in same page as root modal div (top level page preferred) -->
+    <!-- Although, success messages still need to be wrapped with these two divs in templates! -->
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Image upload</h4>
+            </div>
+            <div class="modal-body">
+                <p>Choose how you want to upload your profile image?</p>
+                <div style="float:right;">
+                    <a class="btn btn-small btn-info" onclick="hideModal()" href="{% url 'image_upload' %}"
+                       data-toggle="modal" data-target="#modal" title="Upload image" data-tooltip>
+                    <i class="fa fa-upload"></i> Upload image</a>
+
+                    <a class="btn btn-small btn-primary" onclick="hideModal()" href="{% url 'image_url' %}"
+                       data-toggle="modal" data-target="#modal" title="Enter image URL" data-tooltip>
+                    <i class="fa fa-external-link"></i> Enter image URL</a>
+                </div>
+                <p>&nbsp;</p>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
 <!-- It is necessary to clear up the root modal div when dialogs are canceled, -->
 <!-- otherwise, always the first opened modal dialog will pop up -->
 <script>
         $(document).ready(function() {
-            $('body').on('hidden.bs.modal', '.modal', function () {
+            $('body').on('hidden.bs.modal', '#modal', function () {
                 $(this).removeData('bs.modal');
             });
         });
 
+        function hideModal() {
+            // bootstrap.js import must be in header for this to work
+            $('#image_modal').modal('hide');
+        };
 </script>
 <!--- /Modal -->
 

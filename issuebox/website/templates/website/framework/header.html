@@ -35,6 +35,10 @@
     <script src="{% static 'js/jquery.cookie.js' %}"></script>
     <script src="{% static 'js/jquery.form.min.js' %}"></script>
 
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+
 </head>
 
 <body>
@@ -144,8 +148,8 @@
                 <li>
                     <a href="{% url 'users' user.pk %}"><i class="fa fa-fw fa-dashboard"></i> Dashboard</a>
                 </li>
-                <li><!-- treba tags umesto all-repositories -->
-                    <a href="{% url 'all-repositories' %}"><i class="fa fa-fw fa-tags"></i> Tags</a>
+                <li>
+                    <a href="{% url 'tags' %}"><i class="fa fa-fw fa-tags"></i> Tags</a>
                 </li>
                 <li>
                     <a href="{% url 'all-issues' %}"><i class="fa fa-fw fa-exclamation-circle"></i> My issues</a>

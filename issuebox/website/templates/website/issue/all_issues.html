@@ -156,12 +156,7 @@
 
                         </tbody>
                     </table>
-                    {% else %}
-                    There is no any issue to show.
-                    {% endif %}
-
                     <nav>
-
                         <ul class="pagination">
                             {% if issuesList.has_previous %}
                             <li>
@@ -184,6 +179,11 @@
                             {% endif %}
                         </ul>
                     </nav>
+                    {% else %}
+                    There is no any issue to show.
+                    {% endif %}
+
+
                 </div>
             </div>
         </div>

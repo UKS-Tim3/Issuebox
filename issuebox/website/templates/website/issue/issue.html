@@ -16,9 +16,9 @@
                     <div class="panel-heading">
                         <h3 class="panel-title">Tags</h3></div>
                     <div class="panel-body">
-                        <span class="label label-warning tag"><font size="3">Feature</font></span>
-                        <span class="label label-success tag"><font size="3">help wanted</font></span>
-                    </div>
+                        {% for tag in issue.tags.all %}
+                            <span class="label label-primary tag" style = "background-color: {{ tag.background_color }}"><font size="3" color="{{ tag.font_color }}" >{{ tag.label }}</font></span>
+                        {% endfor %}
                 </div>
             </div>
             <br/>

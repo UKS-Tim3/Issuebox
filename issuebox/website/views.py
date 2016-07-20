@@ -409,6 +409,11 @@ class IssueCreateView(CreateView):
                                                         Q(pk=repository.owner.pk)
                                             ).distinct();
 
+        form.fields['tags'].queryset = Tag.objects.all().filter(
+                                                            Q(repository=None)|
+                                                            Q(repository=repository)
+                                                ).distinct();
+
         template = loader.get_template(self.template_name)
         return HttpResponse(template.render({'repository': repository, 'form': form}, request))
 

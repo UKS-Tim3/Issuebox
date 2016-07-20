@@ -10,6 +10,7 @@ RUN git clone https://github.com/UKS-Tim3/Issuebox.git /opt/issuebox
 # RUN git clone -b develop https://github.com/UKS-Tim3/Issuebox.git /opt/issuebox
 
 ADD .docker/run.sh /usr/local/bin
+RUN pip3 install --upgrade pip
 RUN pip3 install -r /opt/issuebox/requirements.txt
 
 EXPOSE 8003

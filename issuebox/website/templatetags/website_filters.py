@@ -1,4 +1,8 @@
 from django import template
+import datetime
+from django.utils import timezone
+from ..models import Comment
+from ..models import Issue
 
 register = template.Library()
 
@@ -23,3 +27,44 @@ def absolute_url(relative_url):
         else:
             url = ''.join(['https://', relative_url])
     return url
+
+@register.filter
+def last_activity(user, repository):
+    """Gets user's last activity on this repository."""
+
+    if not user:
+        return False
+
+    # 01. 01. 01.
+    last_activity = datetime.datetime.fromordinal(1)
+
+    for issue in Issue.objects.filter(issuer=user, repository=repository):
+        if issue.created.replace(tzinfo=None) > last_activity:
+            last_activity = issue.created.replace(tzinfo=None)
+        elif issue.closed.replace(tzinfo=None) > last_activity:
+            last_activity = issue.closed.replace(tzinfo=None)
+        for comment in Comment.objects.filter(issue=issue, commenter=user):
+            if comment.timestamp.replace(tzinfo=None) > last_activity:
+                last_activity = comment.timestamp.replace(tzinfo=None)
+
+    return last_activity
+
+@register.filter
+def has_last_activity(user, repository):
+    """Gets user's last activity on this repository."""
+
+    if not user:
+        return False
+    # 01. 01. 01.
+    last_activity = datetime.datetime.fromordinal(1)
+
+    for issue in Issue.objects.filter(issuer=user, repository=repository):
+        if issue.created.replace(tzinfo=None) > last_activity:
+            last_activity = issue.created.replace(tzinfo=None)
+        elif issue.closed.replace(tzinfo=None) > last_activity:
+            last_activity = issue.closed.replace(tzinfo=None)
+        for comment in Comment.objects.filter(issue=issue, commenter=user):
+            if comment.timestamp.replace(tzinfo=None) > last_activity:
+                last_activity = comment.timestamp.replace(tzinfo=None)
+
+    return True if last_activity > datetime.datetime.fromordinal(1) else False

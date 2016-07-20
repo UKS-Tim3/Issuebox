@@ -19,25 +19,13 @@
                     </div>
                     <div class="panel-body">
                         <ul class="list-unstyled">
-                            <li>
-                                <span class="label label-success tag"><font size="3">help wanted</font></span>
-                            </li>
+                            {% for default_tag in default_tags %}
                             <li class="expanded-li">
-                                <span class="label label-primary tag"><font size="3">Question</font></span>
+                                <span class="label label-primary tag" style = "background-color: {{ default_tag.background_color }}">
+                                    <font size="3" color="{{ default_tag.font_color }}" >{{ default_tag.label }}</font>
+                                </span>
                             </li>
-                            <li class="expanded-li">
-                                <span class="label label-info tag"><font size="3">Wontfix</font></span>
-                            </li>
-                            <li class="expanded-li">
-                                <span class="label label-warning tag"><font size="3">Feature</font></span>
-                            </li>
-                            <li class="expanded-li">
-                                <span class="label label-default tag"><font size="3">Invalid</font></span>
-                            </li>
-                            <li class="expanded-li">
-                                <span class="label label-danger tag"><font size="3">Bug</font></span>
-                            </li>
-
+                            {% endfor %} 
                         </ul>
                     </div>
                 </div>
@@ -60,7 +48,11 @@
                         <tbody>
                         {% for tag in tags %}
                         <tr>
-                            <td style="vertical-align:middle"> <span class="label label-primary tag" style = "background-color: {{ tag.background_color }}"><font size="3" color="{{ tag.font_color }}" >{{ tag.label }}</font></span></td>
+                            <td style="vertical-align:middle"> 
+                                <span class="label label-primary tag" style = "background-color: {{ tag.background_color }}">
+                                    <font size="3" color="{{ tag.font_color }}" >{{ tag.label }}</font>
+                                </span>
+                            </td>
                             <td>{{ tag.repository.name }}</td>
                             <td><a class="btn btn-info"
                                     href={% url 'tag_edit' tag.id %} data-toggle="modal" data-target="#modal">
@@ -75,7 +67,7 @@
                         {% endfor %}
                         </tbody>
                     </table>
-                    <nav>
+                    <!-- <nav>
                         <ul class="pagination">
                             <li>
                                 <a href="#" aria-label="Previous">
@@ -93,7 +85,7 @@
                                 </a>
                             </li>
                         </ul>
-                    </nav>
+                    </nav> -->
                 </div>
             </div>
 

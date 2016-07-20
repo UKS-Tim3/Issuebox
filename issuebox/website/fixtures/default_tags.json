@@ -1,0 +1,56 @@
+[
+    {
+        "model"  : "website.tag",
+        "pk"     : "1",
+        "fields" : {
+            "label"            : "Help Wanted",
+            "background_color" : "#008000",
+            "font_color"       : "#FFFFFF"
+        }
+    },
+    {
+        "model"  : "website.tag",
+        "pk"     : "2",
+        "fields" : {
+            "label"            : "Question",
+            "background_color" : "#0000FF",
+            "font_color"       : "#FFFFFF"
+        }
+    },
+    {
+        "model"  : "website.tag",
+        "pk"     : "3",
+        "fields" : {
+            "label"            : "Won't Fix",
+            "background_color" : "#00FFFF",
+            "font_color"       : "#FFFFFF"
+        }
+    },
+    {
+        "model"  : "website.tag",
+        "pk"     : "4",
+        "fields" : {
+            "label"            : "Feature",
+            "background_color" : "#FFA500",
+            "font_color"       : "#FFFFFF"
+        }
+    },
+    {
+        "model"  : "website.tag",
+        "pk"     : "5",
+        "fields" : {
+            "label"            : "Invalid",
+            "background_color" : "#A9A9A9",
+            "font_color"       : "#FFFFFF"
+        }
+    },
+    {
+        "model"  : "website.tag",
+        "pk"     : "6",
+        "fields" : {
+            "label"            : "Bug",
+            "background_color" : "#FF0000",
+            "font_color"       : "#FFFFFF"
+        }
+    }
+]

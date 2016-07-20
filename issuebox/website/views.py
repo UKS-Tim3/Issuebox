@@ -469,6 +469,12 @@ class TagListView(ListView):
     template_name = "website/tags/tags.html"
     context_object_name = "tags"
     
+    def get_context_data(self, **kwargs):
+        context = super(TagListView, self).get_context_data(**kwargs)
+        context['default_tags'] = Tag.objects.filter(repository__id = None)
+
+        return context
+
     def get_queryset(self):
         return Tag.objects.filter(repository__owner=self.request.user) 
 

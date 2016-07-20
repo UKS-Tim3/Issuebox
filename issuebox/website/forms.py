@@ -58,6 +58,14 @@ class IssueForm (forms.ModelForm):
         model = Issue
         fields = ['name', 'message', 'priority', 'status', 'tags', 'assignee']
 
+    def __init__(self, *args, **kwargs):
+        super (IssueForm, self).__init__ (*args, **kwargs)
+
+        self.fields['tags'].queryset = Tag.objects.all().filter(
+                                                        Q(repository=None)|
+                                                        Q(repository=self.instance.repository)
+                                            ).distinct();
+
     def save(self, repository, issuer):
         issue = self.instance
         # using timezone because django throws warning for naive datetime
@@ -89,6 +97,9 @@ class IssueForm (forms.ModelForm):
             else:
                 issue.closed = None
 
+        tags = self.cleaned_data['tags']
+        issue.tags = []
+        issue.tags.add(*(tags.all()))
         issue.save()
         return issue
 
